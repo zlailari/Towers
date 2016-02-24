@@ -2,6 +2,7 @@ import time
 
 
 class Clock:
+    """This is a convenience class which has a method that will sleep until a specific amount of time has passed since the last tick."""
 
     def __init__(self, tick_len=1.0 / 30.0):
         self.last_tick = 0

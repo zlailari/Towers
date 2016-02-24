@@ -2,7 +2,7 @@
 import time
 from creep import Creep
 from clock import Clock
-from Main_Menu import Main_Menu
+from main_menu import Main_Menu
 
 # Define our globals
 TPS = 30  # ticks per second
