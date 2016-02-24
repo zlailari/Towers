@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import time
+from creep import creep
 
 # globally store last frame time
 last_time = 0
@@ -18,11 +19,13 @@ def main():
         if dt < min_dt:
             time.sleep(min_dt - dt)
 
-        loop(dt)
+        game_loop(dt)
 
-def loop(dt):
+def game_loop(dt):
     # this is the game's loop
     print("it's been " + str(dt * 1000) + " since last frame")
+    enemy = creep(10, (0,0), 100)
+    print(str(enemy))
 
 def start_game():
     pass
