@@ -6,9 +6,6 @@ class Game_State:
     the positions/damage/etc of creeps.  The game state during the main menu will
     wait for commands to go to other game states, like "settings" or "start game"."""
 
-    def __init__(self):
-        pass
-
     def update(self):
         # subclass game states MUST implement this, so throw exception
         # if they don't

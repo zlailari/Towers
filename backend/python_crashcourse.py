@@ -10,7 +10,7 @@ class Example:
     def __init__(self):
         """this method is called at object initialization,
         it's basically the constructor method"""
-        self.test = 100 # since we attach test to 'self', each object has its own 'test', like a true member variable in Java/C++/whatever
+        self.test = 100  # since we attach test to 'self', each object has its own 'test', like a true member variable in Java/C++/whatever
 
     def get_test(self):
         return self.test
@@ -37,3 +37,5 @@ def main():
 if __name__ == '__main__':
     main()
     # This is Python's way of entering the program, which is sort of weird, but that's just how python does it.
+    # The method main() isn't special at all, it could be kangaroo(), it just
+    # makes sense for the main method to be called main()

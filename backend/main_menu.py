@@ -6,5 +6,7 @@ class Main_Menu(Game_State):
     def __init__(self):
         print('main menu created.')
 
-    def update(self):
-        print('updating main menu state!')
+    def update(self, client_info):
+        #    print('updating main menu state!')
+
+        return self
