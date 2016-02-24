@@ -2,25 +2,31 @@
 import time
 from creep import Creep
 from clock import Clock
+from Main_Menu import Main_Menu
 
-TPS = 30 # ticks per second
-tick_len = 1.0/TPS # never update more fequently than this interval
+# Define our globals
+TPS = 30  # ticks per second
+TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
+
+game_state = Main_Menu()  # when we load up, game_state begins at main_menu
+
 
 def main():
-    clock = Clock(tick_len)    
+    clock = Clock(TICK_LEN)
 
     while True:
         dt = clock.tick()
         game_loop(dt)
 
+
 def game_loop(dt):
     # this is the game's loop
-    print("it's been " + str(dt * 1000) + " since last frame")
-    # enemy = Creep(10, (0,0), 100)
-    # print(str(enemy))
 
-def start_game():
-    pass
+    print("it's been " + str(dt * 1000) + " since last frame")
+
+    game_state.update()
+    # network.send(game_state) # psuedocode, network doesn't exist yet
+
 
 if __name__ == '__main__':
     # entrance to Python program

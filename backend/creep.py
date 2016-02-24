@@ -1,12 +1,13 @@
 class Creep:
+    """So far this is just an example implementation"""
     speed = 0
-    location = (0,0)
+    location = (0, 0)
     health = 0
 
-    def __init__(self, speed = 0, loc = (0,0), health = 0):
-       self.speed = speed
-       self.location = loc
-       self.health = health
+    def __init__(self, speed=0, loc=(0, 0), health=0):
+        self.speed = speed
+        self.location = loc
+        self.health = health
 
     def move(self, dest):
         pass
@@ -17,6 +18,5 @@ class Creep:
     def adjust_speed(self, amount):
         self.speed += amount
 
-    def __str__(self): # like toString() in Java
+    def __str__(self):  # like toString() in Java
         return 'speed,loc,health: ' + str(self.speed) + ',' + str(self.location) + ',' + str(self.health)
-
