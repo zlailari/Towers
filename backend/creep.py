@@ -1,4 +1,4 @@
-class creep:
+class Creep:
     speed = 0
     location = (0,0)
     health = 0
