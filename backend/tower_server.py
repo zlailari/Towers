@@ -20,9 +20,16 @@ network = Network()
 def main():
     clock = Clock(TICK_LEN)
     clock.tick()  # tick once to initialize counter
-    while True:
-        dt = clock.tick()
-        game_loop(dt)
+
+    try:
+        while True:
+            dt = clock.tick()
+            game_loop(dt)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # do any cleanup you want to do here
+        pass
 
 
 def game_loop(dt):
