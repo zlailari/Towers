@@ -25,7 +25,7 @@ def game_loop(dt):
     global game_state  # pull game_state into scope from global
     print("it's been " + str(dt * 1000) + " ms since last frame")
     client_info = network.receive()
-    game_state = game_state.update(client_info)
+    game_state = game_state.update(dt, client_info)
     network.send(game_state)  # psuedocode, network doesn't exist yet
 
 
