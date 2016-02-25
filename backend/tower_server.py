@@ -3,13 +3,17 @@ import time
 from creep import Creep
 from clock import Clock
 from main_menu import MainMenu
+from gameplay_state import GameplayState
 from network import Network
+import levels
 
 # Define our globals
 TPS = 30  # ticks per second
 TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
+WORLD_WIDTH = 20
+WORLD_HEIGHT = 20
 
-game_state = MainMenu()  # when we load up, game_state begins at main_menu
+game_state = GameplayState(levels.level_one, WORLD_WIDTH, WORLD_HEIGHT)
 network = Network()
 
 
