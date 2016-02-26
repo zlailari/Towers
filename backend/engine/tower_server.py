@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """This file acts as the main entrance point to the server."""
 import time
-from creep import Creep
-from clock import Clock
-from main_menu import MainMenu
-from gameplay_state import GameplayState
-from network import Network
-import levels
+from game_pieces.creep import Creep
+from engine.clock import Clock
+from game_states.main_menu import MainMenu
+from game_states.gameplay_state import GameplayState
+from engine.network import Network
+import game_pieces.levels
 
 # Define our globals
 TPS = 30  # ticks per second
@@ -15,7 +15,7 @@ WORLD_WIDTH = 20
 WORLD_HEIGHT = 20
 
 # game_state = GameplayState(levels.level_one, WORLD_WIDTH, WORLD_HEIGHT)
-game_state = MainMenu
+game_state = MainMenu()
 network = Network()
 
 

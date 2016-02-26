@@ -1,5 +1,5 @@
-from game_state import GameState
-from gameplay_state import GameplayState
+from game_states.game_state import GameState
+from game_states.gameplay_state import GameplayState
 
 
 class MainMenu(GameState):

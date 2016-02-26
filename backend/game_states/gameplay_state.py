@@ -1,7 +1,7 @@
-from game_state import GameState
-from grid_world import GridWorld
-from creep import Creep
-from tower import Tower
+from game_states.game_state import GameState
+from engine.grid_world import GridWorld
+from game_pieces.creep import Creep
+from game_pieces.tower import Tower
 
 
 class GameplayState(GameState):
