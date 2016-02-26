@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""This file acts as the main entrance point to the server."""
 import time
 from creep import Creep
 from clock import Clock
@@ -13,7 +14,8 @@ TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
 WORLD_WIDTH = 20
 WORLD_HEIGHT = 20
 
-game_state = GameplayState(levels.level_one, WORLD_WIDTH, WORLD_HEIGHT)
+# game_state = GameplayState(levels.level_one, WORLD_WIDTH, WORLD_HEIGHT)
+game_state = MainMenu
 network = Network()
 
 
@@ -33,6 +35,10 @@ def main():
 
 
 def game_loop(dt):
+    """This is the main game loop for the entire server.
+    Every tick of this loop will progress the game state by
+    some amount.  argument dt is the delta time since the last tick."""
+
     global game_state  # pull game_state into scope from global
     print("it's been " + str(dt * 1000) + " ms since last frame")
     client_info = network.receive()
