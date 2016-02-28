@@ -3,8 +3,15 @@
     <head>
         <title>Cursers</title> 
         <link rel="stylesheet" type="text/css" href="css/mainStyles.css" />
+        <link rel="stylesheet" type="text/css" href="css/ui.css" />
+
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+        <script src="js/deps/Raf.js"></script>
+        <script src="js/deps/Animate.js"></script>
+        <script src="js/deps/Scroller.js"></script>
+        <script src="js/deps/Tiling.js"></script>
     </head>
     <body>
         <div class="header">
@@ -13,24 +20,14 @@
             </div>
         </div>
 
-        <div class="content">
-            <div class="wrapper">
-                <div class="canvas">
-                    <canvas id="gameFrame"></canvas>
-                </div>
-                <!-- <div class="chatWrapper">
-                    <div class="chat">
-                        <div class="messageField">
-                            <ul id="chatMessages"></ul>
-                        </div>
-                        <form id="chatForm" action="">
-                            <input id="chatInput" autocomplete="off" placeholder="Type a message..."></input>
-                        </form>
-                    </div>
-                </div> -->
-            </div>
-        </div>
-        <script src="js/gamecore.js"></script>
+    <div id="container">
+        <canvas id="content"></canvas>
+    </div>
+
+    <script src="js/gamecore.js"></script>
+
+    <!-- Create Scroller, bind UI layer and mouse/touch events -->
+    <script src="js/deps/ui.js"></script>
     </body>
 </html>
 
