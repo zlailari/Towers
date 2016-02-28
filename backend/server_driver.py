@@ -3,6 +3,5 @@
 This only exists so that the scope of this program begins
 somewhere above all the child directories."""
 
-import engine.tower_server as server
-
+import websockets.test_server as server
 server.main()

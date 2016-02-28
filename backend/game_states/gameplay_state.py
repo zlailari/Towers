@@ -19,9 +19,12 @@ class GameplayState(GameState):
     def update(self, dt, client_info):
         for creep in self.all_creeps:
             creep.update(dt)
+
+        attacksMade = {}
         for tower in self.all_towers:
-            tower.update(dt, self.all_creeps)
-        return self
+            attacksMade.update({tower.id : tower.update(dt, self.all_creeps)}) 
+
+        return (self ,attacksMade)
 
     def set_level(self, level):
         self.cur_level = level

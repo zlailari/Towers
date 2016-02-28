@@ -11,12 +11,14 @@ CREEP_TYPES = {
 class Creep:
     """So far this is just an example implementation"""
 
-    def __init__(self, loc=(0, 0), creep_type=None, speed=None, health=None):
+    def __init__(self, loc=(0, 0), creep_type=None, speed=None, health=None, id=None):
         self.loc = loc
+        self.id = id; #give each creep an id to help keep track of it
+        
         if creep_type:
             # callers can either pass in a predefined creep_type
-            assert speed is None
-            assert health is None
+            #assert speed is None
+            #assert health is None
             self.speed = creep_type['speed']
             self.health = creep_type['health']
         else:
