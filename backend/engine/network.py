@@ -1,6 +1,6 @@
+import asyncio
 from autobahn.asyncio.websocket import WebSocketServerProtocol
 from autobahn.asyncio.websocket import WebSocketServerFactory
-import asyncio
 import json
 
 class MyServerProtocol(WebSocketServerProtocol):
