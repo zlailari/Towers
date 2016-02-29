@@ -7,6 +7,21 @@
 .content {
     display: flex;
     flex-flow: row wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+
+.chatWrapper {
+    width: auto;
+    min-width: 250px;
+}
+
+.wrapper{
+    width: 60%;
+    display: flex;
+    flex-flow: row wrap;
+    min-width: 800px;
+    min-height: 650px;
 }
 
 .ui-chatbox {
@@ -72,13 +87,18 @@
     word-wrap: break-word;      /* IE */
     font-size:12px;
 }
+.counterWrapper {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+}
 
-.chatWrapper {
-    min-width: 250px;
+.counter {
+    margin: 5px;
 }
 
 .gameFrame {
-    margin: 0 auto;
     margin-bottom: 1em;
     background-color: #FFFFFF;
 
