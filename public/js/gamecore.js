@@ -8,6 +8,12 @@ var content = document.getElementById('content');
 var context = content.getContext('2d');
 var tiling = new Tiling;
 
+// *Temperary for demonstration* get image. This is a bad way to do this
+var tile = new Image();
+var imageLoaded = false;
+tile.src = "img/game/tile.png"
+tile.onload = function() { imageLoaded = true; };
+
 var CellType = Object.freeze({
     EMPTY: 0,
     BLOCKED: 1,
@@ -19,8 +25,6 @@ var Cell = function (Grid, row, col) {
     this.row = row;
     this.col = col;
 
-    this.hover = true;
-
     this.type = CellType.EMPTY;
 
     // What Grid this cell belongs to, so we can access its properties
@@ -29,7 +33,6 @@ var Cell = function (Grid, row, col) {
     // Cell Paint Logic, called from tiling -> render (passed as callback)
     this.paint = function(row, col, left, up, width, height, zoom) {
         var highlightSize = 5;
-
         // Cell color based on type
         switch (this.type) {
             case CellType.EMPTY:
@@ -48,26 +51,29 @@ var Cell = function (Grid, row, col) {
                 console.log("ERROR: Illegal CellType");
         }
 
-        context.fillRect(left, up, width, height);
+        if (this.type == CellType.EMPTY && imageLoaded) {
+            context.drawImage(tile, left, up, width, height);
+        } else {
+            context.fillRect(left, up, width, height);
+        }
 
         context.fillStyle = "black";
         context.font = (14 * zoom).toFixed(2) + 'px "Helvetica Neue", Helvetica, Arial, sans-serif';
 
         // Pretty primitive text positioning :)
         context.fillText(row + "," + col, left + (6 * zoom), up + (18 * zoom));
+    }
 
-        // Highlight square on hover
-        if (this.hover) {
+    this.highlight = function () {
+        if (this == this.Grid.focusCell) {
+            // Highlight square on hover
             context.lineWidth = highlightSize;
             context.strokeStyle = "#FF0"; // yellow
             context.strokeRect(left, up, width, height);
-         }
+        }
     }
-
-    // this.draw = function(ctx) {
-
-    // }
 }
+
 var Grid = function (contentWidth, contentHeight, cellWidth, cellHeight) {
     // Grid size
     this.rows = Math.ceil(contentWidth / cellWidth);
@@ -93,9 +99,7 @@ var Grid = function (contentWidth, contentHeight, cellWidth, cellHeight) {
     // Mouse move handler
     this.mouseMove = function(x, y) {
         var coords = tiling.getCell(x, y);
-
-        //this.focusCell = this.Cells[row][col];
-        //this.Cells[row][col].hover = true;
+        this.focusCell = this.Cells[coords.row][coords.col];
     }
 
     this.mouseClick = function(x, y) {
