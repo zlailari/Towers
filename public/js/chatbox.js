@@ -48,7 +48,7 @@ $(document).ready(function() {
             and for demo we have appended sent message to our log div.
           */
           messageSent : function(id, user, msg) {
-            $("#log").append(id + " said: " + msg + "<br/>");
+            $(".log").append(id + " said: " + msg + "<br/>");
             $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
           }
         } );

@@ -1,36 +1,39 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Tower Wars</title> 
-        <link rel="stylesheet" type="text/css" href="css/mainStyles.css" />
-        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-        <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script type="text/javascript" src="js/jquery.ui.chatbox.js"></script>
-        <script type="text/javascript" src="js/chatbox.js"></script>
-    </head>
-    <body>
-        <div class="header">
-            <div class=logo>  
-            </div>
-        </div>
+<head>
+  <title>Tower Wars</title> 
+  <link rel="stylesheet" type="text/css" href="css/mainStyles.css" />
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/jquery.ui.chatbox.js"></script>
+  <script type="text/javascript" src="js/chatbox.js"></script>
+</head>
+<body>
+  <div class="header">
+    <div class=logo>  
+    </div>
+  </div>
 
-        <div class="content">
-            <div class="wrapper">
-                <div class="canvas">
-                    <canvas id="gameFrame"></canvas>
-                </div>
-            </div>
+  <div class="content">
+    <div class="wrapper">
+      <div class="canvas">
+        <canvas id="gameFrame"></canvas>
+      </div>
+    </div>
 
-            <!-- Home for chat bog -->
-            <input type="button" name="toggle" value="Show Chat Box" />
-            <div id="chat_div"></div>
+    <div class="chatWrapper">
+      <!-- Button -->
+      <input type="button" name="toggle" value="Show Chat Box" />
+      <!-- Home for chat box -->
+      <div id="chat_div"></div>
 
-            <!-- Home for chat log -->
-            <hr />
-            <div id="log"></div>
-        </div> 
-        <script src="js/gamecore.js"></script>
-    </body>
+      <!-- Home for chat log -->
+      <div class="log"></div>
+    </div>
+
+  </div> 
+  <script src="js/gamecore.js"></script>
+</body>
 </html>
 
