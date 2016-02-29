@@ -40,14 +40,14 @@ Tiling.prototype.setup = function(clientWidth, clientHeight, contentWidth, conte
 
 /**
  * Renders the given location on the area defined by {@link #setup} by calling
- * `paint(row, column, left, top, width, height, zoom)` as needed.
+ * `paint(row, column, left, up, width, height, zoom)` as needed.
  *
  * @param left {Number} Left position to render
- * @param top {Number} Top position to render
- * @param zoom {Number} Current zoom level (should be applied to `left` and `top` already)
+ * @param up {Number} Top position to render
+ * @param zoom {Number} Current zoom level (should be applied to `left` and `up` already)
  * @param paint {Function} Callback method for every tile to paint.
  */
-Tiling.prototype.render = function(left, top, zoom, paint) {
+Tiling.prototype.render = function(left, up, zoom, myGrid) {
 
 	var clientHeight = this.__clientHeight;
 	var clientWidth = this.__clientWidth;
@@ -57,7 +57,7 @@ Tiling.prototype.render = function(left, top, zoom, paint) {
 	var tileWidth = this.__tileWidth * zoom;
 
 	// Compute starting rows/columns and support out of range scroll positions
-	var startRow = Math.max(Math.floor(top / tileHeight), 0);
+	var startRow = Math.max(Math.floor(up / tileHeight), 0);
 	var startCol = Math.max(Math.floor(left / tileWidth), 0);
 
 	// Compute maximum rows/columns to render for content size
@@ -71,13 +71,13 @@ Tiling.prototype.render = function(left, top, zoom, paint) {
 	// 2. Negative scroll position: We shift the whole render context
 	//    (ignoring the tile dimensions) and effectively reduce the render
 	//    dimensions by the scroll amount.
-	var startTop = top >= 0 ? -top % tileHeight : -top;
+	var startTop = up >= 0 ? -up % tileHeight : -up;
 	var startLeft = left >= 0 ? -left % tileWidth : -left;
 
 	// Compute number of rows to render
 	var rows = Math.floor(clientHeight / tileHeight);
 
-	if ((top % tileHeight) > 0) {
+	if ((up % tileHeight) > 0) {
 		rows += 1;
 	}
 
@@ -107,12 +107,33 @@ Tiling.prototype.render = function(left, top, zoom, paint) {
 	// Render new squares
 	for (var row = startRow; row < (rows + startRow); row++) {
 		for (var col = startCol; col < (cols + startCol); col++) {
-			paint(row, col, currentLeft, currentTop, tileWidth, tileHeight, zoom);
+			myGrid.Cells[row][col].paint(row, col, currentLeft, currentTop, tileWidth, tileHeight, zoom);
 			currentLeft += tileWidth;
 		}
 
 		currentLeft = startLeft;
 		currentTop += tileHeight;
 	}
-	
+};
+
+// Gives the row/col of the entered x and y pixel values
+Tiling.prototype.getCell = function(x, y) {
+    var positions = scroller.getValues();
+
+	// Respect zooming
+	var tileHeight = this.__tileHeight * positions.zoom;
+	var tileWidth = this.__tileWidth * positions.zoom;
+
+	// Compute starting rows/columns and support out of range scroll positions
+	var startRow = Math.max(Math.floor(positions.top / tileHeight), 0);
+	var startCol = Math.max(Math.floor(positions.left / tileWidth), 0);
+
+    var rowOffset = Math.floor(y / tileHeight);
+    var colOffset = Math.floor(x / tileWidth);
+
+    var coord = {
+        row: startRow + rowOffset,
+        col: startCol + colOffset
+    }
+    return coord;
 };

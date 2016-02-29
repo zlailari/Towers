@@ -23,7 +23,7 @@ window.addEventListener("resize", reflow, false);
 reflow();
 
 if ('ontouchstart' in window) {
-
+    // Mobile *** Not currently supported ***
 	container.addEventListener("touchstart", function(e) {
 		// Don't react if initial down happens on a form element
 		if (e.touches[0] && e.touches[0].target && e.touches[0].target.tagName.match(/input|textarea|select/i)) {
@@ -50,6 +50,7 @@ if ('ontouchstart' in window) {
 
 	var mousedown = false;
 
+    // Event Listeners for canvas pan/zoom
 	container.addEventListener("mousedown", function(e) {
 		if (e.target.tagName.match(/input|textarea|select/i)) {
 			return;
@@ -85,6 +86,15 @@ if ('ontouchstart' in window) {
 
 		mousedown = false;
 	}, false);
+
+    // Game specific mouse events
+    container.addEventListener("mousemove", function(e) {
+        myGrid.mouseMove(e.layerX, e.layerY);
+    }, false);
+
+    container.addEventListener("click", function(e) {
+        myGrid.mouseClick(e.layerX, e.layerY);
+    }, false);
 
 	container.addEventListener(navigator.userAgent.indexOf("Firefox") > -1 ? "DOMMouseScroll" :  "mousewheel", function(e) {
 		scroller.doMouseZoom(e.detail ? (e.detail * -120) : e.wheelDelta, e.timeStamp, e.pageX, e.pageY);

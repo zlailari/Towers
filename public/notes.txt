@@ -1,0 +1,12 @@
+Animate.js: takes care of delay in frames and making rendering look nice in general,
+we probably don't have to worry about anything inside of it
+
+Scroller.js: This is the object you instantiate when you want a canvas. Implements
+all of the panning and zooming. Also implements what to do on touch start/stop
+
+Tiling.js: Dictates what tiles to be drawn when location to render is being modified
+
+ui.js: Has all of the eventlisteners in it. Also declares the scroller object
+
+gamecore.js: Has the grid + cell classes for now. Declares the game grid,
+canvas, and content
