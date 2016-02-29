@@ -107,7 +107,11 @@ Tiling.prototype.render = function(left, up, zoom, myGrid) {
     // Render new squares
     for (var row = startRow; row < (rows + startRow); row++) {
         for (var col = startCol; col < (cols + startCol); col++) {
-            myGrid.Cells[row][col].paint(row, col, currentLeft, currentTop, tileWidth, tileHeight, zoom);
+            if (myGrid.Cells[row][col]) {
+                myGrid.Cells[row][col].paint(row, col, currentLeft, currentTop, tileWidth, tileHeight, zoom);
+            } else {
+                console.log("ERROR: Grid cell index does not exist: " + row + ", " + col);
+            }
             currentLeft += tileWidth;
         }
 
@@ -116,7 +120,7 @@ Tiling.prototype.render = function(left, up, zoom, myGrid) {
     }
 };
 
-// Gives the row/col of the entered x and y pixel values
+// Gives the row and col of the entered x and y pixel values
 Tiling.prototype.getCell = function(x, y) {
     var positions = scroller.getValues();
 
@@ -131,9 +135,28 @@ Tiling.prototype.getCell = function(x, y) {
     var rowOffset = Math.floor(y / tileHeight);
     var colOffset = Math.floor(x / tileWidth);
 
-    var coord = {
+    return {
         row: startRow + rowOffset,
         col: startCol + colOffset
-    }
-    return coord;
+    };
 };
+
+// Gives x, y, height, and width for given cell index
+Tiling.prototype.getCellDimensions = function(row, col) {
+    var positions = scroller.getValues();
+
+    // Respect zooming
+    var tileHeight = this.__tileHeight * positions.zoom;
+    var tileWidth = this.__tileWidth * positions.zoom;
+
+    // Compute starting rows/columns and support out of range scroll positions
+    var startRow = Math.max(Math.floor(positions.top / tileHeight), 0);
+    var startCol = Math.max(Math.floor(positions.left / tileWidth), 0);
+
+    return {
+        height: tileHeight,
+        width: tileWidth,
+        x: col * tileWidth - startCol * tileWidth,
+        y: row * tileHeight - startRow * tileHeight
+    };
+}

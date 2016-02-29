@@ -4,6 +4,20 @@ var content = document.getElementById("content");
 var clientWidth = 0;
 var clientHeight = 0;
 
+// This is called whenever the grid needs to be updated due to pan or zoom
+var render = function(left, up, zoom) {
+    // Sync current dimensions with canvas (set in Tiling.js
+    content.width = clientWidth;
+    content.height = clientHeight;
+
+    // Full clearing for updated painting
+    context.clearRect(0, 0, clientWidth, clientHeight);
+
+    // Use tiling
+    tiling.setup(clientWidth, clientHeight, contentWidth, contentHeight, cellWidth, cellHeight);
+    tiling.render(left, up, zoom, myGrid);
+};
+
 // Initialize Scroller
 this.scroller = new Scroller(render, {
     zooming: true
@@ -18,6 +32,7 @@ var reflow = function() {
     clientHeight = container.clientHeight;
     scroller.setDimensions(clientWidth, clientHeight, contentWidth, contentHeight);
 };
+
 
 window.addEventListener("resize", reflow, false);
 reflow();
@@ -55,7 +70,7 @@ if ('ontouchstart' in window) {
         if (e.target.tagName.match(/input|textarea|select/i)) {
             return;
         }
-        
+
         scroller.doTouchStart([{
             pageX: e.pageX,
             pageY: e.pageY
@@ -68,7 +83,7 @@ if ('ontouchstart' in window) {
         if (!mousedown) {
             return;
         }
-        
+
         scroller.doTouchMove([{
             pageX: e.pageX,
             pageY: e.pageY
@@ -81,7 +96,7 @@ if ('ontouchstart' in window) {
         if (!mousedown) {
             return;
         }
-        
+
         scroller.doTouchEnd(e.timeStamp);
 
         mousedown = false;
