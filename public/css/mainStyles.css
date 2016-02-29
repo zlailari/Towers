@@ -9,6 +9,8 @@
     flex-flow: row wrap;
     align-content: flex-start;
     align-items: flex-start;
+    min-width: 800px;
+    min-height: 650px;
 }
 
 .chatWrapper {
@@ -16,12 +18,40 @@
     min-width: 250px;
 }
 
-.wrapper{
+.gameWrapper{
     width: 60%;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     min-width: 800px;
     min-height: 650px;
+}
+
+.stateWrapper {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.sideBarWrapper {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    margin: 10px;
+    width: auto;
+    min-height: inherit;
+}
+
+.sideBar {
+    margin: auto;
+    min-width: 100px;
+}
+
+.tab {
+    margin: 5px;
+    border-top: 4px solid #bdc3c7;
+    border-bottom: 4px solid #bdc3c7;
+    border-left: 4px solid #bdc3c7;
+    border-right: 4px solid #bdc3c7;
+    padding: 1px;
 }
 
 .ui-chatbox {
@@ -87,15 +117,14 @@
     word-wrap: break-word;      /* IE */
     font-size:12px;
 }
-.counterWrapper {
-    display: flex;
-    flex-flow: row wrap;
-    align-content: flex-start;
-    align-items: flex-start;
-}
 
 .counter {
     margin: 5px;
+    border-top: 4px solid #FFFFFF;
+    border-bottom: 4px solid #FFFFFF;
+    border-left: 4px solid #FFFFFF;
+    border-right: 4px solid #FFFFFF;
+    padding: 1px;
 }
 
 .gameFrame {
