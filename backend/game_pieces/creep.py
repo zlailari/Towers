@@ -1,4 +1,3 @@
-
 # this will store data about the different varieties of creeps
 # I don't know if I like this way of designating types, but it works for now
 CREEP_TYPES = {
@@ -11,31 +10,29 @@ CREEP_TYPES = {
 class Creep:
     """So far this is just an example implementation"""
 
-    def __init__(self, loc=(0, 0), creep_type=None, speed=None, health=None):
+    def __init__(self, loc, creep_type, speed, health):
         self.loc = loc
-        if creep_type:
-            # callers can either pass in a predefined creep_type
-            assert speed is None
-            assert health is None
-            self.speed = creep_type['speed']
-            self.health = creep_type['health']
-        else:
-            # or callers can define their own
-            assert creep_type is None
-            self.speed = speed
-            self.health = health
+        self.type = creep_type
+        self.speed = speed
+        self.health = health
 
     def update(self, dt):
         pass
 
-    def get_position(self):
-        return self.loc[0], self.loc[1]
+    def move_to_dest(self, dest):
+        self.loc = dest
+        return self.loc
 
-    def move(self, dest):
-        pass
-
+    def move_on_path(self, path):
+        self.loc = path[self.loc]
+        return self.loc
+		
     def take_damage(self, amount):
         self.health -= amount
+        if (self.health <= 0):
+            return 0
+        else:
+            return self.health
 
     def adjust_speed(self, amount):
         self.speed += amount
