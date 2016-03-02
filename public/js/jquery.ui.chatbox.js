@@ -83,7 +83,7 @@
             this.elem.uiChatboxInputBox.focus();
             $( ".ui-icon.ui-icon-minusthick" ).text("Minimize");
           } else {
-            this.elem.uiChatboxInputBox.blur();
+            $( "#gameFrame" ).focus();
             $( ".ui-icon.ui-icon-minusthick" ).text("Expand");
           }
         },
@@ -99,7 +99,7 @@
         this.uiChatboxInputBox.focus();
         $( ".ui-icon.ui-icon-minusthick" ).text("Minimize");
       } else {
-        this.uiChatboxInputBox.blur();
+        $( "#gameFrame" ).focus();
         $( ".ui-icon.ui-icon-minusthick" ).text("Expand");
       }
     },
