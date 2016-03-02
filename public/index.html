@@ -16,22 +16,38 @@
   </div>
 
   <div class="content">
-    <div class="wrapper">
-      <div class="canvas">
-        <canvas id="gameFrame"></canvas>
+
+    <div class="sideBarWrapper">
+      <div class="sideBarItem"> 
+        <p> select 1 </p>
+      </div>
+      <div class="sideBarItem"> 
+        <p>select 2 </p>
       </div>
     </div>
 
-    <div class="chatWrapper">
-      <!-- Button -->
-      <input type="button" name="toggle" value="Show Chat Box" />
-      <!-- Home for chat box -->
-      <div id="chat_div"></div>
+    <div class="gameWrapper">
+      <div class="stateWrapper">
+      <div class="tab"> My Game
+      </div>
+        <div class="counter">Lives: </div>
+        <div class="counter" id="lives">30 </div>
+        <div class="counter">Gold: </div>
+        <div class="counter" id="gold">30 </div>
+        <div class="counter">Enemies: </div>
+        <div class="counter" id="enRemain">10</div>
+      </div>
 
-      <!-- Home for chat log -->
-      <div class="log"></div>
+      <div class="canvas">
+        <canvas id="gameFrame"></canvas>
+      </div>
+      
     </div>
 
+    <!-- Inital home for chat box -->
+    <div id="chat_div"></div>
+
+      
   </div> 
   <script src="js/gamecore.js"></script>
 </body>
