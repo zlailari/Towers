@@ -6,6 +6,8 @@ var frequency = 60;
 can.height = 600;
 can.width = 800;
 
+var offset = $( ".canvas" ).offset()
+
 var Grid = function () {
     // Size of each cell with currect zoom
     this.distance = 50;
@@ -37,8 +39,8 @@ var Grid = function () {
 
     // Mouse move handler
     this.mouseMove = function(x, y) {
-        var row = Math.floor(y / this.distance);
-        var col = Math.floor(x / this.distance);
+        var row = Math.floor((y - offset.top) / this.distance);
+        var col = Math.floor((x - offset.left) / this.distance);
 
         // Check if user if hovered over a cell
         if (row < this.rows && col < this.cols) {
