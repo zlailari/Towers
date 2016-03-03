@@ -1,0 +1,47 @@
+In Python, you need to have a file named __init__.py in every directory you want to be able to import from.
+It was my bad that I forgot to git add the __init__.py files, which is why imports worked for me but for
+no one else.  Sorry :(
+
+So it works like this:
+
+top_level_dir:
+    __init__.py (empty file, just has to be named this)
+    run_my_stuff.py
+
+    dirA:
+        __init__.py
+        frog.py
+
+    dirB:
+        __init__.py
+        bunny.py
+
+Whatever Python file you run determines where the top of scope is.
+So if you run bunny.py, it's impossible to import frog.
+
+However, if you create a top-level script that only serves as a proxy
+to run bunny.py, you can make the scope be at the top level, and then imports will work.
+
+So if bunny imports frog, this won't work:
+./bunny.py    (executing bunny)
+
+But this will work:
+./run_my_stuff.py
+
+And run_my_stuff.py would look like this:
+
+import dirB.bunny
+bunny.main() # or whatever method you want to start running
+
+To import frog from bunny, it'd look like this:
+bunny.py:
+import dirA.frog
+
+or, to be able to call frog without saying dirA.frog:
+
+from dirA import frog
+
+sorry for forgetting the init files :(
+
+Python doesn't consider those directories to be importable
+if they don't have that __init__.py file.
