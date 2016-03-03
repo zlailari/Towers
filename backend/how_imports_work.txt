@@ -30,7 +30,7 @@ But this will work:
 
 And run_my_stuff.py would look like this:
 
-import dirB.bunny
+from dirB.bunny import bunny # if bunny is a class in bunny.py
 bunny.main() # or whatever method you want to start running
 
 To import frog from bunny, it'd look like this:
@@ -39,7 +39,7 @@ import dirA.frog
 
 or, to be able to call frog without saying dirA.frog:
 
-from dirA import frog
+from dirA.frog import frog
 
 sorry for forgetting the init files :(
 
