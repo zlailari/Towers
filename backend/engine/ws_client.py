@@ -21,6 +21,12 @@ from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientF
 # we can make the thread do stuff by adding them to the loop, which is sort of
 # like a "to do" queue
 client_loop = None
+client_protocol = None
+
+def get_client_protocol():
+    global client_protocol
+    assert client_protocol is not None
+    return client_protocol
 
 def start_client_process(address="127.0.0.1", port=9000):
     # address and port are those of the server
@@ -29,6 +35,7 @@ def start_client_process(address="127.0.0.1", port=9000):
     p = Process(target=start_client, args=(address, port))
     p.start()
     print("client was started.")
+
 
 def start_client(address, port):
     # see http://autobahn.ws/python/websocket/programming.html
@@ -50,9 +57,13 @@ def start_client(address, port):
     global client_loop
     client_loop = loop
 
-    print("client creating connection to address {} and port {}".format(address, str(port)))
+    print("client creating connection to address {} and port {}".format(
+        address, str(port)))
     coro = loop.create_connection(factory, address, port)
-    loop.run_until_complete(coro)
+
+    global client_protocol
+    (transport, client_protocol) = loop.run_until_complete(coro)
+    #print('{}, {}'.format(transport, client_protocol))
     loop.run_forever()
 
 

@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+"""This module acts as the server in charge of everything.
+
+The game_loop has a client that connects to this server.
+
+Each player has their web-browser client which connects to this server.
+
+More details are in engin/ws_client.py."""
 import asyncio
 from multiprocessing import Process
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
@@ -82,7 +88,3 @@ class MyServerProtocol(WebSocketServerProtocol):
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {0}".format(reason))
-
-
-if __name__ == '__main__':
-    start_server()
