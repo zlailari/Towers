@@ -1,26 +1,45 @@
 #!/usr/bin/env python3
 import asyncio
-import threading
 from multiprocessing import Process
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
     WebSocketServerFactory
 
 
 connected = []
+server_loop = None
 
-def start_server_threaded():
-    p = Process(target=start_server)
+
+def get_server_loop():
+    assert server_loop is not None
+    return server_loop
+
+
+def start_server_process(address="127.0.0.1", port="9000"):
+    # start the server running in a new process
+    p = Process(target=start_server, args=(address, port))
     p.start()
 
-def start_server():
-    factory = WebSocketServerFactory(u"ws://127.0.0.1:9000", debug=False)
+
+def start_server(address, port):
+    # see http://autobahn.ws/python/websocket/programming.html
+
+    # accept both string and int, since client has to accept int
+    if isinstance(port, int):
+        port = str(port)
+
+    composite_address = 'ws://' + address + ':' + port
+    print("starting websocket server at {}".format(composite_address))
+    factory = WebSocketServerFactory(composite_address, debug=False)
     factory.protocol = MyServerProtocol
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop = asyncio.get_event_loop()
-    
-    coro = loop.create_server(factory, '0.0.0.0', 9000)
+
+    global server_loop
+    server_loop = loop
+
+    coro = loop.create_server(factory, address, port)
     server = loop.run_until_complete(coro)
 
     try:
