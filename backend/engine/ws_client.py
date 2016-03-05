@@ -13,6 +13,7 @@ with the server.  The organization looks like of like this:
     clients.  This is pretty much how NodeJS does it too."""
 
 import asyncio
+import threading
 from multiprocessing import Process
 from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientFactory
 
@@ -23,18 +24,23 @@ from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientF
 client_loop = None
 client_protocol = None
 
+
 def get_client_protocol():
     global client_protocol
     assert client_protocol is not None
     return client_protocol
 
-def start_client_process(address="127.0.0.1", port=9000):
+
+def start_client_thread(address="127.0.0.1", port=9000):
     # address and port are those of the server
 
     # start the client running in a new process
-    p = Process(target=start_client, args=(address, port))
-    p.start()
-    print("client was started.")
+    #p = Process(target=start_client, args=(address, port))
+    #p.start()
+    #print("client was started.")
+    t = threading.Thread(target=start_client, args=(address, port))
+    t.daemon = True
+    t.start()
 
 
 def start_client(address, port):
@@ -45,11 +51,6 @@ def start_client(address, port):
     if isinstance(port, str):
         port = int(port)
 
-    composite_address = 'ws://' + address + ':' + str(port)
-    print('client composite address of {}'.format(composite_address))
-    factory = WebSocketClientFactory(composite_address)
-    factory.protocol = MyClientProtocol
-
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop = asyncio.get_event_loop()
@@ -57,13 +58,18 @@ def start_client(address, port):
     global client_loop
     client_loop = loop
 
+    composite_address = 'ws://' + address + ':' + str(port)
+    print('client composite address of {}'.format(composite_address))
+    factory = WebSocketClientFactory(composite_address)
+    factory.protocol = MyClientProtocol
+
     print("client creating connection to address {} and port {}".format(
         address, str(port)))
     coro = loop.create_connection(factory, address, port)
 
     global client_protocol
     (transport, client_protocol) = loop.run_until_complete(coro)
-    #print('{}, {}'.format(transport, client_protocol))
+    print('{}, {}'.format(transport, client_protocol))
     loop.run_forever()
 
 

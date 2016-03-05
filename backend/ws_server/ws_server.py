@@ -7,12 +7,18 @@ Each player has their web-browser client which connects to this server.
 More details are in engin/ws_client.py."""
 import asyncio
 from multiprocessing import Process
+from ws_server.gameloop_client_identifier import GAMELOOP_CLIENT_IDENTIFIER
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
     WebSocketServerFactory
 
 
 connected = []
-server_loop = None
+
+# this will refer to the connection
+# to the gameloop client, which will have
+# special priviledges and behave differently
+# from regular player clients
+gameloop_client = None
 
 
 def get_server_loop():
@@ -78,10 +84,18 @@ class MyServerProtocol(WebSocketServerProtocol):
                 utf("hey, first guy! someone else connected!"), False)
 
     def onMessage(self, payload, isBinary):
+        # for now, only send text messages, no binary yes
+        assert isBinary == False
         if isBinary:
+            # but keep this check in for future reference
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
             print("Text message received: {0}".format(payload.decode('utf8')))
+
+        as_string = payload.decode('utf8')
+        if as_string == GAMELOOP_CLIENT_IDENTIFIER:
+            gameloop_client = self
+            print("game engine client regisetered!!")
 
         # echo back message verbatim
         self.sendMessage(payload, isBinary)
