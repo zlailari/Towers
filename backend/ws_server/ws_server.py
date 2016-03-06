@@ -100,8 +100,5 @@ class MyServerProtocol(WebSocketServerProtocol):
             gameloop_client = self
             print("game engine client regisetered!!")
 
-        # echo back message verbatim
-        self.sendMessage(payload, isBinary)
-
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {0}".format(reason))
