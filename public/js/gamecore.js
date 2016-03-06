@@ -1,19 +1,19 @@
-var can = document.getElementById("gameFrame");
-var ctx = can.getContext("2d");
+var gameCan = document.getElementById("gameFrame");
+var gameCtx = gameCan.getContext("2d");
 
 var frequency = 60;
 
-can.height = 600;
-can.width = 800;
+gameCan.height = 600;
+gameCan.width = 800;
 
-var Grid = function () {
+var gameOffset = $( ".canvas" ).offset();
+
+var Grid = function (can, ctx, offset) {
     // Size of each cell with currect zoom
     this.distance = 50;
 
     // Grid draw properties
     this.gridColor = "#000000";
-    this.verticalLines = true;
-    this.horizontalLines = true;
 
     // Grid size
     this.rows = 12;
@@ -31,14 +31,14 @@ var Grid = function () {
     // Fill Cells array with Cell Objects
     for (var i = 0; i < this.rows; i++) {
         for (var j = 0; j < this.cols; j++) {
-            this.Cells[i][j] = new Cell(this, i, j);
+            this.Cells[i][j] = new Cell(this, ctx, i, j);
         }
     }
 
     // Mouse move handler
     this.mouseMove = function(x, y) {
-        var row = Math.floor(y / this.distance);
-        var col = Math.floor(x / this.distance);
+        var row = Math.floor((y - offset.top) / this.distance);
+        var col = Math.floor((x - offset.left) / this.distance);
 
         // Check if user if hovered over a cell
         if (row < this.rows && col < this.cols) {
@@ -78,7 +78,7 @@ var CellType = Object.freeze({
     TRAP: 3
 });
 
-var Cell = function (Grid, row, col) {
+var Cell = function (Grid, ctx, row, col) {
     this.row = row;
     this.col = col;
 
@@ -132,13 +132,13 @@ var Cell = function (Grid, row, col) {
     }
 }
 
-var myGrid = new Grid();
+var myGrid = new Grid(gameCan, gameCtx, gameOffset);
 
-can.onmousemove = function (e) {
+gameCan.onmousemove = function (e) {
     myGrid.mouseMove(e.pageX, e.pageY);
 }
 
-can.addEventListener('click', handleMouseClick, false);
+gameCan.addEventListener('click', handleMouseClick, false);
 
 function handleMouseClick() {
     myGrid.mouseClick();
@@ -151,5 +151,5 @@ function gameLoop () {
 }
 
 function render () {
-    myGrid.draw(ctx);
+    myGrid.draw(gameCtx);
 }

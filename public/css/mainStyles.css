@@ -1,9 +1,130 @@
-.gameFrame {
-    position: relative;
-    text-align: center;
-    margin: 0 auto;
-    margin-bottom: 1em;
+/* CSS Document */
+/* style sheets */
+/* Flexbox guide:
+    https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+*/
 
+.content {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+    min-width: 800px;
+    min-height: 650px;
+}
+
+
+.gameWrapper{
+    width: auto;
+    display: flex;
+    flex-flow: column wrap;
+    min-width: 800px;
+    min-height: 650px;
+}
+
+.stateWrapper {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.sideBarWrapper {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    margin: 10px;
+    width: auto;
+    min-height: inherit;
+}
+
+.sideBarItem {
+    margin: auto;
+    min-width: 200px;
+}
+
+.tab {
+    margin: 5px;
+    border-top: 4px solid #bdc3c7;
+    border-bottom: 4px solid #bdc3c7;
+    border-left: 4px solid #bdc3c7;
+    border-right: 4px solid #bdc3c7;
+    padding: 1px;
+}
+
+.ui-chatbox {
+    position: fixed;
+    bottom:0;
+    padding: 2px;
+    background:  #CCCCCC;
+}
+
+.ui-chatbox-titlebar {
+    cursor: pointer;
+    height: 35px;
+    line-height: 35px;
+    font-weight: normal;
+    padding: 3px;
+}
+
+.ui-chatbox-content {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+
+.ui-chatbox-log {
+    padding: 3px;
+    height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #FFFFFF;
+}
+
+.ui-chatbox-input {
+    padding: 3px;
+    border-top: 1px solid grey;
+    overflow: hidden;
+}
+
+.ui-chatbox-input-box {
+    margin: 5px;
+    font-size: 12px !important;
+    border: 2px solid lightgrey;/* #6699FF */
+    padding: 2px;
+    height: 50px;
+}
+
+.ui-chatbox-icon {
+    float: right;
+}
+
+.ui-chatbox-input-focus {
+    border-color: #6699FF;
+}
+
+.ui-chatbox-msg {
+    margin-top: 10px;
+    float: left;
+    clear: both;
+    /* Source: http://snipplr.com/view/10979/css-cross-browser-word-wrap */
+    white-space: pre-wrap;      /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap;     /* Opera <7 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    word-wrap: break-word;      /* IE */
+    font-size:12px;
+}
+
+.counter {
+    margin: 5px;
+    border-top: 4px solid #FFFFFF;
+    border-bottom: 4px solid #FFFFFF;
+    border-left: 4px solid #FFFFFF;
+    border-right: 4px solid #FFFFFF;
+    padding: 1px;
+}
+
+.gameFrame {
+    margin-bottom: 1em;
     background-color: #FFFFFF;
 
     border-top: 4px solid #bdc3c7;
@@ -15,9 +136,9 @@
     -moz-box-shadow: 0 8px 6px -6px black;
     box-shadow: 0 8px 6px -6px black;
 
-    min-width: 1000px;
-    max-width: 1000px;
+    min-width: 800px;
+    /*max-width: 800px;*/
     min-height: 650px;
-    max-height: 650px;
+    /*max-height: 325px;*/
 }
 
