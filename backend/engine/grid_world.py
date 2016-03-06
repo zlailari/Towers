@@ -1,5 +1,6 @@
 from Queue import Queue
 
+
 class GridWorld:
 
     def __init__(self, width, height, spawnpoint, endpoint):
@@ -11,7 +12,8 @@ class GridWorld:
 
         # this grid is a 2d array of bools, where grid[3][4] means
         # x,y position (4,3) is either obstructed (True) or traversable (False)
-        self.grid = [[False for x in range(self.width)] for x in range(self.height)]
+        self.grid = [[False for x in range(self.width)]
+                     for x in range(self.height)]
 
     def is_blocked(self, x, y):
         return self.grid[y][x]
@@ -19,22 +21,24 @@ class GridWorld:
     def get_width(self):
         return self.width
 
-	def get_grid(self):
-		return self.grid
-	
+    def get_grid(self):
+        return self.grid
+
     def get_height(self):
         return self.height
 
     def get_tiles(self):
         return self.tiles
 
-    def get_neighbors(self, xCoord, yCoord):                                  ##returns an array of tuples that are the coordinates of the neighboring tiles of the passed tile
+    # returns an array of tuples that are the coordinates of the neighboring
+    # tiles of the passed tile
+    def get_neighbors(self, xCoord, yCoord):
         neighbors = []
         if(xCoord == 0):
             if(yCoord == 0):
                 neighbors.append((xCoord + 1, yCoord))
                 neighbors.append((xCoord, yCoord + 1))
-            elif(yCoord == self.height-1):
+            elif(yCoord == self.height - 1):
                 neighbors.append((xCoord, yCoord - 1))
                 neighbors.append((xCoord + 1, yCoord))
             else:
@@ -69,8 +73,8 @@ class GridWorld:
 
         return neighbors
 
-
-    def build_tower(self, xCoord, yCoord):                         ##if a tower can be built in the desired location, do so. else return false
+    # if a tower can be built in the desired location, do so. else return false
+    def build_tower(self, xCoord, yCoord):
 
         if(xCoord >= self.width or yCoord >= self.height):
             return False
@@ -82,7 +86,9 @@ class GridWorld:
         else:
             return False
 
-    def get_path(self, all_tiles):                                        ##return an array of that represents the tile to move to from any other tile
+    # return an array of that represents the tile to move to from any other
+    # tile
+    def get_path(self, all_tiles):
         frontier = Queue()
         frontier.put(self.endpoint)
         came_from = {}
@@ -95,31 +101,36 @@ class GridWorld:
                 # print "next of 0", next[0]
                 # print "next of 1", next[1]
                 # print all_tiles
-                if not all_tiles[next[1]][next[0]]:               ##check to make sure the tile is empty
+                # check to make sure the tile is empty
+                if not all_tiles[next[1]][next[0]]:
                     if next not in came_from:
                         frontier.put(next)
                         came_from[next] = current
         return came_from
 
     def can_build(self, xCoord, yCoord):
-        if((xCoord, yCoord) == self.endpoint):                          ##cant build on the goal
+        if((xCoord, yCoord) == self.endpoint):  # cant build on the goal
             return False
 
-        if((xCoord, yCoord) == self.spawnpoint):                ##cant build on the spawnpoint
+        if((xCoord, yCoord) == self.spawnpoint):  # cant build on the spawnpoint
             return False
 
-        if(self.grid[yCoord][xCoord]):                        ##cant build where there is already a tower
+        if(self.grid[yCoord][xCoord]):  # cant build where there is already a tower
             return False
 
-        copy_board = self.grid                                     ##create a copy of the current came board
+        copy_board = self.grid  # create a copy of the current came board
 
-        copy_board[yCoord][xCoord] = True                              ##place a tower in the desired location
+        # place a tower in the desired location
+        copy_board[yCoord][xCoord] = True
 
-        copy_path = self.get_path(copy_board)                            ##calculate the paths of the new board                      
+        # calculate the paths of the new board
+        copy_path = self.get_path(copy_board)
 
         for x in range(self.width):
             for y in range(self.height):
-                if(not copy_board[y][x] and (x,y) not in copy_path):    ##if a tile in the new board is empty but does not have a path, the build does not work
+                # if a tile in the new board is empty but does not have a path,
+                # the build does not work
+                if(not copy_board[y][x] and (x, y) not in copy_path):
                     return False
 
-        return True                                                 ##otherwise return true
+        return True  # otherwise return true
