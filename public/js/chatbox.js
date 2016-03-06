@@ -1,43 +1,27 @@
-/*
-document ready.
-*/
-$(document).ready(function() {
-/*
-  declare gloabl box variable,
-  so we can check if box is alreay open,
-  when user click toggle button
-  */
-  var box = $("#chat_div").chatbox( {
-    /*
-      unique id for chat box
-    */
-    id:"Runnable",
-    user:
-    {
-      key : "value"
-    },
-    /*
-      Title for the chat box
-    */
-    title : "Runnable User",
-    /*
-      messageSend as name suggest,
-      this will called when message sent.
-      and for demo we have appended sent message to our log div.
-    */
-    messageSent : function(id, user, msg) {
-      $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
-    }
-  });
-  /* Minimize the chatbox after instantiation */
-  box.chatbox("option", "boxManager").toggleBox();
+// This file hangles creates and has the functions governing messages in the Chatbox
 
-  /* Add listener to expand the chat box when enter is pressed */
-  $(document).keypress(function(e) {
-    if(e.which == 13) {
-      if(!box.chatbox("option", "boxManager").isVisible()) {
-        box.chatbox("option", "boxManager").toggleBox();
-      }
-    }
-  });
+$(document).ready(function() {
+    // Sets up a jquery ui chatbox
+    window.box = $("#chat_div").chatbox( {
+        id: "Runnable",
+        user: { key: "value" },
+        title: "Runnable User",
+        messageSent : function(id, user, msg) {
+            ws.sendChat(id, msg);
+            $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+        }
+    });
+
+    // Minimize the chatbox after instantiation
+    box.chatbox("option", "boxManager").toggleBox();
+
+    // Add listener to expand the chat box when enter is pressed
+    $(document).keypress(function(e) {
+        // key value 13 = 'Enter'
+        if(e.which == 13) {
+            if(!box.chatbox("option", "boxManager").isVisible()) {
+                box.chatbox("option", "boxManager").toggleBox();
+            }
+        }
+    });
 });
