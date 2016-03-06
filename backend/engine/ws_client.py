@@ -16,6 +16,7 @@ import asyncio
 import threading
 from multiprocessing import Process
 from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientFactory
+from collections import deque
 
 # the event loop on which this client will run; this is a threading thing
 # i.e., the spawned thread runs the methods in this loop forever
@@ -75,8 +76,18 @@ def start_client(address, port):
 
 class MyClientProtocol(WebSocketClientProtocol):
 
+    def __init__(self):
+        super(self.__class__, self).__init__()
+        self.message_que = deque([])
+
+    def receive_message(self):
+        if len(self.message_que) > 0:
+            return self.message_que.popleft()
+        return False
+
     def onOpen(self):
         print("client opened connection")
 
     def onMessage(self, payload, isBinary):
-        pass
+        assert isBinary is False
+        self.message_que.append(payload.decode('utf8'))

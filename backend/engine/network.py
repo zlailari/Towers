@@ -29,6 +29,10 @@ class Network:
         # set the gameloops client running on a different thread.
         client.start_client_thread(address, port)
 
+        # there is actually a time-dependent operation going on here
+        # the client starts in a new thread, so we need to give it adequate time
+        # to spin up.  This could be done with Python async stuff, but honestly
+        # waiting is a lot easier, if a little ugly. This only happens once on startup.
         time.sleep(3)
 
         # this is the main handle for communicating with the server.
@@ -41,7 +45,16 @@ class Network:
         self.send_message(GAMELOOP_CLIENT_IDENTIFIER)
 
     def receive(self):
-        pass
+        # returns next message in the holding queue, or False if no messages.
+        # messages are utf8 strings.
+
+        # The way this works is that our connection to the server runs
+        # in a different thread, and as it receives messages, it puts them
+        # in its queue of messages.  So if you are the gameloop and you want the
+        # next message, call this method to get it.  Something to think about is
+        # the fact that we should be consuming messages at least as fast as we are
+        # sending them.
+        return self.client_protocol.receive_message()
 
     def send(self, gamestate):
         pass

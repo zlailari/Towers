@@ -6,6 +6,7 @@ Each player has their web-browser client which connects to this server.
 
 More details are in engin/ws_client.py."""
 import asyncio
+from engine.util import utf
 from multiprocessing import Process
 from ws_server.gameloop_client_identifier import GAMELOOP_CLIENT_IDENTIFIER
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
@@ -63,17 +64,19 @@ def start_server(address, port):
         loop.close()
 
 
-def utf(i):
-    return i.encode('utf8')
-
-
 class MyServerProtocol(WebSocketServerProtocol):
 
     def onConnect(self, request):
+        # onConnect happens before onOpen().  It isn't as useful
+        # because onConnect() happens before the connection has succeeded.
+        # if you want to do something when a client connects, you probably
+        # want to do it in onOpne().  This is more like "onAttempt()".
         print("Client connecting: {0}".format(request.peer))
 
     def onOpen(self):
         connected.append(self)
+        if gameloop_client is not None:
+            gameloop_client.sendMessage(utf("player connected!"), False)
         print("connections: " + str(len(connected)))
         self.sendMessage(utf("welcome to the club!"), False)
 
