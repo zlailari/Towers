@@ -6,7 +6,8 @@ Each player has their web-browser client which connects to this server.
 
 More details are in engin/ws_client.py."""
 import asyncio
-from engine.util import utf
+
+from engine.util import utf, obj_from_json
 from multiprocessing import Process
 from ws_server.gameloop_client_identifier import GAMELOOP_CLIENT_IDENTIFIER
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
@@ -70,7 +71,7 @@ class MyServerProtocol(WebSocketServerProtocol):
         # onConnect happens before onOpen().  It isn't as useful
         # because onConnect() happens before the connection has succeeded.
         # if you want to do something when a client connects, you probably
-        # want to do it in onOpne().  This is more like "onAttempt()".
+        # want to do it in onOpen().  This is more like "onAttempt()".
         print("Client connecting: {0}".format(request.peer))
 
     def onOpen(self):
@@ -87,8 +88,8 @@ class MyServerProtocol(WebSocketServerProtocol):
                 utf("hey, first guy! someone else connected!"), False)
 
     def onMessage(self, payload, isBinary):
-        # for now, only send text messages, no binary yes
-        assert isBinary == False
+        # for now, only send text messages, no binary yet
+        assert isBinary is False
         if isBinary:
             # but keep this check in for future reference
             print("Binary message received: {0} bytes".format(len(payload)))
@@ -101,5 +102,18 @@ class MyServerProtocol(WebSocketServerProtocol):
             gameloop_client = self
             print("game engine client regisetered!!")
 
+        message = obj_from_json(as_string)
+        if message:
+            assert "type" in message
+            if message["type"] == "chat":
+                self.broadcast_message(payload)
+
+    def broadcast_message(self, msg):
+        assert len(connected) > 0
+
+        for client in connected:
+            client.sendMessage(msg, False)
+
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {0}".format(reason))
+        connected.remove(self)
