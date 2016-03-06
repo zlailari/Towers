@@ -5,6 +5,8 @@ from game_pieces.tower import Tower
 
 LOCATION_INDEX = 0;
 PROGRESS_INDEX = 1;
+X_INDEX = 0
+Y_INDEX = 1
 
 class GameplayState(GameState):
     """This is the state the game is in during real gameplay,
@@ -58,3 +60,9 @@ class GameplayState(GameState):
         for _ in range(self.cur_level['amount']):
             creep = Creep(creep_type=self.cur_level['creep_type'])
             self.all_creeps.append(creep)
+
+    def build_tower(self, tower):
+        #rocket science
+        if self.world.can_build(tower.loc[X_INDEX],tower.loc[Y_INDEX]):
+            self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX])
+            self.all_towers.append(tower)
