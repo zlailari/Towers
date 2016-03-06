@@ -97,6 +97,7 @@ class MyServerProtocol(WebSocketServerProtocol):
 
         as_string = payload.decode('utf8')
         if as_string == GAMELOOP_CLIENT_IDENTIFIER:
+            global gameloop_client
             gameloop_client = self
             print("game engine client regisetered!!")
 
