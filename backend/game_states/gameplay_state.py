@@ -52,14 +52,21 @@ class GameplayState(GameState):
         for tower in self.all_towers:
             attacksMade.update({tower.id : tower.update(dt, self.all_creeps)})
 
-        #Dictionary of player stats
+        # Dictionary of player stats
         playerState = {
             'lives' : self.lives,
             'gold' : self.gold,
             'enemiesLeft' : len(self.all_creeps)
         }
 
-        return playerState, creepLoc, creepProgress, attacksMade # Giant tuple of jsons
+        update = {
+            'type': 'gameUpdate',
+            'playerState': playerState,
+            'creepLoc': creepLoc,
+            'creepProgress': creepProgress,
+            'attacksMade': attacksMade
+        }
+        return update
 
     def set_level(self, level):
         self.cur_level = level

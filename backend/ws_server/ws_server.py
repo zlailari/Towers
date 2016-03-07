@@ -107,6 +107,8 @@ class MyServerProtocol(WebSocketServerProtocol):
             assert "type" in message
             if message["type"] == "chat":
                 self.broadcast_message(payload)
+            elif message["type"] == "gameUpdate":
+                self.broadcast_message(payload)
 
     def broadcast_message(self, msg):
         assert len(connected) > 0

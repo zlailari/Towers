@@ -1,5 +1,7 @@
 """This file acts as the main entrance point to the server."""
 import time
+from json import dumps
+
 from game_pieces.creep import Creep
 from engine.clock import Clock
 # from game_states.main_menu import MainMenu
@@ -47,7 +49,7 @@ class GameRunner:
         clock.tick()  # tick once to initialize counter
 
         try:
-            for i in range(0,40):
+            for i in range(0, 1000):
                 dt = clock.tick()
                 self.game_loop(dt)
 
@@ -58,25 +60,19 @@ class GameRunner:
             pass
 
     def game_loop(self, dt):
+        tupleReturned = self.game_state.update(dt, [])
 
+        # playerState, creepLoc, creepProgress, attacksMade
+        print(str(tupleReturned['playerState']))
+        print(str(tupleReturned['creepLoc']))
+        print(str(tupleReturned['creepProgress']))
+        print(str(tupleReturned['attacksMade']))
 
-        tupleReturned = self.game_state.update(dt,[])
+        self.network.send_message(dumps(tupleReturned))
 
-        #text_file = open("Output.txt", "w")
-        #text_file.write(str(tupleReturned[0]))
-        print(str(tupleReturned[0]))
-        print(str(tupleReturned[1]))
-        print(str(tupleReturned[2]))
-        print(str(tupleReturned[3]))
-        #text_file.write(str(tupleReturned[1]))
-        #text_file.write(tupleReturned[2])
-        #text_file.write(tupleReturned[3])
-        #text_file.write("\n")
-        #text_file.close()
+        # if self.print_gametick:
+        #     print("it's been " + str(dt * 1000) + " ms since last frame")
 
-        #if self.print_gametick:
-            #print("it's been " + str(dt * 1000) + " ms since last frame")
-
-        #message = self.network.receive()
-        #if message is not False and self.print_on_receive:
-            #print("gameloop got message: {}".format(message))
+        # message = self.network.receive()
+        # if message is not False and self.print_on_receive:
+        #     print("gameloop got message: {}".format(message))
