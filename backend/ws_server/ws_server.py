@@ -112,6 +112,9 @@ class MyServerProtocol(WebSocketServerProtocol):
         assert len(connected) > 0
 
         for client in connected:
+            # Don't send to yourself
+            if client == self:
+                continue
             client.sendMessage(msg, False)
 
     def onClose(self, wasClean, code, reason):
