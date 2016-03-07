@@ -34,4 +34,3 @@ $(document).ready(function()  {
         myGrid.draw(gameCtx);
     }
 });
-
