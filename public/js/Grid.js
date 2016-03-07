@@ -3,6 +3,7 @@ var gameOffset = $( ".canvas" ).offset();
 var Grid = function (can, ctx, offset) {
     // Size of each cell with currect zoom
     this.distance = 50;
+    this.offset = offset;
 
     // Grid draw properties
     this.gridColor = "#000000";
@@ -13,6 +14,7 @@ var Grid = function (can, ctx, offset) {
 
     // Cell which user is currently hovering over
     this.focusCell = {};
+    this.lastClick = {};
 
     // Initialize Cells array
     this.Cells = new Array(this.rows);
@@ -29,8 +31,8 @@ var Grid = function (can, ctx, offset) {
 
     // Mouse move handler
     this.mouseMove = function(x, y) {
-        var row = Math.floor((y - offset.top) / this.distance);
-        var col = Math.floor((x - offset.left) / this.distance);
+        var row = Math.floor((y - this.offset.top) / this.distance);
+        var col = Math.floor((x - this.offset.left) / this.distance);
 
         // Check if user if hovered over a cell
         if (row < this.rows && col < this.cols) {
@@ -46,7 +48,8 @@ var Grid = function (can, ctx, offset) {
     }
 
     this.mouseClick = function() {
-        this.focusCell.type = (this.focusCell.type + 1) % 4
+        this.focusCell.type = (this.focusCell.type + 1) % 4;
+        this.lastClick = this.focusCell;
     }
 
     this.draw = function(ctx) {
@@ -60,5 +63,12 @@ var Grid = function (can, ctx, offset) {
                 this.Cells[i][j].draw(ctx);
             }
         }
+    }
+
+    this.setOffset = function(newOffset) {
+        this.offset = newOffset;
+    }
+    this.getLastClick = function() {
+        return this.lastClick;
     }
 }

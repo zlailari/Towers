@@ -12,11 +12,10 @@
 
   <!-- Our Files -->
   <script type="text/javascript" src="js/util.js"></script>
-  <!-- <script type="text/javascript" src="js/Connection.js"></script> -->
+  <script type="text/javascript" src="js/Connection.js"></script>
   <script type="text/javascript" src="js/chatbox.js"></script>
   <script src="js/gamecore.js"></script>
   <script src="js/sidebar.js"></script>
-  
 </head>
 <body>
   <div class="header">
@@ -52,9 +51,16 @@
 
     <!-- Inital home for chat box -->
     <div id="chat_div"></div>
+<<<<<<< e3a92e76a5cd5fc654263b856dd2fd5ad5aa55aa
   </div>
+
   <script src="js/Cell.js"></script>
   <script src="js/Grid.js"></script>
+  <script src="js/gamecore.js"></script>
+  <script src="js/sidebar.js"></script>
+=======
+  </div> 
+>>>>>>> local
 </body>
 </html>
 

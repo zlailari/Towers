@@ -1,4 +1,4 @@
-// This file hangles creates and has the functions governing messages in the Chatbox
+// This file handles creates and has the functions governing messages in the Chatbox
 
 $(document).ready(function() {
     // Sets up a jquery ui chatbox
@@ -8,7 +8,7 @@ $(document).ready(function() {
         title: "Runnable User",
         messageSent : function(id, user, msg) {
             ws.sendChat(id, msg);
-            name of the person sending the message.  msg is the text
+            /*name of the person sending the message.  msg is the text
             displayed next to the message*/
             $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
         }

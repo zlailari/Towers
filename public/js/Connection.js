@@ -28,9 +28,19 @@ ws.sendChat = function(id, msg) {
     }));
 }
 
-ws.towerRequest = function(id, msg) {
+ws.towerRequest = function(id, cell, msg) {
     ws.send(JSON.stringify({
         type: "towerRequest",
+        id: id,
+        x: cell.col,
+        y: cell.row,
+        msg: msg
+    }));
+}
+
+ws.creepRequest = function(id, msg) {
+    ws.send(JSON.stringify({
+        type: "creepRequest",
         id: id,
         msg: msg
     }));

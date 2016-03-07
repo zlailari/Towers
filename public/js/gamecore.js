@@ -1,6 +1,7 @@
+/* Create a global for the grid */
+var myGrid = null;
 
-$(document).ready(function() {
-
+$(document).ready(function()  {
     var gameCan = document.getElementById("gameFrame");
     var gameCtx = gameCan.getContext("2d");
 
@@ -9,22 +10,19 @@ $(document).ready(function() {
     gameCan.height = 600;
     gameCan.width = 800;
 
-        this.offset = offset;
-                && row >= 0 && col >= 0) {
-        this.setOffset = function(newOffset) {
-            this.offset = newOffset;
-        }
+    var gameOffset = $( "#gameFrame" ).offset();
 
-
-    var gameGrid = new Grid(gameCan, gameCtx, gameOffset);
+    myGrid = new Grid(gameCan, gameCtx, gameOffset);
 
     gameCan.onmousemove = function (e) {
-        gameGrid.mouseMove(e.pageX, e.pageY);
+        myGrid.mouseMove(e.pageX, e.pageY);
     }
 
-    gameCan.addEventListener('click', function() {
-        gameGrid.mouseClick();
-    }, false);
+    gameCan.addEventListener('click', handleMouseClick, false);
+
+    function handleMouseClick() {
+        myGrid.mouseClick();
+    }
 
     setInterval(gameLoop, frequency);
 
@@ -33,7 +31,7 @@ $(document).ready(function() {
     }
 
     function render () {
-        gameGrid.setOffset($( ".canvas" ).offset());
-        gameGrid.draw(gameCtx);
+        myGrid.draw(gameCtx);
     }
 });
+
