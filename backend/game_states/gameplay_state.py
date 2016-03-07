@@ -23,11 +23,17 @@ class GameplayState(GameState):
         self.set_level(level)
         self.lives = lives;
         self.gold = gold; # starting gold
+        self.counter = 0;
+
         #bill.kill(yanming);
 
 
     # Calls all update methods within the game and returns dictionaries to be converted to json with the player status (gold lives enemies left) and other stats
     def update(self, dt, client_info):
+
+        self.counter+= dt; #the total amount of time that has elapsed
+
+        self.creeps.append(self.cur_level.spawnWave(self.counter))
 
         creepLoc = {} # Dicitonary of creep locations
         creepProgress = {} # Dictionary of creep progresses
