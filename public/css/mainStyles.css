@@ -37,8 +37,14 @@
 }
 
 .sideBarItem {
+    display: flex;
+    flex-flow: row wrap;
     margin: auto;
-    min-width: 200px;
+    max-width: 200px;
+}
+
+.sideButton {
+    margin: 5px;
 }
 
 .tab {

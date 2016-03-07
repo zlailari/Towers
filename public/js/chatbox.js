@@ -8,6 +8,8 @@ $(document).ready(function() {
         title: "Runnable User",
         messageSent : function(id, user, msg) {
             ws.sendChat(id, msg);
+            name of the person sending the message.  msg is the text
+            displayed next to the message*/
             $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
         }
     });
