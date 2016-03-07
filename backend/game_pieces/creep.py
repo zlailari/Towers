@@ -10,7 +10,7 @@ CREEP_TYPES = {
 class Creep:
     """So far this is just an example implementation"""
 
-    def factory(self, type,id):
+    def factory(type,id):
         if type == "Default": return Creep((10,10),"default",1,100,id)
     factory = staticmethod(factory)
 

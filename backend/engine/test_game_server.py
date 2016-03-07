@@ -6,7 +6,7 @@ from engine.clock import Clock
 # from game_states.gameplay_state import GameplayState
 from engine.network import Network
 from game_pieces.levels import Levels
-from gameplay_state import GameplayState
+from game_states.gameplay_state import GameplayState
 import game_pieces.levels
 from game_pieces.tower import Tower
 
@@ -24,17 +24,17 @@ class GameRunner:
 
     def __init__(self, print_gametick=False, print_on_receive=False):
 
-        self.level_creeps_spawn_timers = {1,2,3,4,5,6,7,8,9,10}
-        self.spawnCreeps = {}
+        self.level_creeps_spawn_timers = [1,2,3,4,5,6,7,8,9,10]
+        self.spawnCreeps = []
 
         for i in range(0, 10):
             self.spawnCreeps.append(Creep.factory("Default",i))
 
         levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps);
-        self.game_state = GameplayState(levels.level_one, WORLD_WIDTH, WORLD_HEIGHT)
+        self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
         # game_state = MainMenu()
 
-        self.game_state.build_tower(Tower((9,9),10000000,1,1,0))
+        self.game_state.build_tower(Tower((5,5),10000000,1,1,0))
 
         self.network = Network()
         self.print_gametick = print_gametick
@@ -63,10 +63,10 @@ class GameRunner:
         tupleReturned = self.game_state.update(dt,[])
 
         text_file = open("Output.txt", "w")
-        text_file.write(tupleReturned[0]+"\n")
-        text_file.write(tupleReturned[1]+"\n")
-        text_file.write(tupleReturned[2]+"\n")
-        text_file.write(tupleReturned[3]+"\n")
+        text_file.write(str(tupleReturned[0]))
+        #text_file.write(tupleReturned[1])
+        #text_file.write(tupleReturned[2])
+        #text_file.write(tupleReturned[3])
         text_file.write("\n")
         text_file.close()
 

@@ -1,0 +1,1 @@
+{'enemiesLeft': 1, 'lives': 100, 'gold': 100}

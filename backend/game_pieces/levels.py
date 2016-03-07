@@ -14,7 +14,7 @@ class Levels:
 
     #Builds waves to spawn for tick
     def spawnWave(self,totalTime):
-        spawningThisTick = {}
+        spawningThisTick = []
         for i in range(self.begin, len(self.creeps)):
             if(self.spawnTimers[i] < totalTime):
                 spawningThisTick.append(self.creeps[i])

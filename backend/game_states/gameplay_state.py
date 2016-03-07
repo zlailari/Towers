@@ -16,11 +16,11 @@ class GameplayState(GameState):
 
 
     def __init__(self, level, width, height, lives, gold):
-        self.cur_level = None
-        self.world = GridWorld(width, height, (0, 0), (width, 0))
+        self.cur_level = level
+        self.world = GridWorld(width, height, (0, 0), (width-1, height-1))
         self.all_creeps = []
         self.all_towers = []
-        self.set_level(level)
+        #self.set_level(level)
         self.lives = lives;
         self.gold = gold; # starting gold
         self.counter = 0;
@@ -30,10 +30,9 @@ class GameplayState(GameState):
 
     # Calls all update methods within the game and returns dictionaries to be converted to json with the player status (gold lives enemies left) and other stats
     def update(self, dt, client_info):
-
         self.counter+= dt; #the total amount of time that has elapsed
 
-        self.creeps.append(self.cur_level.spawnWave(self.counter))
+        self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
 
         creepLoc = {} # Dicitonary of creep locations
         creepProgress = {} # Dictionary of creep progresses
@@ -41,6 +40,7 @@ class GameplayState(GameState):
 
         #Update all creeps and get location location and movement progress
         bestPath = self.world.get_path(self.world.grid);
+
         for creep in self.all_creeps:
             cUpdate = creep.update(bestPath, dt)
             creepLoc.update(cUpdate[LOCATION_INDEX])
@@ -69,6 +69,5 @@ class GameplayState(GameState):
 
     def build_tower(self, tower):
         #rocket science
-        if self.world.can_build(tower.loc[X_INDEX],tower.loc[Y_INDEX]):
-            self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX])
+        if self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
             self.all_towers.append(tower)
