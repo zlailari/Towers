@@ -7,6 +7,53 @@
 .content {
     display: flex;
     flex-flow: row wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+    min-width: 800px;
+    min-height: 650px;
+}
+
+
+.gameWrapper{
+    width: auto;
+    display: flex;
+    flex-flow: column wrap;
+    min-width: 800px;
+    min-height: 650px;
+}
+
+.stateWrapper {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.sideBarWrapper {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    margin: 10px;
+    width: auto;
+    min-height: inherit;
+}
+
+.sideBarItem {
+    display: flex;
+    flex-flow: row wrap;
+    margin: auto;
+    max-width: 200px;
+}
+
+.sideButton {
+    margin: 5px;
+}
+
+.tab {
+    margin: 5px;
+    border-top: 4px solid #bdc3c7;
+    border-bottom: 4px solid #bdc3c7;
+    border-left: 4px solid #bdc3c7;
+    border-right: 4px solid #bdc3c7;
+    padding: 1px;
 }
 
 .ui-chatbox {
@@ -73,12 +120,16 @@
     font-size:12px;
 }
 
-.chatWrapper {
-    min-width: 250px;
+.counter {
+    margin: 5px;
+    border-top: 4px solid #FFFFFF;
+    border-bottom: 4px solid #FFFFFF;
+    border-left: 4px solid #FFFFFF;
+    border-right: 4px solid #FFFFFF;
+    padding: 1px;
 }
 
 .gameFrame {
-    margin: 0 auto;
     margin-bottom: 1em;
     background-color: #FFFFFF;
 

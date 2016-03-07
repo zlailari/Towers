@@ -1,57 +1,29 @@
-/*
-document ready.
-*/
-$(document).ready(function() {
-/*
-  declare gloabl box variable,
-  so we can check if box is alreay open,
-  when user click toggle button
-  */
-  var box = null;
-  /*
-  we are now adding click hanlder for 
-  toggle button.
-  */
+// This file handles creates and has the functions governing messages in the Chatbox
 
-  $("input[type='button']").click(function(event, ui) {
-    /*
-      now if box is not null,
-      we are toggling chat box.
-    */
-    if(box) {
-      /*
-        below code will hide the chatbox that 
-        is active, when first clicked on toggle button
-      */
-      box.chatbox("option", "boxManager").toggleBox();
-      } else {
-          /*
-            if box variable is null then we will create
-            chat-box.
-          */
-        box = $("#chat_div").chatbox( {
-          /*
-            unique id for chat box
-          */
-          id:"Runnable",
-          user:
-          {
-            key : "value"
-          },
-          /*
-            Title for the chat box
-          */
-          title : "Runnable User",
-          /*
-            messageSend as name suggest,
-            this will called when message sent.
-            and for demo we have appended sent message to our log div.
-          */
-          messageSent : function(id, user, msg) {
-            $(".log").append(id + " said: " + msg + "<br/>");
+$(document).ready(function() {
+    // Sets up a jquery ui chatbox
+    window.box = $("#chat_div").chatbox( {
+        id: "Runnable",
+        user: { key: "value" },
+        title: "Runnable User",
+        messageSent : function(id, user, msg) {
+            ws.sendChat(id, msg);
+            /*name of the person sending the message.  msg is the text
+            displayed next to the message*/
             $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
-          }
-        } );
-      }
+        }
+    });
+
+    // Minimize the chatbox after instantiation
+    box.chatbox("option", "boxManager").toggleBox();
+
+    // Add listener to expand the chat box when enter is pressed
+    $(document).keypress(function(e) {
+        // key value 13 = 'Enter'
+        if(e.which == 13) {
+            if(!box.chatbox("option", "boxManager").isVisible()) {
+                box.chatbox("option", "boxManager").toggleBox();
+            }
+        }
     });
 });

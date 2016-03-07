@@ -26,7 +26,7 @@ class Creep:
     def move_on_path(self, path):
         self.loc = path[self.loc]
         return self.loc
-
+		
     def take_damage(self, amount):
         self.health -= amount
         if (self.health <= 0):
