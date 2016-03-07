@@ -11,7 +11,7 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-        if type == "Default": return Creep((10,10),"default",1,100,id)
+        if type == "Default": return Creep((0,0),"default",1,100,id)
     factory = staticmethod(factory)
 
     def __init__(self, loc, creep_type, speed, health,id):
@@ -27,7 +27,7 @@ class Creep:
         self.progress += dt
         if self.progress>=self.speed:
             self.progress = 0
-            self.move_on_path(path)
+            pos = self.move_on_path(path)
         return {self.id : self.loc} , {self.id : (self.progress/self.speed)}
 
     def move_to_dest(self, dest):

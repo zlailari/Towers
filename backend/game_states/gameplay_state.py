@@ -41,6 +41,8 @@ class GameplayState(GameState):
         #Update all creeps and get location location and movement progress
         bestPath = self.world.get_path(self.world.grid);
 
+        print(str(item.id) for item in self.all_creeps)
+
         for creep in self.all_creeps:
             cUpdate = creep.update(bestPath, dt)
             creepLoc.update(cUpdate[LOCATION_INDEX])

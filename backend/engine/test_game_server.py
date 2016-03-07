@@ -24,17 +24,17 @@ class GameRunner:
 
     def __init__(self, print_gametick=False, print_on_receive=False):
 
-        self.level_creeps_spawn_timers = [1,2,3,4,5,6,7,8,9,10]
+        self.level_creeps_spawn_timers = [1]
         self.spawnCreeps = []
 
-        for i in range(0, 10):
+        for i in range(0, 1):
             self.spawnCreeps.append(Creep.factory("Default",i))
 
         levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps);
         self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
         # game_state = MainMenu()
 
-        self.game_state.build_tower(Tower((5,5),10000000,1,1,0))
+        self.game_state.build_tower(Tower((8,8),10000000,1,1,0))
 
         self.network = Network()
         self.print_gametick = print_gametick
@@ -62,13 +62,17 @@ class GameRunner:
 
         tupleReturned = self.game_state.update(dt,[])
 
-        text_file = open("Output.txt", "w")
-        text_file.write(str(tupleReturned[0]))
-        #text_file.write(tupleReturned[1])
+        #text_file = open("Output.txt", "w")
+        #text_file.write(str(tupleReturned[0]))
+        print(str(tupleReturned[0]))
+        print(str(tupleReturned[1]))
+        print(str(tupleReturned[2]))
+        print(str(tupleReturned[3]))
+        #text_file.write(str(tupleReturned[1]))
         #text_file.write(tupleReturned[2])
         #text_file.write(tupleReturned[3])
-        text_file.write("\n")
-        text_file.close()
+        #text_file.write("\n")
+        #text_file.close()
 
         #if self.print_gametick:
             #print("it's been " + str(dt * 1000) + " ms since last frame")
