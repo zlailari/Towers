@@ -5,13 +5,16 @@ from engine.clock import Clock
 # from game_states.main_menu import MainMenu
 # from game_states.gameplay_state import GameplayState
 from engine.network import Network
+from game_pieces.levels import Levels
+from gameplay_state import GameplayState
 import game_pieces.levels
+from game_pieces.tower import Tower
 
 # Define our globals
-TPS = 30  # ticks per second
+TPS = 2  # ticks per second
 TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
-WORLD_WIDTH = 20
-WORLD_HEIGHT = 20
+WORLD_WIDTH = 10
+WORLD_HEIGHT = 10
 
 
 class GameRunner:
@@ -20,8 +23,19 @@ class GameRunner:
     game engine loop to the server."""
 
     def __init__(self, print_gametick=False, print_on_receive=False):
-        # game_state = GameplayState(levels.level_one, WORLD_WIDTH, WORLD_HEIGHT)
+
+        self.level_creeps_spawn_timers = {1,2,3,4,5,6,7,8,9,10}
+        self.spawnCreeps = {}
+
+        for i in range(0, 10):
+            self.spawnCreeps.append(Creep.factory("Default",i))
+
+        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps);
+        self.game_state = GameplayState(levels.level_one, WORLD_WIDTH, WORLD_HEIGHT)
         # game_state = MainMenu()
+
+        self.game_state.build_tower(Tower((9,9),10000000,1,1,0))
+
         self.network = Network()
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
@@ -33,9 +47,10 @@ class GameRunner:
         clock.tick()  # tick once to initialize counter
 
         try:
-            while True:
+            for i in range(0,40):
                 dt = clock.tick()
                 self.game_loop(dt)
+
         except KeyboardInterrupt:
             pass
         finally:
@@ -43,16 +58,21 @@ class GameRunner:
             pass
 
     def game_loop(self, dt):
-        """This is the main game loop for the entire server.
-        Every tick of this loop will progress the game state by
-        some amount.  argument dt is the delta time since the last tick."""
 
-        # global game_state  # pull game_state into scope from global
-        if self.print_gametick:
-            print("it's been " + str(dt * 1000) + " ms since last frame")
-        # game_state = game_state.update(dt, client_info)
-        # network.send(game_state)  # psuedocode, network doesn't exist yet
 
-        message = self.network.receive()
-        if message is not False and self.print_on_receive:
-            print("gameloop got message: {}".format(message))
+        tupleReturned = self.game_state.update(dt,[])
+
+        text_file = open("Output.txt", "w")
+        text_file.write(tupleReturned[0]+"\n")
+        text_file.write(tupleReturned[1]+"\n")
+        text_file.write(tupleReturned[2]+"\n")
+        text_file.write(tupleReturned[3]+"\n")
+        text_file.write("\n")
+        text_file.close()
+
+        #if self.print_gametick:
+            #print("it's been " + str(dt * 1000) + " ms since last frame")
+
+        #message = self.network.receive()
+        #if message is not False and self.print_on_receive:
+            #print("gameloop got message: {}".format(message))

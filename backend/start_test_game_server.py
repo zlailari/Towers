@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from engine.tower_server import GameRunner
+from engine.test_game_server import GameRunner
 import sys
 
 args = sys.argv

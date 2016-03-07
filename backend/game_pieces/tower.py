@@ -39,7 +39,7 @@ class Tower:
         """Fire at a target creep."""
         self.time_since_last_fire = 0
         target.take_damage(self.damage);
-        
+
 
     def get_position(self):
         return self.loc[0], self.loc[1]

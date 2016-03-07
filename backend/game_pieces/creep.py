@@ -10,6 +10,10 @@ CREEP_TYPES = {
 class Creep:
     """So far this is just an example implementation"""
 
+    def factory(self, type,id):
+        if type == "Default": return Creep((10,10),"default",1,100,id)
+    factory = staticmethod(factory)
+
     def __init__(self, loc, creep_type, speed, health,id):
         self.loc = loc
         self.type = creep_type
@@ -19,9 +23,9 @@ class Creep:
         self.id = id # The unique ID of the creep
 
     # We generate a json for movement. Passed up to the gameplay_state
-    def update(self, path):
-        self.progress += 1
-        if self.progress==self.speed:
+    def update(self, path, dt):
+        self.progress += dt
+        if self.progress>=self.speed:
             self.progress = 0
             self.move_on_path(path)
         return {self.id : self.loc} , {self.id : (self.progress/self.speed)}
