@@ -1,8 +1,10 @@
 // This file handles creates and has the functions governing messages in the Chatbox
 
+var chatbox = null;
+
 $(document).ready(function() {
     // Sets up a jquery ui chatbox
-    window.box = $("#chat_div").chatbox( {
+    var box = $("#chat_div").chatbox( {
         id: "Runnable",
         user: { key: "value" },
         title: "Runnable User",
@@ -13,16 +15,22 @@ $(document).ready(function() {
             $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
         }
     });
-
+    chatbox = box.chatbox("option", "boxManager")
     // Minimize the chatbox after instantiation
-    box.chatbox("option", "boxManager").toggleBox();
+    chatbox.toggleBox();
 
     // Add listener to expand the chat box when enter is pressed
-    $(document).keypress(function(e) {
+    $(document).keydown(function(e) {
         // key value 13 = 'Enter'
-        if(e.which == 13) {
-            if(!box.chatbox("option", "boxManager").isVisible()) {
-                box.chatbox("option", "boxManager").toggleBox();
+        if(e.which == $.ui.keyCode.ENTER) {
+            if(!chatbox.isVisible()) {
+                chatbox.toggleBox();
+            }
+        } else if (e.which == $.ui.keyCode.ESCAPE) {
+            if(towerButtons.getLastButton()) {
+                towerButtons.clearLastButton();
+            } else if(chatbox.isVisible()) {
+                chatbox.toggleBox();
             }
         }
     });

@@ -57,9 +57,6 @@ var Grid = function (can, ctx, offset) {
             
             this.focusCell.type = parseFloat(CellType.ARROW) + 
                 parseFloat(last);
-
-            console.log(msg);
-            console.log(this.focusCell.type);
         }
     }
 
