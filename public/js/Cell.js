@@ -2,7 +2,10 @@ var CellType = Object.freeze({
     EMPTY: 0,
     BLOCKED: 1,
     BASIC_TOWER: 2,
-    TRAP: 3
+    TRAP: 3,
+    ARROW: 100,
+    LASER: 101,
+    ICE: 102
 });
 
 var Cell = function (Grid, ctx, row, col) {
@@ -35,8 +38,17 @@ var Cell = function (Grid, ctx, row, col) {
             case CellType.TRAP:
                 ctx.fillStyle = "#0000FF";
                 break;
+            case CellType.ARROW:
+                ctx.fillStyle = towerColors[0];
+                break;
+            case CellType.LASER:
+                ctx.fillStyle = towerColors[1];
+                break;
+            case CellType.ICE:
+                ctx.fillStyle = towerColors[2];
+                break;
             default:
-                console.log("ERROR: Illegal CellType");
+                console.log("ERROR: Illegal CellType: " + this.type);
         }
         // Fill rectangle with color chosen above
         ctx.fillRect((this.col * size) + .5 * highlightSize,
@@ -46,9 +58,13 @@ var Cell = function (Grid, ctx, row, col) {
         // Highlight square on hover
         if (this.hover) {
             ctx.lineWidth = highlightSize;
-            ctx.fillStyle = "rgba(255, 255, 0, 0.3)";
+            if(towerButtons.getLastButton()) {
+                ctx.fillStyle = towerColors[towerButtons.getLastButton()];
+            } else {
+                ctx.fillStyle = "rgba(255, 255, 0, 0.3)"; 
+            }
             ctx.fillRect((this.col * size) + .5 * highlightSize,
-                         (this.row * size) + .5 * highlightSize, size, size);
+                (this.row * size) + .5 * highlightSize, size, size);
         } else {
             // Temporary hack to remove highlight from past focusCells
             ctx.strokeStyle = "#FFFFFF";
