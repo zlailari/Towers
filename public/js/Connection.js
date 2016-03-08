@@ -2,7 +2,7 @@
 var ws = new WebSocket('ws://localhost:9000/');
 ws.onopen = function() {
     console.log('CONNECT');
-    ws.send("I'm the client!")
+    ws.send("I'm the client!");
 };
 
 ws.onclose = function() {
@@ -15,7 +15,7 @@ ws.onmessage = function(event) {
     msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
         if (msg.type == 'chat') {
-            if(chatbox) {
+            if (chatbox) {
                 chatbox.addMsg(msg.id, msg.msg);
             }
         }
@@ -28,7 +28,7 @@ ws.sendChat = function(id, msg) {
         id: id,
         msg: msg
     }));
-}
+};
 
 ws.towerRequest = function(id, msg) {
     ws.send(JSON.stringify({
@@ -36,7 +36,7 @@ ws.towerRequest = function(id, msg) {
         id: id,
         msg: msg
     }));
-}
+};
 
 ws.creepRequest = function(id, msg) {
     ws.send(JSON.stringify({
@@ -44,6 +44,6 @@ ws.creepRequest = function(id, msg) {
         id: id,
         msg: msg
     }));
-}
+};
 
 var userID = 0; // Placeholder

@@ -15,7 +15,7 @@ var TowerButtons = function (divID, towerNames, towerHotKeys) {
         .click(function() {
             var tid = $(this).attr("tid");
             // alert("Button: " + tid);
-            if(lastButton == tid) {
+            if (lastButton == tid) {
                 lastButton = null;
             } else {
                 lastButton = tid;
@@ -23,22 +23,22 @@ var TowerButtons = function (divID, towerNames, towerHotKeys) {
         });
     }
 
-    $(document).keydown( function(e) {
+    $(document).keydown(function(e) {
         for (var i = 0; i < towerHotKeys.length; i++) {
-            if(e.which == towerHotKeys[i].kc) {
+            if (e.which == towerHotKeys[i].kc) {
                 buttons[i].click();
             }
         }
     });
-    
-    this.getLastButton = function() {return lastButton};
-    this.clearLastButton = function() {lastButton = null};
-    this.getButtons = function() {return buttons};
-}
+
+    this.getLastButton = function() { return lastButton; };
+    this.clearLastButton = function() { lastButton = null; };
+    this.getButtons = function() { return buttons; };
+};
 
 
 var CreepButtons = function (divID, creepNames, creepHotKeys) {
-    var buttons = [creepNames.length]
+    var buttons = [creepNames.length];
     for (var i = 0; i < creepNames.length; i++) {
         buttons[i] = $('<input type="button" value="' 
             + creepNames[i]+ ' (' + creepHotKeys[i].s 
@@ -53,16 +53,16 @@ var CreepButtons = function (divID, creepNames, creepHotKeys) {
         });
     }
 
-    $(document).keydown( function(e) {
+    $(document).keydown(function(e) {
         for (var i = 0; i < creepHotKeys.length; i++) {
-            if(e.which == creepHotKeys[i].kc) {
+            if (e.which == creepHotKeys[i].kc) {
                 buttons[i].click();
             }
         }
     });
 
-    this.getButtons = function() {return buttons};
-}
+    this.getButtons = function() { return buttons; };
+};
 
 var towerColors = ["rgba(255, 0, 0, 0.3)",
     "rgba(0, 255, 0, 0.3)",
@@ -82,5 +82,5 @@ $(document).ready(function() {
         towerNames, towerHotKeys);
     creepButtons = new CreepButtons("#creepButtons",
         creepNames, creepHotKeys);
-    myGrid.setOffset($( "#gameFrame" ).offset());
+    myGrid.setOffset($("#gameFrame").offset());
 });

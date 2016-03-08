@@ -1,10 +1,7 @@
-
-
-
 safeParseJSON = function(s) {
-    try{
+    try {
         return JSON.parse(s);
     }catch(e){
         return false;
     }
-}
+};

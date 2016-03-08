@@ -1,4 +1,4 @@
-var gameOffset = $( ".canvas" ).offset();
+var gameOffset = $(".canvas").offset();
 
 var Grid = function (can, ctx, offset) {
     // Size of each cell with currect zoom
@@ -17,8 +17,8 @@ var Grid = function (can, ctx, offset) {
 
     // Initialize Cells array
     this.Cells = new Array(this.rows);
-    for (var i = 0; i < this.rows; i++) {
-        this.Cells[i] = new Array(this.cols);
+    for (var k = 0; k < this.rows; k++) {
+        this.Cells[k] = new Array(this.cols);
     }
 
     // Fill Cells array with Cell Objects
@@ -44,21 +44,21 @@ var Grid = function (can, ctx, offset) {
             this.focusCell = this.Cells[row][col];
             this.Cells[row][col].hover = true;
         }
-    }
+    };
 
     this.mouseClick = function() {
         this.focusCell.type = (this.focusCell.type + 1) % 4;
         var last = towerButtons.getLastButton();
-        if(last) {
+        if (last) {
             var msg = "tid:" + last +
                 " x:" + this.focusCell.col + 
                 " y:" + this.focusCell.row;
             ws.towerRequest(userID, msg);
-            
+
             this.focusCell.type = parseFloat(CellType.ARROW) + 
                 parseFloat(last);
         }
-    }
+    };
 
     this.draw = function(ctx) {
         if (!ctx) {
@@ -71,9 +71,9 @@ var Grid = function (can, ctx, offset) {
                 this.Cells[i][j].draw(ctx);
             }
         }
-    }
+    };
 
     this.setOffset = function(newOffset) {
         this.offset = newOffset;
-    }
-}
+    };
+};
