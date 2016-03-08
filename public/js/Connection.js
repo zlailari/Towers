@@ -15,7 +15,9 @@ ws.onmessage = function(event) {
     msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
         if (msg.type == 'chat') {
-            $("#chat_div").chatbox("option", "boxManager").addMsg(msg.id, msg.msg);
+            if(chatbox) {
+                chatbox.addMsg(msg.id, msg.msg);
+            }
         }
     }
 };
@@ -28,12 +30,10 @@ ws.sendChat = function(id, msg) {
     }));
 }
 
-ws.towerRequest = function(id, cell, msg) {
+ws.towerRequest = function(id, msg) {
     ws.send(JSON.stringify({
         type: "towerRequest",
         id: id,
-        x: cell.col,
-        y: cell.row,
         msg: msg
     }));
 }
@@ -45,3 +45,5 @@ ws.creepRequest = function(id, msg) {
         msg: msg
     }));
 }
+
+var userID = 0; // Placeholder
