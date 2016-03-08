@@ -29,7 +29,6 @@ var TowerButtons = function (divID, towerNames, towerHotKeys) {
                 buttons[i].click();
             }
         }
-        ws.creepRequest(userID, msg);
     });
     
     this.getLastButton = function() {return lastButton};
