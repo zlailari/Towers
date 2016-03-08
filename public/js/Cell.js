@@ -58,7 +58,7 @@ var Cell = function (Grid, ctx, row, col) {
         // Highlight square on hover
         if (this.hover) {
             ctx.lineWidth = highlightSize;
-            if(towerButtons.getLastButton()) {
+            if (towerButtons.getLastButton()) {
                 ctx.fillStyle = towerColors[towerButtons.getLastButton()];
             } else {
                 ctx.fillStyle = "rgba(255, 255, 0, 0.3)"; 
@@ -71,6 +71,5 @@ var Cell = function (Grid, ctx, row, col) {
             ctx.lineWidth = highlightSize;
             ctx.strokeRect((this.col * size), (this.row * size), size, size);
         }
-
-    }
-}
+    };
+};

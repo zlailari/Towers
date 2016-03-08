@@ -1,0 +1,117 @@
+# envs are common operating environments that are preconfigured. These define
+# what globals are or are not available to the code.
+env:
+    browser: true
+    jquery:  true
+# This section defines default globals throughout all of our JS files.
+#
+# We should try to keep this to a minimum and declare globals in the files they
+# are used instead.
+globals:
+
+# The rules are defined on the eslint rules page: http://eslint.org/docs/rules
+# That page will give all the options and indicate what does and does not pass
+# based on various configurations.
+rules:
+    # Static checks that can save from errors
+    #
+    # Except where noted, these are the defaults at the time of
+    # implementation. We do this for two reasons:
+    # 1. It future proofs from changes to the default.
+    # 2. It allows people to explicitly know what is set.
+    comma-dangle: 0
+    no-comma-dangle: 0
+    no-cond-assign: 2
+    no-console: 0
+    no-control-regex: 2
+    no-debugger: 2
+    no-dupe-keys: 2
+    no-empty: 2
+    no-empty-character-class: 2
+    no-ex-assign: 2
+    no-extra-boolean-cast: 2
+    no-extra-semi: 2
+    no-func-assign: 2
+    no-inner-declarations: 2
+    no-invalid-regexp: 2
+    no-irregular-whitespace: 2
+    no-negated-in-lhs: 2
+    no-obj-calls: 2
+    no-regex-spaces: 2
+    no-sparse-arrays: 2
+    no-unreachable: 2
+    use-isnan: 2
+    valid-typeof: 2
+    no-extra-parens: 0
+    space-after-keywords: 2
+    # We aren't using jsdoc, so we don't care if it is valid.
+    valid-jsdoc: 0
+    # We can't do this because angular has an "abstract" key, plus this is only
+    # an issue for <= IE 8.
+    no-reserved-keys: 0
+
+    # With can be dangerous in cases where an object normally has a property
+    # overwritten in a with, but doesn't occasionally. In that case you'll
+    # overwrite some other variable. More here:
+    # http://yuiblog.com/blog/2006/04/11/with-statement-considered-harmful/
+    no-with: 2
+
+    # best practice rules
+    #
+    # Off by default, but this will help deal with odd bugs caused by
+    # variable hoisting.
+    block-scoped-var: 2
+    # This is the default, but I'm calling it out because there has
+    # been a history of JS interpreters guessing incorrectly for ASI.
+    brace-style: [2, "1tbs", { "allowSingleLine": true}]
+    # We haven't been doing camel case or snake case consistently, so
+    # just don't worry about it. We can turn this on if people want.
+    camelcase: 0
+    # we can choose to follow flake8, but it would be unnecessary since
+    # JS does not do string interpolation on double quotes.
+    # There is an argument to enforce double quotes since it tends to
+    # be community standard and is required by JSON.
+    quotes: 0
+    # Don't rely on ASI. Lots of people don't know all the ins and outs
+    # & it can really bite you in odd ways.
+    semi: [2, "always"]
+    comma-spacing:
+        - 2
+        -
+            before: false
+            after: true
+    # We may want to consider turning this on since people might not know
+    # the difference between:
+    # var foo = function foo() {}
+    # function foo() {}
+    # And how the first can be confusing.
+    # Mostly I'm waiting to see if anyone has any thoughts on it.
+    func-style: 0
+    complexity: [2, 10]
+    yoda: 0
+    # I don't have a strong opinion on this, but it seems to be a
+    # defacto JS standard.
+    wrap-iife: [2, "inside"]
+
+    # pep8-y stylistic settings
+    #
+    # disallow ( 1 + 1 ), instead require (1 + 1)
+    space-in-parens: 2
+    # disallow [ 1 ] & { a: 1 }, instead require [1] & {a: 1}
+    object-curly-spacing: [2, 'never']
+    computed-property-spacing: [2, 'never']
+    array-bracket-spacing: [2, 'never']
+    # This is the default, calling it out since it helps us have the
+    # same rule as pep8.
+    #
+    # Require a space between the '#' and the first word, like all the comments
+    # in this file
+    spaced-comment: [2, "always", {"markers":['*', '**']}]
+    # 79 character length, 4 spaces to a tab
+    max-len:
+        - 2
+        - 89
+        - 4
+
+    # Disable this since it contradicts the AngularJS style guide we are using.
+    no-use-before-define:  [2, "nofunc"]
