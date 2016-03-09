@@ -68,7 +68,7 @@ class GameplayState(GameState):
             'playerState': playerState,
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
-            'path' : bestPath
+            'path' : str(bestPath)
         }
         return update
 
