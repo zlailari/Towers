@@ -19,11 +19,14 @@ var Cell = function (Grid, ctx, row, col) {
     // What Grid this cell belongs to, so we can access its properties
     this.Grid = Grid;
 
+    this.img = null;
+    this.changed = false;
+
     this.draw = function(ctx) {
         var size = this.Grid.distance;
         var highlightSize = Math.floor(size / 10);
         var drawSize = size - highlightSize;
-
+        var imgToDraw = false;
         // Cell draw based on type
         switch (this.type) {
             case CellType.EMPTY:
@@ -39,13 +42,19 @@ var Cell = function (Grid, ctx, row, col) {
                 ctx.fillStyle = "#0000FF";
                 break;
             case CellType.ARROW:
-                ctx.fillStyle = towerColors[0];
+                ctx.fillStyle = "#FFFFFF";
+                if(this.changed)
+                    this.img = towerImages[towerButtons.getLastButton()];
                 break;
             case CellType.LASER:
-                ctx.fillStyle = towerColors[1];
+                ctx.fillStyle = "#FFFFFF";
+                if(this.changed)
+                    this.img = towerImages[towerButtons.getLastButton()];
                 break;
             case CellType.ICE:
-                ctx.fillStyle = towerColors[2];
+                ctx.fillStyle = "#FFFFFF";
+                if(this.changed)
+                    this.img = towerImages[towerButtons.getLastButton()];
                 break;
             default:
                 console.log("ERROR: Illegal CellType: " + this.type);
@@ -54,22 +63,33 @@ var Cell = function (Grid, ctx, row, col) {
         ctx.fillRect((this.col * size) + .5 * highlightSize,
                      (this.row * size) + .5 * highlightSize,
                      drawSize, drawSize);
-
+        if(this.img) {
+            ctx.drawImage(this.img,
+                (this.col * size) + .5 * highlightSize,
+                (this.row * size) + .5 * highlightSize, size, size);
+        }
         // Highlight square on hover
         if (this.hover) {
-            ctx.lineWidth = highlightSize;
             if (towerButtons.getLastButton()) {
-                ctx.fillStyle = towerColors[towerButtons.getLastButton()];
+                ctx.lineWidth = highlightSize;
+                ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; 
+                ctx.fillRect((this.col * size) + .5 * highlightSize,
+                    (this.row * size) + .5 * highlightSize, size, size);
+                var img = towerImages[towerButtons.getLastButton()];
+                ctx.drawImage(img, (this.col * size) + .5 * highlightSize,
+                    (this.row * size) + .5 * highlightSize, size, size);
             } else {
+                ctx.lineWidth = highlightSize;
                 ctx.fillStyle = "rgba(255, 255, 0, 0.3)"; 
+                ctx.fillRect((this.col * size) + .5 * highlightSize,
+                    (this.row * size) + .5 * highlightSize, size, size);
             }
-            ctx.fillRect((this.col * size) + .5 * highlightSize,
-                (this.row * size) + .5 * highlightSize, size, size);
         } else {
             // Temporary hack to remove highlight from past focusCells
             ctx.strokeStyle = "#FFFFFF";
             ctx.lineWidth = highlightSize;
             ctx.strokeRect((this.col * size), (this.row * size), size, size);
         }
+        this.changed = false;
     };
 };

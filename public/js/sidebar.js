@@ -1,7 +1,9 @@
 /* Handles the creation of the buttons to spawn towers
-    and creeps */
+*   and creeps 
+*   http://keycode.info/ -- go here to figure out keycodes
+*/
 
-var towerButtons = null, creepButtons = null;
+var towerButtons = null, creepButtons = null, towerImages = null;
 
 var TowerButtons = function (divID, towerNames, towerHotKeys) {
     var lastButton = null;
@@ -11,16 +13,16 @@ var TowerButtons = function (divID, towerNames, towerHotKeys) {
             + towerNames[i] + ' (' + towerHotKeys[i].s 
             + ')" class="sideButton"'
             + 'tid="' + i + '"/>')
-        .appendTo($(divID))
-        .click(function() {
-            var tid = $(this).attr("tid");
-            // alert("Button: " + tid);
-            if (lastButton == tid) {
-                lastButton = null;
-            } else {
-                lastButton = tid;
-            }
-        });
+            .appendTo($(divID))
+            .click(function() {
+                var tid = $(this).attr("tid");
+                // alert("Button: " + tid);
+                if (lastButton == tid) {
+                    lastButton = null;
+                } else {
+                    lastButton = tid;
+                }
+            });
     }
 
     $(document).keydown(function(e) {
@@ -44,13 +46,13 @@ var CreepButtons = function (divID, creepNames, creepHotKeys) {
             + creepNames[i]+ ' (' + creepHotKeys[i].s 
             + ')" class="sideButton"'
             + 'cid="' + i + '"/>')
-        .appendTo($(divID))
-        .click(function() {
-            this.cid = $(this).attr("cid");
-            // alert("Creep Please: " + this.cid);
-            var msg = "type:" + this.cid;
-            ws.creepRequest(userID, msg);
-        });
+            .appendTo($(divID))
+            .click(function() {
+                this.cid = $(this).attr("cid");
+                // alert("Creep Please: " + this.cid);
+                var msg = "type:" + this.cid;
+                ws.creepRequest(userID, msg);
+            });
     }
 
     $(document).keydown(function(e) {
@@ -64,23 +66,29 @@ var CreepButtons = function (divID, creepNames, creepHotKeys) {
     this.getButtons = function() { return buttons; };
 };
 
-var towerColors = ["rgba(255, 0, 0, 0.3)",
-    "rgba(0, 255, 0, 0.3)",
-    "rgba(0, 0, 255, 0.3)"];
 
 $(document).ready(function() {
-    var towerNames = ["Archer Tower", "Laser Tower", "Ice Tower"];
+    var towerNames = ["Archer Tower", "Fire Tower", "Ice Tower"];
     var towerHotKeys = [{s:"A", kc:65}, 
-        {s:"L", kc:76}, 
+        {s:"R", kc:82}, 
         {s:"I", kc:73}];
+
+    var towerImageNames = ["images/arrowHead.png",
+        "images/fire.png", "images/ice.png"];
+    towerImages = [];
+    for (var i = 0; i < towerImageNames.length; i++) {
+        towerImages[i] = new Image();
+        towerImages[i].src = towerImageNames[i];
+    }
 
     var creepNames = ["Fast", "Slow"];
     var creepHotKeys = [{s:"F", kc:70}, 
-        {s:"S", kc:83}];
+        {s:"S ", kc:83}];
 
     towerButtons = new TowerButtons("#towerButtons", 
         towerNames, towerHotKeys);
     creepButtons = new CreepButtons("#creepButtons",
         creepNames, creepHotKeys);
-    myGrid.setOffset($("#gameFrame").offset());
+    if(myGrid)
+        myGrid.setOffset($("#gameFrame").offset());
 });

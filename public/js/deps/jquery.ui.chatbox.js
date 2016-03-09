@@ -16,7 +16,7 @@
 (function($) {
     $.widget("ui.chatbox", {
         options: {
-        id: null, //id for the DOM element
+        id: null, // id for the DOM element
         title: null, // title of the chatbox
         user: null, // can be anything associated with this chatbox
         hidden: false,

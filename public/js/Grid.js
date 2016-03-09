@@ -48,6 +48,7 @@ var Grid = function (can, ctx, offset) {
 
     this.mouseClick = function() {
         this.focusCell.type = (this.focusCell.type + 1) % 4;
+        this.focusCell.changed = true;
         var last = towerButtons.getLastButton();
         if (last) {
             var msg = "tid:" + last +
