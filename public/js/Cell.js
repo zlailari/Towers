@@ -43,18 +43,21 @@ var Cell = function (Grid, ctx, row, col) {
                 break;
             case CellType.ARROW:
                 ctx.fillStyle = "#FFFFFF";
-                if(this.changed)
+                if (this.changed) {
                     this.img = towerImages[towerButtons.getLastButton()];
+                }
                 break;
             case CellType.LASER:
                 ctx.fillStyle = "#FFFFFF";
-                if(this.changed)
+                if (this.changed) {
                     this.img = towerImages[towerButtons.getLastButton()];
+                }
                 break;
             case CellType.ICE:
                 ctx.fillStyle = "#FFFFFF";
-                if(this.changed)
+                if (this.changed) {
                     this.img = towerImages[towerButtons.getLastButton()];
+                }
                 break;
             default:
                 console.log("ERROR: Illegal CellType: " + this.type);
@@ -63,7 +66,7 @@ var Cell = function (Grid, ctx, row, col) {
         ctx.fillRect((this.col * size) + .5 * highlightSize,
                      (this.row * size) + .5 * highlightSize,
                      drawSize, drawSize);
-        if(this.img) {
+        if (this.img) {
             ctx.drawImage(this.img,
                 (this.col * size) + .5 * highlightSize,
                 (this.row * size) + .5 * highlightSize, size, size);
@@ -72,7 +75,7 @@ var Cell = function (Grid, ctx, row, col) {
         if (this.hover) {
             if (towerButtons.getLastButton()) {
                 ctx.lineWidth = highlightSize;
-                ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; 
+                ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, size, size);
                 var img = towerImages[towerButtons.getLastButton()];
@@ -80,7 +83,7 @@ var Cell = function (Grid, ctx, row, col) {
                     (this.row * size) + .5 * highlightSize, size, size);
             } else {
                 ctx.lineWidth = highlightSize;
-                ctx.fillStyle = "rgba(255, 255, 0, 0.3)"; 
+                ctx.fillStyle = "rgba(255, 255, 0, 0.3)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, size, size);
             }

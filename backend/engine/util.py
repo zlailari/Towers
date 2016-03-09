@@ -40,3 +40,6 @@ def obj_from_json(s):
         return loads(s)
     except:
         return False
+
+def dump_obj_dict(obj):
+    return obj.__dict__

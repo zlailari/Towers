@@ -3,44 +3,50 @@
 
 var stateManager = null;
 
-var StateManager = function (lives, gold, en) {
+var StateManager = function (lives, gold, enemies) {
     this.gold = gold;
     this.lives = lives;
-    this.en = en;
+    this.enemies = enemies;
 
-    $('<div class="counter" id="livesText"> Lives: </div>')
+    $('<div class="counter" id="livesText">Lives:</div>')
         .appendTo($(".stateWrapper"));
     $('<div class="counter" id="lives"></div>')
         .appendTo($(".stateWrapper"))
         .text(this.lives);
 
-    $('<div class="counter" id="goldText"> Gold: </div>')
+    $('<div class="counter" id="goldText">Gold:</div>')
         .appendTo($(".stateWrapper"));
      $('<div class="counter" id="gold"></div>')
         .appendTo($(".stateWrapper"))
         .text(this.gold);
 
 
-    $('<div class="counter" id="enText"> Enemies Remaining: </div>')
+    $('<div class="counter" id="enemiesText">Enemies Remaining:</div>')
         .appendTo($(".stateWrapper"));
-    $('<div class="counter" id="en"></div>')
+    $('<div class="counter" id="enemies"></div>')
         .appendTo($(".stateWrapper"))
-        .text(this.en);
+        .text(this.enemies);
 
     this.setLives = function(lives) { this.lives = lives; };
     this.setGold = function(gold) { this.gold = gold; };
-    this.setEn = function(en) { this.en = en; };
+    this.setEnemies = function(enemies) { this.enemies = enemies; };
 
     this.draw = function() {
         $("#lives").text(this.lives);
         $("#gold").text(this.gold);
-        $("#en").text(this.end);
+        $("#enemies").text(this.enemies);
+    };
+
+    this.update = function(newInfo) {
+        this.lives = newInfo['lives'];
+        this.enemies = newInfo['enemiesLeft'];
+        this.gold = newInfo['gold'];
     };
 };
 
 
 $(document).ready(function() {
     stateManager = new StateManager(10, 30, 0);
-    if(myGrid)
+    if (myGrid)
         myGrid.setOffset($("#gameFrame").offset());
 });

@@ -11,6 +11,7 @@ from game_pieces.levels import Levels
 from game_states.gameplay_state import GameplayState
 import game_pieces.levels
 from game_pieces.tower import Tower
+from engine.util import dump_obj_dict
 
 # Define our globals
 TPS = 2  # ticks per second
@@ -64,11 +65,10 @@ class GameRunner:
 
         # playerState, creepLoc, creepProgress, attacksMade
         print(str(tupleReturned['playerState']))
-        print(str(tupleReturned['creepLoc']))
-        print(str(tupleReturned['creepProgress']))
         print(str(tupleReturned['attacksMade']))
+        print(str(tupleReturned['creeps']))
 
-        self.network.send_message(dumps(tupleReturned))
+        self.network.send_message(dumps(tupleReturned, default=dump_obj_dict))
 
         # if self.print_gametick:
         #     print("it's been " + str(dt * 1000) + " ms since last frame")

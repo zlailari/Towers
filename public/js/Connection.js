@@ -10,14 +10,19 @@ ws.onclose = function() {
 };
 
 ws.onmessage = function(event) {
-    console.log('MESSAGE: ' + event.data);
-
     msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
+        console.log('MESSAGE: ' + JSON.stringify(msg, null, 2));
+
         if (msg.type == 'chat') {
             if (chatbox) {
                 chatbox.addMsg(msg.id, msg.msg);
             }
+        }
+        if (msg.type == 'gameUpdate') {
+            playerState = msg['playerState'];
+            attacksMade = msg['attacksMade'];
+            creeps = msg['creeps'];
         }
     }
 };
@@ -31,6 +36,12 @@ ws.sendChat = function(id, msg) {
 };
 
 ws.towerRequest = function(id, msg) {
+    // msg format is:
+    // {
+    //     "towerID": 1,
+    //     "x": 3,
+    //     "y": 4
+    // }
     ws.send(JSON.stringify({
         type: "towerRequest",
         id: id,
@@ -39,6 +50,10 @@ ws.towerRequest = function(id, msg) {
 };
 
 ws.creepRequest = function(id, msg) {
+    // msg format is:
+    // {
+    //     "creepID": 1,
+    // }
     ws.send(JSON.stringify({
         type: "creepRequest",
         id: id,
