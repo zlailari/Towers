@@ -39,7 +39,7 @@ class GameplayState(GameState):
         attacksMade = {} # Dictionary of attacks made by towers
 
         #Update all creeps and get location location and movement progress
-        bestPath = self.world.get_path(self.world.grid);
+        bestPath = self.world.tilePaths
 
         for creep in self.all_creeps:
             cUpdate = creep.update(bestPath, dt , self)
