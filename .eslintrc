@@ -44,6 +44,7 @@ rules:
     valid-typeof: 2
     no-extra-parens: 0
     space-after-keywords: 2
+    keyword-spacing: 2
     # We aren't using jsdoc, so we don't care if it is valid.
     valid-jsdoc: 0
     # We can't do this because angular has an "abstract" key, plus this is only

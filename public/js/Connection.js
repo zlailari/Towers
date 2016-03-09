@@ -24,10 +24,20 @@ ws.onmessage = function(event) {
             attacksMade = msg['attacksMade'];
             creeps = msg['creeps'];
         }
+        if (msg.type == 'towerUpdate') {
+            if (msg['towerAccepted'] && myGrid) {
+                myGrid.towerAccepted();
+            } else {
+                // Placeholder until I can get a popup box working
+                console.log("Tower denied");
+                // towerDenied();
+            }
+        }
     }
 };
 
 ws.sendChat = function(id, msg) {
+    // msg is literally msg
     ws.send(JSON.stringify({
         type: "chat",
         id: id,

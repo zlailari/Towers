@@ -51,7 +51,9 @@ var CreepButtons = function (divID, creepNames, creepHotKeys) {
             .click(function() {
                 this.cid = $(this).attr("cid");
                 // alert("Creep Please: " + this.cid);
-                var msg = "type:" + this.cid;
+                var msg = {
+                    "creepID": this.cid
+                };
                 ws.creepRequest(userID, msg);
             });
     }
@@ -67,9 +69,24 @@ var CreepButtons = function (divID, creepNames, creepHotKeys) {
     this.getButtons = function() { return buttons; };
 };
 
+function towerDenied () {
+    $('<div id="dialog" title="Basic dialog">'
+        + '<p>Tower cannot be created</p></div>')
+        .appendTo(document.body);
+    $("#dialog").dialog({
+        open: function() {
+            var self = $(this);
+            setTimeout(function() {
+                self.dialog('close');
+            }, 1000);
+        }
+    });
+}
+
+
 
 $(document).ready(function() {
-    var towerNames = ["Archer Tower", "Fire Tower", "Ice Tower"];
+    var towerNames = ["Arrow Tower", "Fire Tower", "Ice Tower"];
     var towerHotKeys = [{s:"A", kc:65},
         {s:"R", kc:82},
         {s:"I", kc:73}];
@@ -82,6 +99,8 @@ $(document).ready(function() {
         towerNames, towerHotKeys);
     creepButtons = new CreepButtons("#creepButtons",
         creepNames, creepHotKeys);
-    if (myGrid)
+    if (myGrid) {
         myGrid.setOffset($("#gameFrame").offset());
+    }
 });
+

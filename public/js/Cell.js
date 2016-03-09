@@ -4,7 +4,7 @@ var CellType = Object.freeze({
     BASIC_TOWER: 2,
     TRAP: 3,
     ARROW: 100,
-    LASER: 101,
+    FIRE: 101,
     ICE: 102
 });
 
@@ -20,7 +20,7 @@ var Cell = function (Grid, ctx, row, col) {
     this.Grid = Grid;
 
     this.img = null;
-    this.changed = false;
+    this.newTower = false;
 
     this.draw = function(ctx) {
         var size = this.Grid.distance;
@@ -42,20 +42,10 @@ var Cell = function (Grid, ctx, row, col) {
                 ctx.fillStyle = "#0000FF";
                 break;
             case CellType.ARROW:
-                ctx.fillStyle = "#FFFFFF";
-                if (this.changed) {
-                    this.img = towerImages[towerButtons.getLastButton()];
-                }
-                break;
-            case CellType.LASER:
-                ctx.fillStyle = "#FFFFFF";
-                if (this.changed) {
-                    this.img = towerImages[towerButtons.getLastButton()];
-                }
-                break;
+            case CellType.FIRE:
             case CellType.ICE:
                 ctx.fillStyle = "#FFFFFF";
-                if (this.changed) {
+                if (this.newTower) {
                     this.img = towerImages[towerButtons.getLastButton()];
                 }
                 break;
@@ -93,6 +83,6 @@ var Cell = function (Grid, ctx, row, col) {
             ctx.lineWidth = highlightSize;
             ctx.strokeRect((this.col * size), (this.row * size), size, size);
         }
-        this.changed = false;
+        this.newTower = false;
     };
 };

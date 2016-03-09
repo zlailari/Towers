@@ -1,7 +1,8 @@
 /* Create a global for the grid */
+
 var myGrid = null;
 
-var playerState, creeps, attacksMade;
+var playerState = null, creeps = null, attacksMade = null;
 
 $(document).ready(function()  {
     var gameCan = document.getElementById("gameFrame");
@@ -44,9 +45,11 @@ $(document).ready(function()  {
         stateManager.draw();
         myGrid.draw(gameCtx);
 
-        // DONT REPLICATE THIS, just trying to get something to work for MVP
-        for (var i = 0; i < creeps.length; i++) {
-            drawCreep(gameCtx, creeps[i]);
+        if (creeps) {
+            // DONT REPLICATE THIS, just trying to get something to work for MVP
+            for (var i = 0; i < creeps.length; i++) {
+                drawCreep(gameCtx, creeps[i]);
+            }
         }
     }
 });

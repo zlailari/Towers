@@ -104,7 +104,7 @@
         }
     },
     widget: function() {
-        return this.uiChatbox
+        return this.uiChatbox;
     },
     _create: function() {
         var self = this,
@@ -120,7 +120,7 @@
             .attr('outline', 0)
             .focusin(function() {
                 // ui-state-highlight is not really helpful here
-                //self.uiChatbox.removeClass('ui-state-highlight');
+                // self.uiChatbox.removeClass('ui-state-highlight');
                 self.uiChatboxTitlebar.addClass('ui-state-focus');
             })
             .focusout(function() {

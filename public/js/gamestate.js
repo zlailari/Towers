@@ -47,6 +47,7 @@ var StateManager = function (lives, gold, enemies) {
 
 $(document).ready(function() {
     stateManager = new StateManager(10, 30, 0);
-    if (myGrid)
+    if (myGrid) {
         myGrid.setOffset($("#gameFrame").offset());
+    }
 });
