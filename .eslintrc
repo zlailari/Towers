@@ -49,6 +49,7 @@ rules:
     # We can't do this because angular has an "abstract" key, plus this is only
     # an issue for <= IE 8.
     no-reserved-keys: 0
+    no-trailing-spaces: 2
 
     # With can be dangerous in cases where an object normally has a property
     # overwritten in a with, but doesn't occasionally. In that case you'll
@@ -87,7 +88,7 @@ rules:
     # And how the first can be confusing.
     # Mostly I'm waiting to see if anyone has any thoughts on it.
     func-style: 0
-    complexity: [2, 10]
+    complexity: [2, 18]
     yoda: 0
     # I don't have a strong opinion on this, but it seems to be a
     # defacto JS standard.
@@ -107,7 +108,7 @@ rules:
     # Require a space between the '#' and the first word, like all the comments
     # in this file
     spaced-comment: [2, "always", {"markers":['*', '**']}]
-    # 79 character length, 4 spaces to a tab
+    # 89 character length, 4 spaces to a tab
     max-len:
         - 2
         - 89

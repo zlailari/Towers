@@ -52,11 +52,11 @@ var Grid = function (can, ctx, offset) {
         var last = towerButtons.getLastButton();
         if (last) {
             var msg = "tid:" + last +
-                " x:" + this.focusCell.col + 
+                " x:" + this.focusCell.col +
                 " y:" + this.focusCell.row;
             ws.towerRequest(userID, msg);
 
-            this.focusCell.type = parseFloat(CellType.ARROW) + 
+            this.focusCell.type = parseFloat(CellType.ARROW) +
                 parseFloat(last);
         }
     };
