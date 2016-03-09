@@ -15,16 +15,19 @@ class Tower:
 
         self.time_since_last_fire = 0
 
-    def update(self, dt, living_creeps):
+    def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt
         myAttacks = [];
-        if self.can_fire():
-            x2, y2 = self.get_position()
-            for creep in living_creeps:
-                x1, y1 = creep.get_position()
-                if util.distance(x1, y1, x2, y2) <= self.fire_range:
-                    self.fire(creep)
-                    myAttacks.append(creep.id) #adds in all the fireable creeps to an array
+        print(self.time_since_last_fire)
+
+        x2, y2 = self.get_position()
+        for creep in living_creeps:
+                if creep.live:
+                    x1, y1 = creep.loc[0] , creep.loc[1]
+                    if engine.util.distance(x1, y1, x2, y2) <= self.fire_range:
+                        if self.can_fire():
+                            self.fire(creep, gameState)
+                            myAttacks.append(creep.id) #adds in all the fireable creeps to an array
         return myAttacks;
                     
     
@@ -32,13 +35,13 @@ class Tower:
 
     def can_fire(self):
         """True if the cooldown has warn off."""
-        return self.time_since_last_fire <= self.cooldown
+        return self.time_since_last_fire >= self.cooldown
         #return True
-        
-    def fire(self, target):
+
+    def fire(self, target, gameState):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
-        target.take_damage(self.damage);
+        target.take_damage(self.damage , gameState);
 
 
     def get_position(self):

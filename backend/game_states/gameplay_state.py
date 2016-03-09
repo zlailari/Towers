@@ -44,13 +44,13 @@ class GameplayState(GameState):
         print(str(item.id) for item in self.all_creeps)
 
         for creep in self.all_creeps:
-            cUpdate = creep.update(bestPath, dt)
+            cUpdate = creep.update(bestPath, dt , self)
             creepLoc.update(cUpdate[LOCATION_INDEX])
             creepProgress.update(cUpdate[PROGRESS_INDEX])
 
         #Updates the attacks made by the towers on the creeps
         for tower in self.all_towers:
-            attacksMade.update({tower.id : tower.update(dt, self.all_creeps)})
+            attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
 
         # Dictionary of player stats
         playerState = {
