@@ -1,5 +1,6 @@
 # this will store data about the different varieties of creeps
 # I don't know if I like this way of designating types, but it works for now
+import engine.util
 CREEP_TYPES = {
     'basic': {'speed': 10, 'health': 100},
     'medium': {'speed': 10, 'health': 150},
@@ -11,7 +12,7 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-        if type == "Default": return Creep((0,0),"default",1,100,id, 15)
+        if type == "Default": return Creep((0,0),"default",.5,100,id, 15)
     factory = staticmethod(factory)
 
     def __init__(self, loc, creep_type, speed, health,id, bounty):
@@ -19,7 +20,7 @@ class Creep:
         self.type = creep_type
         self.speed = speed # Gotta go fast
         self.health = health
-        self.progress = 0 # Amount traveled through a square
+        self.cellPos = (0,0)
         self.id = id # The unique ID of the creep
         self.bounty = bounty
         self.live = True
@@ -27,14 +28,21 @@ class Creep:
     # We generate a json for movement. Passed up to the gameplay_state
     def update(self, path, dt, gameState):
         if self.live:
-            self.progress += dt
-            if self.progress>=self.speed:
-                self.progress = 0
+         #   print(self.cellPos)
+            direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
+            self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
+         #   print(self.dest(path))
+         #   print(direction)
+         #   print(self.cellPos)
+            edgeConf = engine.util.edge(self.cellPos , direction) #check if at edge and new position
+
+            if edgeConf[0]: # returns true if creep should move
                 if(self.dest(path) == gameState.world.endpoint):
                     self.killPlayer(gameState)
                 else:
-                    pos = self.move_on_path(path)
-            return {self.id : self.loc} , {self.id : (self.progress/self.speed)}
+                    self.cellPos = edgeConf[1] #this is where the creep should be in the next cell
+                    pos = self.move_on_path(path) #move to next cell
+            return {self.id : self.loc} , {self.id : (self.cellPos)}
 
     def move_to_dest(self, dest):
         self.loc = dest
