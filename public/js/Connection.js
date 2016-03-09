@@ -20,10 +20,9 @@ ws.onmessage = function(event) {
             }
         }
         if (msg.type == 'gameUpdate') {
-            var playerState = msg['playerState'];
-            var creepLoc = msg['creepLoc'];
-            var attacksMade = msg['attacksMade'];
-            var creepProgress = msg['creepProgress'];
+            playerState = msg['playerState'];
+            attacksMade = msg['attacksMade'];
+            creeps = msg['creeps'];
         }
     }
 };
@@ -37,6 +36,12 @@ ws.sendChat = function(id, msg) {
 };
 
 ws.towerRequest = function(id, msg) {
+    // msg format is:
+    // {
+    //     "towerID": 1,
+    //     "x": 3,
+    //     "y": 4
+    // }
     ws.send(JSON.stringify({
         type: "towerRequest",
         id: id,
@@ -45,6 +50,10 @@ ws.towerRequest = function(id, msg) {
 };
 
 ws.creepRequest = function(id, msg) {
+    // msg format is:
+    // {
+    //     "creepID": 1,
+    // }
     ws.send(JSON.stringify({
         type: "creepRequest",
         id: id,

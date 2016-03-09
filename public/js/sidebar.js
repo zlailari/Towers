@@ -4,6 +4,7 @@
 */
 
 var towerButtons = null, creepButtons = null, towerImages = null;
+var towerImages = [];
 
 var TowerButtons = function (divID, towerNames, towerHotKeys) {
     var lastButton = null;
@@ -72,14 +73,6 @@ $(document).ready(function() {
     var towerHotKeys = [{s:"A", kc:65},
         {s:"R", kc:82},
         {s:"I", kc:73}];
-
-    var towerImageNames = ["images/arrowHead.png",
-        "images/fire.png", "images/ice.png"];
-    towerImages = [];
-    for (var i = 0; i < towerImageNames.length; i++) {
-        towerImages[i] = new Image();
-        towerImages[i].src = towerImageNames[i];
-    }
 
     var creepNames = ["Fast", "Slow"];
     var creepHotKeys = [{s:"F", kc:70},

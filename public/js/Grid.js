@@ -51,9 +51,11 @@ var Grid = function (can, ctx, offset) {
         this.focusCell.changed = true;
         var last = towerButtons.getLastButton();
         if (last) {
-            var msg = "tid:" + last +
-                " x:" + this.focusCell.col +
-                " y:" + this.focusCell.row;
+            var msg = {
+                "towerID": last,
+                "x": this.focusCell.col,
+                "y": this.focusCell.row
+            };
             ws.towerRequest(userID, msg);
 
             this.focusCell.type = parseFloat(CellType.ARROW) +

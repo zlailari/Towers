@@ -1,6 +1,8 @@
 /* Create a global for the grid */
 var myGrid = null;
 
+var playerState, creeps, attacksMade;
+
 $(document).ready(function()  {
     var gameCan = document.getElementById("gameFrame");
     var gameCtx = gameCan.getContext("2d");
@@ -24,14 +26,27 @@ $(document).ready(function()  {
         myGrid.mouseClick();
     }
 
+    loadImages();
     setInterval(gameLoop, frequency);
 
     function gameLoop () {
+        processUpdate();
         render();
-        stateManager.draw();
+    }
+
+    function processUpdate() {
+        if (playerState) {
+            stateManager.update(playerState);
+        }
     }
 
     function render () {
+        stateManager.draw();
         myGrid.draw(gameCtx);
+
+        // DONT REPLICATE THIS, just trying to get something to work for MVP
+        for (var i = 0; i < creeps.length; i++) {
+            drawCreep(gameCtx, creeps[i]);
+        }
     }
 });
