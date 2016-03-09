@@ -15,7 +15,7 @@ class GridWorld:
         self.grid = [[False for x in range(self.width)]
                      for x in range(self.height)]
 
-        self.tilePaths = self.get_path(grid)
+        self.tilePaths = self.get_path(self.grid)
 
     def is_blocked(self, x, y):
         return self.grid[y][x]

@@ -12,7 +12,7 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-        if type == "Default": return Creep((0,0),"default",.5,100,id, 15)
+        if type == "Default": return Creep((0,0),"default",.3,100,id, 15)
     factory = staticmethod(factory)
 
     def __init__(self, loc, creep_type, speed, health,id, bounty):
