@@ -11,24 +11,30 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-        if type == "Default": return Creep((0,0),"default",1,100,id)
+        if type == "Default": return Creep((0,0),"default",1,100,id, 15)
     factory = staticmethod(factory)
 
-    def __init__(self, loc, creep_type, speed, health,id):
+    def __init__(self, loc, creep_type, speed, health,id, bounty):
         self.loc = loc
         self.type = creep_type
         self.speed = speed # Gotta go fast
         self.health = health
         self.progress = 0 # Amount traveled through a square
         self.id = id # The unique ID of the creep
+        self.bounty = bounty
+        self.live = True
 
     # We generate a json for movement. Passed up to the gameplay_state
-    def update(self, path, dt):
-        self.progress += dt
-        if self.progress>=self.speed:
-            self.progress = 0
-            pos = self.move_on_path(path)
-        return {self.id : self.loc} , {self.id : (self.progress/self.speed)}
+    def update(self, path, dt, gameState):
+        if self.live:
+            self.progress += dt
+            if self.progress>=self.speed:
+                self.progress = 0
+                if(self.dest(path) == gameState.world.endpoint):
+                    self.killPlayer(gameState)
+                else:
+                    pos = self.move_on_path(path)
+            return {self.id : self.loc} , {self.id : (self.progress/self.speed)}
 
     def move_to_dest(self, dest):
         self.loc = dest
@@ -38,12 +44,25 @@ class Creep:
         self.loc = path[self.loc]
         return self.loc
 
-    def take_damage(self, amount):
+    def dest(self, path):
+        return path[self.loc]
+
+
+    def take_damage(self, amount, gameState):
         self.health -= amount
         if (self.health <= 0):
+            self.die(gameState)
             return 0
         else:
             return self.health
+
+    def die(self, gameState):
+            gameState.gold += self.bounty
+            self.live=False
+
+    def killPlayer(self, gameState):
+            gameState.lives -=1
+            self.live = False
 
     def adjust_speed(self, amount):
         self.speed += amount
