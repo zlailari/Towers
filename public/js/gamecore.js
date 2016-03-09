@@ -28,6 +28,7 @@ $(document).ready(function()  {
 
     function gameLoop () {
         render();
+        stateManager.draw();
     }
 
     function render () {
