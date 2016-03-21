@@ -12,8 +12,6 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
-        console.log('MESSAGE: ' + JSON.stringify(msg, null, 2));
-
         if (msg.type == 'chat') {
             if (chatbox) {
                 chatbox.addMsg(msg.id, msg.msg);

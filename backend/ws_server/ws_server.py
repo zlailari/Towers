@@ -91,10 +91,10 @@ class MyServerProtocol(WebSocketServerProtocol):
         # for now, only send text messages, no binary yet
         assert isBinary is False
         if isBinary:
-            # but keep this check in for future reference
-            print("Binary message received: {0} bytes".format(len(payload)))
+            # keep this check in for future reference
+            pass
         else:
-            print("Text message received: {0}".format(payload.decode('utf8')))
+            pass
 
         as_string = payload.decode('utf8')
         if as_string == GAMELOOP_CLIENT_IDENTIFIER:

@@ -14,7 +14,7 @@ from game_pieces.tower import Tower
 from engine.util import dump_obj_dict
 
 # Define our globals
-TPS = 2  # ticks per second
+TPS = 5  # ticks per second
 TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
 WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
@@ -77,7 +77,7 @@ class GameRunner:
         clock.tick()  # tick once to initialize counter
 
         try:
-            for i in range(0, 1000):
+            while(True):
                 dt = clock.tick()
                 self.game_loop(dt)
 
@@ -129,11 +129,7 @@ class GameRunner:
         # Update game 1 tick and pass to clients
         tupleReturned = self.game_state.update(dt, [])
 
-        # playerState, creepLoc, creepProgress, attacksMade
-        print(str(tupleReturned['playerState']))
-        print(str(tupleReturned['attacksMade']))
-        print(str(tupleReturned['creeps']))
-
+        # tupleReturned is: playerState, creepLoc, creepProgress, attacksMade
         self.network.send_message(dumps(tupleReturned, default=dump_obj_dict))
 
         # if self.print_gametick:

@@ -61,7 +61,8 @@ $(document).ready(function()  {
                     // a lot funky
                     for (var shot in attacksMade[attack]) {
                         // getting each towerID, creepID pair
-                        drawShot(gameCtx, attack, shot);
+                        // this is why we must send stuff as array of objects...
+                        drawShot(gameCtx, attack, attacksMade[attack][shot]);
                     }
                 }
             }

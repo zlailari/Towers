@@ -19,7 +19,6 @@ class Tower:
     def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt
         myAttacks = [];
-        print(self.time_since_last_fire)
 
         x2, y2 = self.get_position()
         for creep in living_creeps:
