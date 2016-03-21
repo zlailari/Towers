@@ -14,6 +14,10 @@ var Creep = function(gridX, gridY, width, height, progress) {
 
 // DONT REPLICATE THIS, just trying to get something to work for MVP
 drawCreep = function(ctx, creep) {
+    if (!creep.live) {
+        return;
+    }
+
     var width = 32;
     var height = 50;
 

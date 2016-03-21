@@ -106,6 +106,7 @@ class GameRunner:
                 1000,
                 1,
                 3,
+                len(self.game_state.all_towers),
                 msg['msg']['towerID']
             )
             success = self.game_state.build_tower(tower)
