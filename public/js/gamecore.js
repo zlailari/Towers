@@ -51,5 +51,20 @@ $(document).ready(function()  {
                 drawCreep(gameCtx, creeps[i]);
             }
         }
+
+        // this is also temp for demo
+        if (attacksMade) {
+            // attacks come in as a dictionary like-> towerID: [creepIDs, ...]
+            // which is why this is a bit funky
+            for (var attack in attacksMade) {
+                if (attacksMade[attack].length > 0) {
+                    // a lot funky
+                    for (var shot in attacksMade[attack]) {
+                        // getting each towerID, creepID pair
+                        drawShot(gameCtx, attack, shot);
+                    }
+                }
+            }
+        }
     }
 });

@@ -26,10 +26,7 @@ ws.onmessage = function(event) {
         }
         if (msg.type == 'towerUpdate') {
             if (msg['towerAccepted'] && myGrid) {
-                var x = msg['tower']['loc'][0];
-                var y = msg['tower']['loc'][1];
-                var id = msg['tower']['tower_type'];
-                myGrid.towerAccepted(x, y, id);
+                myGrid.towerAccepted(msg['tower']);
             } else {
                 // Placeholder until I can get a popup box working
                 console.log("Tower denied");

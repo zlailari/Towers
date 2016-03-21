@@ -28,6 +28,9 @@ var Grid = function (can, ctx, offset) {
         }
     }
 
+    // Keep track of all towers on grid
+    this.towers = [];
+
     // Mouse move handler
     this.mouseMove = function(x, y) {
         var row = Math.floor((y - this.offset.top) / this.distance);
@@ -77,8 +80,14 @@ var Grid = function (can, ctx, offset) {
         this.offset = newOffset;
     };
 
-    this.towerAccepted = function(x, y, id) {
+    this.towerAccepted = function(tower) {
+        var x = tower['loc'][0];
+        var y = tower['loc'][1];
+        var id = tower['tower_type'];
+
         this.Cells[y][x].type = parseFloat(CellType.ARROW) +
                 parseFloat(id);
+
+        this.towers.push(tower);
     };
 };
