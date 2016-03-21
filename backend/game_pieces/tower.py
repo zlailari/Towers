@@ -6,14 +6,17 @@ class Tower:
     """Basic implementation of a tower"""
 
     def __init__(self, loc, health, cooldown, fire_range, id, tower_type=1):
+        # TODO, make tower_type control other values
+
         self.loc = loc
         self.health = health
         self.cooldown = cooldown
         self.fire_range = fire_range
         self.id = id; # we need the towers to know where they are in the array of towers.
-        self.tower_type = tower_type # TODO, make tower_type control other values
+        self.tower_type = tower_type
 
-        self.damage = 10; # PLACE HOLDER DAMAGE VALUE: TO BE REPLACED
+        self.price = 20
+        self.damage = 40
         self.time_since_last_fire = 0
 
     def update(self, dt, living_creeps, gameState):
