@@ -14,7 +14,6 @@ var Grid = function (can, ctx, offset) {
 
     // Cell which user is currently hovering over
     this.focusCell = {};
-    this.lastClick = {};
 
     // Initialize Cells array
     this.Cells = new Array(this.rows);
@@ -28,6 +27,9 @@ var Grid = function (can, ctx, offset) {
             this.Cells[i][j] = new Cell(this, ctx, i, j);
         }
     }
+
+    // Keep track of all towers on grid
+    this.towers = [];
 
     // Mouse move handler
     this.mouseMove = function(x, y) {
@@ -48,7 +50,6 @@ var Grid = function (can, ctx, offset) {
     };
 
     this.mouseClick = function() {
-        this.lastClick = this.focusCell;
         var last = towerButtons.getLastButton();
         if (last) {
             var msg = {
@@ -79,9 +80,14 @@ var Grid = function (can, ctx, offset) {
         this.offset = newOffset;
     };
 
-    this.towerAccepted = function() {
-        this.lastClick.newTower = true;
-        this.lastClick.type = parseFloat(CellType.ARROW) +
-                parseFloat(last);
+    this.towerAccepted = function(tower) {
+        var x = tower['loc'][0];
+        var y = tower['loc'][1];
+        var id = tower['tower_type'];
+
+        this.Cells[y][x].type = parseFloat(CellType.ARROW) +
+                parseFloat(id);
+
+        this.towers.push(tower);
     };
 };

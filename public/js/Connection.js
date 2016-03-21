@@ -12,8 +12,6 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
-        console.log('MESSAGE: ' + JSON.stringify(msg, null, 2));
-
         if (msg.type == 'chat') {
             if (chatbox) {
                 chatbox.addMsg(msg.id, msg.msg);
@@ -26,7 +24,7 @@ ws.onmessage = function(event) {
         }
         if (msg.type == 'towerUpdate') {
             if (msg['towerAccepted'] && myGrid) {
-                myGrid.towerAccepted();
+                myGrid.towerAccepted(msg['tower']);
             } else {
                 // Placeholder until I can get a popup box working
                 console.log("Tower denied");

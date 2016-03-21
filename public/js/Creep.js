@@ -14,12 +14,18 @@ var Creep = function(gridX, gridY, width, height, progress) {
 
 // DONT REPLICATE THIS, just trying to get something to work for MVP
 drawCreep = function(ctx, creep) {
+    if (!creep.live) {
+        return;
+    }
+
     var width = 32;
     var height = 50;
 
-    var xpos = myGrid.distance * (creep.loc[0] + creep.cellPos[0]);
-    var ypos = myGrid.distance * (creep.loc[1] + creep.cellPos[1]);
+    var xpos = gridToPixel(creep.loc[0] + creep.cellPos[0]);
+    var ypos = gridToPixel(creep.loc[1] + creep.cellPos[1]);
 
     ctx.drawImage(creepPic, xpos, ypos,
                       width, height);
 };
+
+

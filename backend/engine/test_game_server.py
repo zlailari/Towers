@@ -1,6 +1,6 @@
 """This file acts as the main entrance point to the server."""
 import time
-from json import dumps
+from json import dumps, loads
 
 from game_pieces.creep import Creep
 from engine.clock import Clock
@@ -14,7 +14,7 @@ from game_pieces.tower import Tower
 from engine.util import dump_obj_dict
 
 # Define our globals
-TPS = 2  # ticks per second
+TPS = 5  # ticks per second
 TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
 WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
@@ -34,7 +34,6 @@ class GameRunner:
         #    self.spawnCreeps.append(Creep.factory("Default",i))
 
         # game_state = MainMenu()
-
 
         self.network = Network()
         self.print_gametick = print_gametick
@@ -78,7 +77,7 @@ class GameRunner:
         clock.tick()  # tick once to initialize counter
 
         try:
-            for i in range(0, 1000):
+            while(True):
                 dt = clock.tick()
                 self.game_loop(dt)
 
@@ -88,14 +87,49 @@ class GameRunner:
             # do any cleanup you want to do here
             pass
 
+    def process_message(self, message):
+        if not message:
+            return
+
+        # We need to check if the message is a string because some of the our
+        # early stuff isn't JSON (TODO, make all messages JSON)
+        try:
+            msg = loads(message)
+        except ValueError:
+            print("message: ", message, " was not valid json")
+            return
+
+        if msg['type'] == 'towerRequest':
+            # Make a new tower TODO, don't hardcode stuff
+            tower = Tower(
+                (msg['msg']['x'], msg['msg']['y']),
+                1000,
+                1,
+                3,
+                len(self.game_state.all_towers),
+                msg['msg']['towerID']
+            )
+            success = self.game_state.build_tower(tower)
+            if success:
+                towerUpdate = {
+                    'type': 'towerUpdate',
+                    'towerAccepted': 'true',
+                    'tower': tower
+                }
+                self.network.send_message(dumps(towerUpdate, default=dump_obj_dict))
+            else:
+                # TODO, tell client request failed and why
+                pass
+
     def game_loop(self, dt):
+        # Receive and process messages from clients
+        message = self.network.receive()
+        self.process_message(message)
+
+        # Update game 1 tick and pass to clients
         tupleReturned = self.game_state.update(dt, [])
 
-        # playerState, creepLoc, creepProgress, attacksMade
-        print(str(tupleReturned['playerState']))
-        print(str(tupleReturned['attacksMade']))
-        print(str(tupleReturned['creeps']))
-
+        # tupleReturned is: playerState, creepLoc, creepProgress, attacksMade
         self.network.send_message(dumps(tupleReturned, default=dump_obj_dict))
 
         # if self.print_gametick:
