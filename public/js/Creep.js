@@ -21,8 +21,8 @@ drawCreep = function(ctx, creep) {
     var width = 32;
     var height = 50;
 
-    var xpos = gridToPixel(creep.loc[0] + creep.cellPos[0]);
-    var ypos = gridToPixel(creep.loc[1] + creep.cellPos[1]);
+    var xpos = gridToPixel(creep.loc[0] + creep.cellPos[0]) - 0.5 * width;
+    var ypos = gridToPixel(creep.loc[1] + creep.cellPos[1]) - 0.5 * height;
 
     ctx.drawImage(creepPic, xpos, ypos,
                       width, height);

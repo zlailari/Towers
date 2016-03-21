@@ -82,7 +82,11 @@ class GameplayState(GameState):
             self.all_creeps.append(creep)
 
     def build_tower(self, tower):
+        if tower.price > self.gold:
+            return False
+
         if self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
+            self.gold -= tower.price
             self.all_towers.append(tower)
             return True
         else:
