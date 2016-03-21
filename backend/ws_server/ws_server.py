@@ -105,9 +105,16 @@ class MyServerProtocol(WebSocketServerProtocol):
         message = obj_from_json(as_string)
         if message:
             assert "type" in message
+
+            # TODO, make this not janky
             if message["type"] == "chat":
                 self.broadcast_message(payload)
             elif message["type"] == "gameUpdate":
+                self.broadcast_message(payload)
+            elif message["type"] == "towerRequest":
+                global gameloop_client
+                gameloop_client.sendMessage(utf(as_string), False)
+            elif message["type"] == "towerUpdate":
                 self.broadcast_message(payload)
 
     def broadcast_message(self, msg):

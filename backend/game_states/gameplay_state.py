@@ -1,5 +1,6 @@
 from game_states.game_state import GameState
 from engine.grid_world import GridWorld
+
 from game_pieces.creep import Creep
 from game_pieces.tower import Tower
 
@@ -81,6 +82,9 @@ class GameplayState(GameState):
             self.all_creeps.append(creep)
 
     def build_tower(self, tower):
-        #rocket science
         if self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
             self.all_towers.append(tower)
+            return True
+        else:
+            # TODO, send why build_tower failed (money, illegal position, etc)
+            return False
