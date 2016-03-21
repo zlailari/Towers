@@ -14,7 +14,6 @@ var Grid = function (can, ctx, offset) {
 
     // Cell which user is currently hovering over
     this.focusCell = {};
-    this.lastClick = {};
 
     // Initialize Cells array
     this.Cells = new Array(this.rows);
@@ -48,7 +47,6 @@ var Grid = function (can, ctx, offset) {
     };
 
     this.mouseClick = function() {
-        this.lastClick = this.focusCell;
         var last = towerButtons.getLastButton();
         if (last) {
             var msg = {
@@ -79,9 +77,9 @@ var Grid = function (can, ctx, offset) {
         this.offset = newOffset;
     };
 
-    this.towerAccepted = function() {
-        this.lastClick.newTower = true;
-        this.lastClick.type = parseFloat(CellType.ARROW) +
-                parseFloat(last);
+    this.towerAccepted = function(x, y, id) {
+        this.Cells[y][x].towerID = id;
+        this.Cells[y][x].type = parseFloat(CellType.ARROW) +
+                parseFloat(id);
     };
 };

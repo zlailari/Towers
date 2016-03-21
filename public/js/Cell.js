@@ -20,13 +20,12 @@ var Cell = function (Grid, ctx, row, col) {
     this.Grid = Grid;
 
     this.img = null;
-    this.newTower = false;
+    this.towerID = null;
 
     this.draw = function(ctx) {
         var size = this.Grid.distance;
         var highlightSize = Math.floor(size / 10);
         var drawSize = size - highlightSize;
-        var imgToDraw = false;
         // Cell draw based on type
         switch (this.type) {
             case CellType.EMPTY:
@@ -45,9 +44,7 @@ var Cell = function (Grid, ctx, row, col) {
             case CellType.FIRE:
             case CellType.ICE:
                 ctx.fillStyle = "#FFFFFF";
-                if (this.newTower) {
-                    this.img = towerImages[towerButtons.getLastButton()];
-                }
+                this.img = towerImages[towerID];
                 break;
             default:
                 console.log("ERROR: Illegal CellType: " + this.type);
@@ -56,6 +53,7 @@ var Cell = function (Grid, ctx, row, col) {
         ctx.fillRect((this.col * size) + .5 * highlightSize,
                      (this.row * size) + .5 * highlightSize,
                      drawSize, drawSize);
+
         if (this.img) {
             ctx.drawImage(this.img,
                 (this.col * size) + .5 * highlightSize,
@@ -83,6 +81,5 @@ var Cell = function (Grid, ctx, row, col) {
             ctx.lineWidth = highlightSize;
             ctx.strokeRect((this.col * size), (this.row * size), size, size);
         }
-        this.newTower = false;
     };
 };

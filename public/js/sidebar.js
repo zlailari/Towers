@@ -17,7 +17,6 @@ var TowerButtons = function (divID, towerNames, towerHotKeys) {
             .appendTo($(divID))
             .click(function() {
                 var tid = $(this).attr("tid");
-                // alert("Button: " + tid);
                 if (lastButton == tid) {
                     lastButton = null;
                 } else {
@@ -82,8 +81,6 @@ function towerDenied () {
         }
     });
 }
-
-
 
 $(document).ready(function() {
     var towerNames = ["Arrow Tower", "Fire Tower", "Ice Tower"];
