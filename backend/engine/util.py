@@ -13,13 +13,13 @@ X_COORD = 0
 Y_COORD = 1
 def edge(position, direction):
         if direction[X_COORD]== -1 and position[X_COORD] <= 0: # left edge of box, going left
-            return True , (1, position[Y_COORD])                #move to right edge of next box
+            return True , (1, position[Y_COORD]%1)                #move to right edge of next box
         elif direction[X_COORD]== 1 and position[X_COORD] >= 1: # right edge of box, going right
-            return True , (0,position[Y_COORD])                 #move to left edge of next box
+            return True , (0,position[Y_COORD]%1)                 #move to left edge of next box
         elif direction[Y_COORD]== -1 and position[Y_COORD] <= 0: #bottom edge of box, going down
-            return True , (position[X_COORD], 1)                #move to top of next box
+            return True , (position[X_COORD]%1, 1)                #move to top of next box
         elif direction[Y_COORD]== 1 and position[Y_COORD] >= 1: #top edge of box, going up
-            return True , (position[X_COORD], 0)
+            return True , (position[X_COORD]%1, 0)
         else:
             return False , -1
 
