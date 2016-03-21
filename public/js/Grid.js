@@ -78,7 +78,6 @@ var Grid = function (can, ctx, offset) {
     };
 
     this.towerAccepted = function(x, y, id) {
-        this.Cells[y][x].towerID = id;
         this.Cells[y][x].type = parseFloat(CellType.ARROW) +
                 parseFloat(id);
     };

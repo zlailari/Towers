@@ -20,7 +20,6 @@ var Cell = function (Grid, ctx, row, col) {
     this.Grid = Grid;
 
     this.img = null;
-    this.towerID = null;
 
     this.draw = function(ctx) {
         var size = this.Grid.distance;
@@ -44,7 +43,9 @@ var Cell = function (Grid, ctx, row, col) {
             case CellType.FIRE:
             case CellType.ICE:
                 ctx.fillStyle = "#FFFFFF";
-                this.img = towerImages[towerID];
+                this.img = towerImages[parseFloat(this.type)
+                    - parseFloat(CellType.ARROW)];
+                
                 break;
             default:
                 console.log("ERROR: Illegal CellType: " + this.type);
