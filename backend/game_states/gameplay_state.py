@@ -13,9 +13,6 @@ class GameplayState(GameState):
     """This is the state the game is in during real gameplay,
     and manages all creeps, towers, scores, etc."""
 
-
-
-
     def __init__(self, level, width, height, lives, gold):
         self.cur_level = level
         self.world = GridWorld(width, height, (0, 0), (width-1, height-1))
@@ -81,7 +78,9 @@ class GameplayState(GameState):
             creep = Creep(creep_type=self.cur_level['creep_type'])
             self.all_creeps.append(creep)
 
-    def build_tower(self, tower):
+    #Changed, should only take in coordinates and tower type
+    def build_tower(self, coordinates, towerType):
+        tower = Tower.factory(towerType,coordinates, len(self.all_towers))
         if tower.price > self.gold:
             return False
 

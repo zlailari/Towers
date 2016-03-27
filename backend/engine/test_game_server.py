@@ -39,34 +39,10 @@ class GameRunner:
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
 
-        self.level_creeps_spawn_timers = []
-        self.spawnCreeps = []
-        initialSpawn = 0
-
-        # 3 sets of spawns
-        # Separated by initialSpawn time.
-        for k in range(0,5):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
-
-        initialSpawn += 3
-
-        for k in range(0,10):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
-
-        initialSpawn +=3
-
-        for k in range(0,15):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
-
-        for i in range (0,30):
-            self.spawnCreeps.append(Creep.factory("Default",i))
-
-        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps);
+        #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
+        levels = Levels.createLevel(0,0.3,3,5,3,"Default")
         self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
-        self.game_state.build_tower(Tower((8,8),10000000,1,1,0))
+        self.game_state.build_tower((8,8), "fire")
 
 
 
