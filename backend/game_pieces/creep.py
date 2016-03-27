@@ -13,6 +13,8 @@ class Creep:
 
     def factory(type,id):
         if type == "Default": return Creep((0,0),"default",.3,100,id, 15)
+        if type == "Strong": return Creep((0,0),"strong",.1,500,id,30)
+        if type == "Weak": return Creep((0,0),"weak",.6,50,id,30)
     factory = staticmethod(factory)
 
     def __init__(self, loc, creep_type, speed, health,id, bounty):
