@@ -1,4 +1,6 @@
 import engine.util
+from shots.shot import shot
+from shots.laser import laser
 import json 
 
 
@@ -37,7 +39,7 @@ class Tower:
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(creep.id)
+                            myAttacks.append(laser(self.id,creep.id))
         return myAttacks;
 
 
