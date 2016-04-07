@@ -91,10 +91,10 @@ class MyServerProtocol(WebSocketServerProtocol):
         # for now, only send text messages, no binary yet
         assert isBinary is False
         if isBinary:
-            # but keep this check in for future reference
-            print("Binary message received: {0} bytes".format(len(payload)))
+            # keep this check in for future reference
+            pass
         else:
-            print("Text message received: {0}".format(payload.decode('utf8')))
+            pass
 
         as_string = payload.decode('utf8')
         if as_string == GAMELOOP_CLIENT_IDENTIFIER:
@@ -105,13 +105,25 @@ class MyServerProtocol(WebSocketServerProtocol):
         message = obj_from_json(as_string)
         if message:
             assert "type" in message
+
+            # TODO, make this not janky
             if message["type"] == "chat":
+                self.broadcast_message(payload)
+            elif message["type"] == "gameUpdate":
+                self.broadcast_message(payload)
+            elif message["type"] == "towerRequest":
+                global gameloop_client
+                gameloop_client.sendMessage(utf(as_string), False)
+            elif message["type"] == "towerUpdate":
                 self.broadcast_message(payload)
 
     def broadcast_message(self, msg):
         assert len(connected) > 0
 
         for client in connected:
+            # Don't send to yourself
+            if client == self:
+                continue
             client.sendMessage(msg, False)
 
     def onClose(self, wasClean, code, reason):

@@ -1,4 +1,4 @@
-var gameOffset = $( ".canvas" ).offset();
+var gameOffset = $(".canvas").offset();
 
 var Grid = function (can, ctx, offset) {
     // Size of each cell with currect zoom
@@ -14,12 +14,11 @@ var Grid = function (can, ctx, offset) {
 
     // Cell which user is currently hovering over
     this.focusCell = {};
-    this.lastClick = {};
 
     // Initialize Cells array
     this.Cells = new Array(this.rows);
-    for (var i = 0; i < this.rows; i++) {
-        this.Cells[i] = new Array(this.cols);
+    for (var k = 0; k < this.rows; k++) {
+        this.Cells[k] = new Array(this.cols);
     }
 
     // Fill Cells array with Cell Objects
@@ -28,6 +27,9 @@ var Grid = function (can, ctx, offset) {
             this.Cells[i][j] = new Cell(this, ctx, i, j);
         }
     }
+
+    // Keep track of all towers on grid
+    this.towers = [];
 
     // Mouse move handler
     this.mouseMove = function(x, y) {
@@ -45,12 +47,21 @@ var Grid = function (can, ctx, offset) {
             this.focusCell = this.Cells[row][col];
             this.Cells[row][col].hover = true;
         }
-    }
+    };
 
     this.mouseClick = function() {
-        this.focusCell.type = (this.focusCell.type + 1) % 4;
-        this.lastClick = this.focusCell;
-    }
+        var last = towerButtons.getLastButton();
+        if (last) {
+            var msg = {
+                "towerID": last,
+                "x": this.focusCell.col,
+                "y": this.focusCell.row
+            };
+            ws.towerRequest(userID, msg);
+        } else {
+            this.focusCell.type = (this.focusCell.type + 1) % 4;
+        }
+    };
 
     this.draw = function(ctx) {
         if (!ctx) {
@@ -63,12 +74,20 @@ var Grid = function (can, ctx, offset) {
                 this.Cells[i][j].draw(ctx);
             }
         }
-    }
+    };
 
     this.setOffset = function(newOffset) {
         this.offset = newOffset;
-    }
-    this.getLastClick = function() {
-        return this.lastClick;
-    }
-}
+    };
+
+    this.towerAccepted = function(tower) {
+        var x = tower['loc'][0];
+        var y = tower['loc'][1];
+        var id = tower['tower_type'];
+
+        this.Cells[y][x].type = parseFloat(CellType.ARROW) +
+                parseFloat(id);
+
+        this.towers.push(tower);
+    };
+};

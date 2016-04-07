@@ -2,7 +2,7 @@
  * Copyright 2010, Wen Pu (dexterpu at gmail dot com)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
- *
+ * 
  * Check out http://www.cs.illinois.edu/homes/wenpu1/chatbox.html for document
  *
  * Depends on jquery.ui.core, jquery.ui.widiget, jquery.ui.effect
@@ -16,7 +16,7 @@
 (function($) {
     $.widget("ui.chatbox", {
         options: {
-        id: null, //id for the DOM element
+        id: null, // id for the DOM element
         title: null, // title of the chatbox
         user: null, // can be anything associated with this chatbox
         hidden: false,
@@ -104,7 +104,7 @@
         }
     },
     widget: function() {
-        return this.uiChatbox
+        return this.uiChatbox;
     },
     _create: function() {
         var self = this,
@@ -120,7 +120,7 @@
             .attr('outline', 0)
             .focusin(function() {
                 // ui-state-highlight is not really helpful here
-                //self.uiChatbox.removeClass('ui-state-highlight');
+                // self.uiChatbox.removeClass('ui-state-highlight');
                 self.uiChatboxTitlebar.addClass('ui-state-focus');
             })
             .focusout(function() {

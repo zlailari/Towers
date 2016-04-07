@@ -1,4 +1,4 @@
-from Queue import Queue
+from queue import *
 
 
 class GridWorld:
@@ -8,12 +8,14 @@ class GridWorld:
         self.height = height
         self.spawnpoint = spawnpoint
         self.endpoint = endpoint
-        self.tilePaths = {}
+        
 
         # this grid is a 2d array of bools, where grid[3][4] means
         # x,y position (4,3) is either obstructed (True) or traversable (False)
         self.grid = [[False for x in range(self.width)]
                      for x in range(self.height)]
+
+        self.tilePaths = self.get_path(self.grid)
 
     def is_blocked(self, x, y):
         return self.grid[y][x]
@@ -107,6 +109,15 @@ class GridWorld:
                         frontier.put(next)
                         came_from[next] = current
         return came_from
+
+    def get_single_path(self, location):
+        path_return = {}
+        myLocation = location
+        while (myLocation != None):
+            path_return[myLocation] = self.tilePaths[myLocation]
+            myLocation = self.tilePaths[myLocation]
+
+        return path_return
 
     def can_build(self, xCoord, yCoord):
         if((xCoord, yCoord) == self.endpoint):  # cant build on the goal
