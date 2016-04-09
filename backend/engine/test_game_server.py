@@ -12,6 +12,7 @@ from game_states.gameplay_state import GameplayState
 import game_pieces.levels
 from game_pieces.tower import Tower
 from engine.util import dump_obj_dict
+from engine.message_enum import *
 
 # Define our globals
 TPS = 5  # ticks per second
@@ -30,7 +31,7 @@ class GameRunner:
         #self.level_creeps_spawn_timers = [1,2,3,4,5]
         #self.spawnCreeps = []
 
-        #for i in range(0, 5):
+        # for i in range(0, 5):
         #    self.spawnCreeps.append(Creep.factory("Default",i))
 
         # game_state = MainMenu()
@@ -45,30 +46,29 @@ class GameRunner:
 
         # 3 sets of spawns
         # Separated by initialSpawn time.
-        for k in range(0,5):
+        for k in range(0, 5):
             self.level_creeps_spawn_timers.append(initialSpawn)
             initialSpawn += 0.3
 
         initialSpawn += 3
 
-        for k in range(0,10):
+        for k in range(0, 10):
             self.level_creeps_spawn_timers.append(initialSpawn)
             initialSpawn += 0.3
 
-        initialSpawn +=3
+        initialSpawn += 3
 
-        for k in range(0,15):
+        for k in range(0, 15):
             self.level_creeps_spawn_timers.append(initialSpawn)
             initialSpawn += 0.3
 
-        for i in range (0,30):
-            self.spawnCreeps.append(Creep.factory("Default",i))
+        for i in range(0, 30):
+            self.spawnCreeps.append(Creep.factory("Default", i))
 
-        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps);
-        self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
-        self.game_state.build_tower(Tower((8,8),10000000,1,1,0))
-
-
+        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
+        self.game_state = GameplayState(
+            levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
+        self.game_state.build_tower(Tower((8, 8), 10000000, 1, 1, 0))
 
     def run(self):
         """Run this game, along with all its network requirements, like the websocket server.
@@ -88,18 +88,7 @@ class GameRunner:
             pass
 
     def process_message(self, message):
-        if not message:
-            return
-
-        # We need to check if the message is a string because some of the our
-        # early stuff isn't JSON (TODO, make all messages JSON)
-        try:
-            msg = loads(message)
-        except ValueError:
-            print("message: ", message, " was not valid json")
-            return
-
-        if msg['type'] == 'towerRequest':
+        if message['type'] == MSG.tower_request.name:
             # Make a new tower TODO, don't hardcode stuff
             tower = Tower(
                 (msg['msg']['x'], msg['msg']['y']),
@@ -116,7 +105,7 @@ class GameRunner:
                     'towerAccepted': 'true',
                     'tower': tower
                 }
-                self.network.send_message(dumps(towerUpdate, default=dump_obj_dict))
+                self.network.send_message(towerUpdate)
             else:
                 # TODO, tell client request failed and why
                 pass
@@ -124,13 +113,14 @@ class GameRunner:
     def game_loop(self, dt):
         # Receive and process messages from clients
         message = self.network.receive()
-        self.process_message(message)
+        if message:
+            self.process_message(message)
 
         # Update game 1 tick and pass to clients
         tupleReturned = self.game_state.update(dt, [])
 
         # tupleReturned is: playerState, creepLoc, creepProgress, attacksMade
-        self.network.send_message(dumps(tupleReturned, default=dump_obj_dict))
+        self.network.send_message(tupleReturned)
 
         # if self.print_gametick:
         #     print("it's been " + str(dt * 1000) + " ms since last frame")

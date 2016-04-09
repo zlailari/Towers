@@ -3,6 +3,8 @@ from engine.grid_world import GridWorld
 
 from game_pieces.creep import Creep
 from game_pieces.tower import Tower
+from engine.util import dump_obj_dict
+from engine.message_enum import MSG # message type enum
 
 LOCATION_INDEX = 0;
 PROGRESS_INDEX = 1;
@@ -65,7 +67,7 @@ class GameplayState(GameState):
         }
 
         update = {
-            'type': 'gameUpdate',
+            'type': MSG.game_update.name,
             'playerState': playerState,
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
