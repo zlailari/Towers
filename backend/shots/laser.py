@@ -1,4 +1,4 @@
-from shot import shot
+from shots.shot import shot
 
 class laser (shot):
     def __init__(self,towerid, creepid):

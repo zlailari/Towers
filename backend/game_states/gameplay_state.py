@@ -68,6 +68,15 @@ class GameplayState(GameState):
             'attacksMade': attacksMade,
             'path' : str(bestPath)
         }
+        print("PlayerState:"+str(playerState) + " \nAttacks Made:" + str(attacksMade)) #needed for testing purposes
+
+        for i in range(0,len(self.all_creeps)):
+            print("Creep"+str(i)+": "+str(self.all_creeps[i]))
+
+        for i in range(0,self.world.width):
+            for j in range(0,self.world.height):
+                self.world.effects[i][j].update()
+
         return update
 
     def set_level(self, level):

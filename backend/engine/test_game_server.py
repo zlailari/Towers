@@ -40,9 +40,9 @@ class GameRunner:
         self.print_on_receive = print_on_receive
 
         #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
-        levels = Levels.createLevel(0,0.3,3,5,3,"Default")
+        levels = Levels.createLevel(0,0.3,2,1,3,"Default")
         self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
-        self.game_state.build_tower((8,8), "fire")
+        self.game_state.build_tower((1,1), "fire")
 
 
 
@@ -67,7 +67,7 @@ class GameRunner:
         if not message:
             return
 
-        # We need to check if the message is a string because some of the our
+        # We need to check if the message is a string because some of our
         # early stuff isn't JSON (TODO, make all messages JSON)
         try:
             msg = loads(message)

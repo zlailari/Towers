@@ -1,4 +1,5 @@
 from queue import *
+from engine.tile_effects import tile_effects
 
 
 class GridWorld:
@@ -16,6 +17,19 @@ class GridWorld:
                      for x in range(self.height)]
 
         self.tilePaths = self.get_path(self.grid)
+
+        self.effects = []
+        for i in range(0,width):
+            new = []
+            for j in range(0,height):
+                new.append(tile_effects())
+            self.effects.append(new)
+
+
+
+
+        self.effects[8][0] = tile_effects()
+
 
     def is_blocked(self, x, y):
         return self.grid[y][x]
