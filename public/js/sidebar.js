@@ -3,39 +3,44 @@
 *   http://keycode.info/ -- go here to figure out keycodes
 */
 
-var towerButtons = null, creepButtons = null, towerImages = null;
-var towerImages = [];
+var towerImages = [], towerImageNames = [];
 
-var TowerButtons = function (divID, towerNames, towerHotKeys) {
-    var lastButton = null;
-    var buttons = [towerNames.length];
+var TowerButtons = function (divID, towerNames, towerHotKeys,
+    towerToolTips) {
+    this.lastButton = -1;
+    this.divs = [towerNames.length];
+    this.images = [towerNames.length];
+    this.toolTips = [towerNames.length];
     for (var i = 0; i < towerNames.length; i++) {
-        buttons[i] = $('<input type="button" value="'
-            + towerNames[i] + ' (' + towerHotKeys[i].s
-            + ')" class="sideButton"'
+        this.divs[i] = $('<div class="sideTower"'
+            + 'id="tower' + i + '"'
             + 'tid="' + i + '"/>')
-            .appendTo($(divID))
-            .click(function() {
-                var tid = $(this).attr("tid");
-                if (lastButton == tid) {
-                    lastButton = null;
-                } else {
-                    lastButton = tid;
-                }
-            });
+            .appendTo($(divID));
+
+        this.images[i] = $('<img src="' + towerImageNames[i] + '"'
+            + 'alt="' + towerNames[i] + '"'
+            + 'style="width:40px;height:40px;"'
+            + 'onclick="towerClick(' + parseFloat(i) + ')"'
+            + 'data-toggle="tooltip"'
+            + 'title="' + towerToolTips[i] +'"'
+            + '/>')
+            .appendTo($("#tower" + i))
+            .tooltip();
     }
 
     $(document).keydown(function(e) {
         for (var i = 0; i < towerHotKeys.length; i++) {
             if (e.which == towerHotKeys[i].kc) {
-                buttons[i].click();
+                this.images[i].click();
             }
         }
     });
 
-    this.getLastButton = function() { return lastButton; };
-    this.clearLastButton = function() { lastButton = null; };
-    this.getButtons = function() { return buttons; };
+    this.getLastButton = function() { return this.lastButton; };
+    this.clearLastButton = function() { this.lastButton = -1; };
+    this.setLastButton = function(val) { this.lastButton = val; };
+    this.getDivs = function() { return this.divs; };
+    this.wasPressed = function() { return this.lastButton >= 0; };
 };
 
 
@@ -48,7 +53,7 @@ var CreepButtons = function (divID, creepNames, creepHotKeys) {
             + 'cid="' + i + '"/>')
             .appendTo($(divID))
             .click(function() {
-                this.cid = $(this).attr("cid");
+                var cid = $(this).attr("cid");
                 // alert("Creep Please: " + this.cid);
                 var msg = {
                     "creepID": this.cid
@@ -82,22 +87,26 @@ function towerDenied () {
     });
 }
 
-$(document).ready(function() {
+function initSideBar() {
     var towerNames = ["Arrow Tower", "Fire Tower", "Ice Tower"];
     var towerHotKeys = [{s:"A", kc:65},
         {s:"R", kc:82},
         {s:"I", kc:73}];
+    var  towerToolTips = [];
+    for (var i = 0; i < towerNames.length; ++ i) {
+        towerToolTips[i] = towerNames[i] + " Shortcut: "
+            + towerHotKeys[i].s;
+    }
 
     var creepNames = ["Fast", "Slow"];
     var creepHotKeys = [{s:"F", kc:70},
         {s:"S ", kc:83}];
 
     towerButtons = new TowerButtons("#towerButtons",
-        towerNames, towerHotKeys);
+        towerNames, towerHotKeys, towerToolTips);
     creepButtons = new CreepButtons("#creepButtons",
         creepNames, creepHotKeys);
     if (myGrid) {
         myGrid.setOffset($("#gameFrame").offset());
     }
-});
-
+}

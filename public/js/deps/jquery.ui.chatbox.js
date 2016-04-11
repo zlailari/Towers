@@ -81,10 +81,10 @@
                 this.elem.uiChatboxContent.toggle();
                 if (this.isVisible()) {
                     this.elem.uiChatboxInputBox.focus();
-                    $( ".ui-icon.ui-icon-minusthick" ).text("Minimize");
+                    $(".ui-icon.ui-icon-minusthick").text("Minimize");
                 } else {
-                    $( "#gameFrame" ).focus();
-                    $( ".ui-icon.ui-icon-minusthick" ).text("Expand");
+                    $("#gameFrame").focus();
+                    $(".ui-icon.ui-icon-minusthick").text("Expand");
                 }
             },
             _scrollToBottom: function() {

@@ -4,6 +4,12 @@
     https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 */
 
+.tooltip-inner {
+    max-width: 150px;
+    /* If max-width does not work, try using width instead */
+    width: 150px; 
+}
+
 .content {
     display: flex;
     flex-flow: row wrap;

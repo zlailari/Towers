@@ -12,7 +12,7 @@ loadImages = function() {
     creepPic.onload = function() {imageLoaded();};
     creepPic.src = ('img/Demon3.png');
 
-    var towerImageNames = ["img/arrowHead.png",
+    towerImageNames = ["img/arrowHead.png",
         "img/fire.png", "img/ice.png"];
     for (var i = 0; i < towerImageNames.length; i++) {
         towerImages[i] = new Image();
@@ -28,5 +28,6 @@ imageLoaded = function() {
     // check if all assets are loaded
     if (assetsLoaded == assetsToLoad) {
         fullyLoaded = true;
+        initSideBar();
     }
 };
