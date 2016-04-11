@@ -51,7 +51,7 @@ ws.towerRequest = function(id, msg) {
     //     "y": 4
     // }
     ws.send(JSON.stringify({
-        type: "towerRequest",
+        type: "tower_request",
         id: id,
         msg: msg
     }));

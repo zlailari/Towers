@@ -20,6 +20,10 @@ loadImages = function() {
         towerImages[i].src = towerImageNames[i];
     }
 
+    backgroundImg = new Image();
+    backgroundImg.onload = function() { imageLoaded(); };
+    backgroundImg.src = ('img/background.png');
+
 };
 
 imageLoaded = function() {

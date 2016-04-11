@@ -1,4 +1,5 @@
 var gameOffset = $(".canvas").offset();
+var backgroundImg;
 
 var Grid = function (can, ctx, offset) {
     // Size of each cell with currect zoom
@@ -68,6 +69,9 @@ var Grid = function (can, ctx, offset) {
             console.log("ERROR: Canvas context not defined");
             return;
         }
+
+        ctx.drawImage(backgroundImg, 0, 0, ctx.canvas.clientWidth,
+            ctx.canvas.clientHeight);
 
         for (var i = 0; i < this.Cells.length; i++) {
             for (var j = 0; j < this.Cells[0].length; j++) {
