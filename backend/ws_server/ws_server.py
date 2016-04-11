@@ -110,9 +110,15 @@ class GameServerProtocol(WebSocketServerProtocol):
     def handleIdentifier(self, json_msg):
         """Handle identification messages, such as the server
         identification message."""
-        global gameloop_client
-        gameloop_client = self
-        info("game engine client registered", INFO_ID)
+        unpacked = obj_from_json(json_msg)
+        assert 'secret' in unpacked
+        if unpacked['secret'] == GAMELOOP_CLIENT_IDENTIFIER:
+            global gameloop_client
+            gameloop_client = self
+            info("game engine client registered", INFO_ID)
+        else:
+            info('game client authentication failed with bad secret: {}'.format(unpacked['secret']))
+
 
     def handleChat(self, json_msg):
         self.broadcast_message(json_msg)
