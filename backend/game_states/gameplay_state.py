@@ -85,6 +85,9 @@ class GameplayState(GameState):
         if tower.price > self.gold:
             return False
 
+        if self.creep_in_loc(tower.loc):
+            return False
+
         if self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
             self.gold -= tower.price
             self.all_towers.append(tower)
@@ -92,3 +95,9 @@ class GameplayState(GameState):
         else:
             # TODO, send why build_tower failed (money, illegal position, etc)
             return False
+
+    def creep_in_loc(self, loc):
+        for cr in self.all_creeps:
+            if cr.loc == loc:
+                return True
+        return False
