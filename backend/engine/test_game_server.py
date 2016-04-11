@@ -1,7 +1,4 @@
 """This file acts as the main entrance point to the server."""
-import time
-from json import dumps, loads
-
 from game_pieces.creep import Creep
 from engine.clock import Clock
 # from game_states.main_menu import MainMenu
@@ -9,10 +6,8 @@ from engine.clock import Clock
 from engine.network import Network
 from game_pieces.levels import Levels
 from game_states.gameplay_state import GameplayState
-import game_pieces.levels
 from game_pieces.tower import Tower
-from engine.util import dump_obj_dict
-from engine.message_enum import *
+from engine.message_enum import MSG
 
 # Define our globals
 TPS = 5  # ticks per second
@@ -46,19 +41,19 @@ class GameRunner:
 
         # 3 sets of spawns
         # Separated by initialSpawn time.
-        for k in range(0, 5):
+        for _ in range(0, 5):
             self.level_creeps_spawn_timers.append(initialSpawn)
             initialSpawn += 0.3
 
         initialSpawn += 3
 
-        for k in range(0, 10):
+        for _ in range(0, 10):
             self.level_creeps_spawn_timers.append(initialSpawn)
             initialSpawn += 0.3
 
         initialSpawn += 3
 
-        for k in range(0, 15):
+        for _ in range(0, 15):
             self.level_creeps_spawn_timers.append(initialSpawn)
             initialSpawn += 0.3
 
@@ -77,7 +72,7 @@ class GameRunner:
         clock.tick()  # tick once to initialize counter
 
         try:
-            while(True):
+            while True:
                 dt = clock.tick()
                 self.game_loop(dt)
 
