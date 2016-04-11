@@ -27,7 +27,7 @@ $(document).ready(function() {
                 chatbox.toggleBox();
             }
         } else if (e.which == $.ui.keyCode.ESCAPE) {
-            if (towerButtons.getLastButton()) {
+            if (towerButtons.wasPressed()) {
                 towerButtons.clearLastButton();
             } else if (chatbox.isVisible()) {
                 chatbox.toggleBox();
