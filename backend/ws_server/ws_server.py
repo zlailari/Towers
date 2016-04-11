@@ -22,13 +22,9 @@ connected = []
 # Reference to the client which is the
 # game engine client.
 gameloop_client = None
+server_loop = None
 
 INFO_ID = 'server'
-
-
-def get_server_loop():
-    assert server_loop is not None
-    return server_loop
 
 def format_msg(text, m_type):
     """Format the given string text to JSON for sending over the network."""
@@ -66,7 +62,6 @@ def start_server(address, port):
         loop.run_forever()
     except KeyboardInterrupt:
         info('cleaning up.', INFO_ID)
-        pass
     finally:
         server.close()
         loop.close()
@@ -93,19 +88,21 @@ class GameServerProtocol(WebSocketServerProtocol):
     def onMessage(self, payload, isBinary):
         assert isBinary is False
         as_string = payload.decode('utf8')
+        # info('received raw message: {}'.format(as_string), INFO_ID)
         message = obj_from_json(as_string)
+        assert 'type' in message
         m_type = message['type']
         info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
         if m_type == MSG.chat.name:
-            self.handleChat(message)
+            self.handleChat(as_string)
         elif m_type == MSG.tower_request.name:
-            self.handleTowerRequest(message)
+            self.handleTowerRequest(as_string)
         elif m_type == MSG.tower_update.name:
-            self.handleTowerUpdate(message)
+            self.handleTowerUpdate(as_string)
         elif m_type == MSG.game_update.name:
-            self.handleTowerUpdate(message)
+            self.handleTowerUpdate(as_string)
         elif m_type == MSG.identifier.name:
-            self.handleIdentifier(message)
+            self.handleIdentifier(as_string)
         else:
             info('warning! server does not handle message with type {}'.format(
                 m_type), INFO_ID)
@@ -118,13 +115,13 @@ class GameServerProtocol(WebSocketServerProtocol):
         info("game engine client registered", INFO_ID)
 
     def handleChat(self, json_msg):
-        self.broadcast_message(message)
+        self.broadcast_message(json_msg)
 
     def handleGameUpdate(self, json_msg):
-        self.broadcast_message(message)
+        self.broadcast_message(json_msg)
 
     def handleTowerRequest(self, json_msg):
-        gameloop_client.sendMessage(utf(as_string), False)
+        gameloop_client.sendMessage(utf(json_msg), False)
 
     def handleTowerUpdate(self, json_msg):
         self.broadcast_message(json_msg)
@@ -135,9 +132,8 @@ class GameServerProtocol(WebSocketServerProtocol):
             # Don't send to yourself
             if client == self:
                 continue
-            client.sendMessage(msg, False)
+            client.sendMessage(utf(msg), False)
 
     def onClose(self, wasClean, code, reason):
         info("WebSocket connection closed: {0}".format(reason), INFO_ID)
-        global connected  # TODO: is this statement necessary?
         connected.remove(self)
