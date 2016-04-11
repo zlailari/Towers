@@ -1,12 +1,12 @@
 """This module contains useful utility functions."""
 from math import sqrt
 from json import loads
-import enum
 
 
 def info(message, origin):
-    if len(message) > 150:
-        message = message[:100] + '...'
+    max_len = 200
+    if len(message) > max_len:
+        message = message[:max_len] + '...'
     print('[{}] {}'.format(origin, message))
 
 
