@@ -87,8 +87,8 @@ class GameRunner:
             # do any cleanup you want to do here
             pass
 
-    def process_message(self, message):
-        if message['type'] == MSG.tower_request.name:
+    def process_message(self, msg):
+        if msg['type'] == MSG.tower_request.name:
             # Make a new tower TODO, don't hardcode stuff
             tower = Tower(
                 (msg['msg']['x'], msg['msg']['y']),
