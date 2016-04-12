@@ -96,7 +96,7 @@ class GameRunner:
             success = self.game_state.build_tower(tower)
             if success:
                 towerUpdate = {
-                    'type': 'towerUpdate',
+                    'type': 'tower_update',
                     'towerAccepted': 'true',
                     'tower': tower
                 }
