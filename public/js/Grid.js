@@ -50,8 +50,9 @@ var Grid = function (can, ctx, offset) {
     };
 
     this.mouseClick = function() {
-        var last = towerButtons.getLastButton();
-        if (last) {
+
+        if (towerButtons.wasPressed()) {
+            var last = towerButtons.getLastButton();
             var msg = {
                 "towerID": last,
                 "x": this.focusCell.col,

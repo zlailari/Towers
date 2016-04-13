@@ -27,5 +27,3 @@ drawCreep = function(ctx, creep) {
     ctx.drawImage(creepPic, xpos, ypos,
                       width, height);
 };
-
-
