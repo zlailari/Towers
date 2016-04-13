@@ -19,3 +19,10 @@ var towerClick = function(tid) {
         towerButtons.setLastButton(tid);
     }
 };
+
+var creepClick = function(cid) {
+    var msg = {
+        "creepID": cid
+    };
+    ws.creepRequest(userID, msg);
+};
