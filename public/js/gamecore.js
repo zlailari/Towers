@@ -53,8 +53,8 @@ $(document).ready(function()  {
 
         if (shots) {
             // Shots come in as array with creepid, towerid, type (+ extra per type)
-            for (var s in shots) {
-                drawShot(gameCtx, s);
+            for (var i = 0; i < shots.length; i++) {
+                drawShot(gameCtx, shots[i]);
             }
         }
     }

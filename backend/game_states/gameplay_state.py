@@ -90,20 +90,21 @@ class GameplayState(GameState):
 
     #Changed, should only take in coordinates and tower type
     def build_tower(self, coordinates, towerType):
-        tower = Tower.factory(towerType,coordinates, len(self.all_towers))
+        tower = Tower.factory(towerType, coordinates, len(self.all_towers))
+
+        # TODO, send why build_tower failed (money, illegal position, etc)
         if tower.price > self.gold:
             return False
 
         if self.creep_in_loc(tower.loc):
             return False
 
-        if self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
+        if not self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
+            return False
+        else:
             self.gold -= tower.price
             self.all_towers.append(tower)
-            return True
-        else:
-            # TODO, send why build_tower failed (money, illegal position, etc)
-            return False
+            return tower
 
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:

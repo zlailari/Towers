@@ -8,9 +8,9 @@ class Tower:
     """Basic implementation of a tower"""
 
     def factory(type,coordinate,id):
-        if type == "arrow": return Tower(coordinate,100,3,2,id,1)
-        if type == "fire": return Tower(coordinate,50,10,10,id,2)
-        if type == "ice": return Tower(coordinate,50,5,9,id,3)
+        if type == "0": return Tower(coordinate,100,3,2,id,1)
+        if type == "1": return Tower(coordinate,50,10,10,id,2)
+        if type == "2": return Tower(coordinate,50,5,9,id,3)
     factory = staticmethod(factory)
 
     def __init__(self, loc, health, cooldown, fire_range, id, tower_type=1):
