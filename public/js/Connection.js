@@ -18,7 +18,7 @@ ws.onmessage = function(event) {
         }
         if (msg.type == 'game_update') {
             playerState = msg['playerState'];
-            attacksMade = msg['attacksMade'];
+            shots = msg['attacksMade'];
             creeps = msg['creeps'];
         }
         if (msg.type == 'tower_update') {
