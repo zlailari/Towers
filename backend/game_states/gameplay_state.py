@@ -23,8 +23,6 @@ class GameplayState(GameState):
         self.gold = gold; # starting gold
         self.counter = 0;
 
-        #bill.kill(yanming);
-
 
     # Calls all update methods within the game and returns dictionaries to be converted to json with the player status (gold lives enemies left) and other stats
     def update(self, dt, client_info):
@@ -69,10 +67,10 @@ class GameplayState(GameState):
             'path' : str(bestPath)
         }
         print("PlayerState:"+str(playerState) + " \nAttacks Made:" + str(attacksMade)) #needed for testing purposes
-
         for i in range(0,len(self.all_creeps)):
             print("Creep"+str(i)+": "+str(self.all_creeps[i]))
 
+        # Updates all effects in the world (decreases their counter by one). Each gridworld holds an effects 2d array that stores a tile_effects object.
         for i in range(0,self.world.width):
             for j in range(0,self.world.height):
                 self.world.effects[i][j].update()

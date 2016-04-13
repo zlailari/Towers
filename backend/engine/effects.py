@@ -1,9 +1,12 @@
 
+
+#This class is stores all the effects in the game.
+# Tile_effects.py holds an array that stores multiple effects (there can be more than 1 effect on a tile at a given time.
 class effects ():
     def __init__(self):
         pass
 
-#fire sublcass
+#fire sublcass. Contains a counter that decrements when update is called.
 class fire(effects):
     def __init__(self, damage, counter=500):
         self.counter = counter;

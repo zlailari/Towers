@@ -18,6 +18,8 @@ class GridWorld:
 
         self.tilePaths = self.get_path(self.grid)
 
+        # Creates the tile effects double array. Sets everything as a tile effect (which holds another array of effects).
+        # Will need to change tile_effect later so that not everything is on fire.
         self.effects = []
         for i in range(0,width):
             new = []
@@ -26,9 +28,7 @@ class GridWorld:
             self.effects.append(new)
 
 
-
-
-        self.effects[8][0] = tile_effects()
+        #self.effects[8][0] = tile_effects()
 
 
     def is_blocked(self, x, y):

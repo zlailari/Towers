@@ -6,10 +6,10 @@ class tile_effects:
 
     def __init__(self):
         self.effects = [];
-        self.effects.append(fire(25))
+        self.effects.append(fire(25)) #Please note that this is for testing purposes.
 
 
         #iterates through the effects and calls their update methods
     def update(self):
-        for i in range(0,len(self.effects)):
+        for i in range(0,len(self.effects)): 
             self.effects[i].update();
