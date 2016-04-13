@@ -8,8 +8,8 @@ var towerImages = [], towerImageNames = [], creepImages = [],
     creepImageNames = [];
 var towerButtons = null, creepButtons = null;
 
-var TowerButtons = function (divID, towerNames, towerToolTips,
-    towerImageNames, towerHotKeys) {
+var TowerButtons = function (divID, towerNames, towerImageNames,
+    towerToolTips, towerHotKeys) {
     this.lastButton = -1;
     this.divID = divID;
     this.divs = [];
