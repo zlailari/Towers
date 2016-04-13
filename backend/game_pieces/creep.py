@@ -33,7 +33,7 @@ class Creep:
          #   print(self.cellPos)
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
             self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
-            gameState.world.effects[self.loc[0]][self.loc[1]].effects[0].on_move(self,gameState);
+            #gameState.world.effects[self.loc[0]][self.loc[1]].effects[0].on_move(self,gameState); We assumed there was fire.
 
          #   print(self.dest(path))
          #   print(direction)

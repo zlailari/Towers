@@ -3,6 +3,8 @@ from engine.grid_world import GridWorld
 
 from game_pieces.creep import Creep
 from game_pieces.tower import Tower
+from engine.util import dump_obj_dict
+from engine.message_enum import MSG # message type enum
 
 LOCATION_INDEX = 0;
 PROGRESS_INDEX = 1;
@@ -32,7 +34,7 @@ class GameplayState(GameState):
 
         creepLoc = {} # Dicitonary of creep locations
         creepProgress = {} # Dictionary of creep progresses
-        attacksMade = {} # Dictionary of attacks made by towers
+        attacksMade = [] # Dictionary of attacks made by towers
 
         #Update all creeps and get location location and movement progress
         bestPath = self.world.tilePaths
@@ -45,7 +47,8 @@ class GameplayState(GameState):
 
         #Updates the attacks made by the towers on the creeps
         for tower in self.all_towers:
-            attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
+            #attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
+            attacksMade = attacksMade + tower.update(dt,self.all_creeps,self)
 
         enemies = 0
         for creep in self.all_creeps:
@@ -60,7 +63,7 @@ class GameplayState(GameState):
         }
 
         update = {
-            'type': 'gameUpdate',
+            'type': MSG.game_update.name,
             'playerState': playerState,
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
@@ -91,6 +94,9 @@ class GameplayState(GameState):
         if tower.price > self.gold:
             return False
 
+        if self.creep_in_loc(tower.loc):
+            return False
+
         if self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
             self.gold -= tower.price
             self.all_towers.append(tower)
@@ -98,3 +104,9 @@ class GameplayState(GameState):
         else:
             # TODO, send why build_tower failed (money, illegal position, etc)
             return False
+
+    def creep_in_loc(self, loc):
+        for cr in self.all_creeps:
+            if cr.loc == loc:
+                return True
+        return False

@@ -6,7 +6,7 @@ class tile_effects:
 
     def __init__(self):
         self.effects = [];
-        self.effects.append(fire(25)) #Please note that this is for testing purposes.
+        #self.effects.append(fire(25)) #Please note that this is for testing purposes. It sets everything on fire.
 
 
         #iterates through the effects and calls their update methods
