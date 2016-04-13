@@ -22,7 +22,7 @@ var TowerButtons = function (divID, towerNames, towerToolTips,
 
     this.changeTower = function (ID, name, imageName, toolTip, hotKeyKC) {
         if (this.images[ID]) {
-            rthis.removeTower(ID);
+            this.removeTower(ID);
         }
         this.images[ID] = $(
             '<img src="' + imageName + '"'
