@@ -17,6 +17,7 @@ import threading
 from multiprocessing import Process
 from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientFactory
 from collections import deque
+from engine.util import info
 
 # the event loop on which this client will run; this is a threading thing
 # i.e., the spawned thread runs the methods in this loop forever
@@ -25,9 +26,9 @@ from collections import deque
 client_loop = None
 client_protocol = None
 
+INFO_ID = 'client'
 
 def get_client_protocol():
-    global client_protocol
     assert client_protocol is not None
     return client_protocol
 
@@ -60,34 +61,34 @@ def start_client(address, port):
     client_loop = loop
 
     composite_address = 'ws://' + address + ':' + str(port)
-    print('client composite address of {}'.format(composite_address))
+    info('client connecting to {}'.format(composite_address), INFO_ID)
     factory = WebSocketClientFactory(composite_address)
-    factory.protocol = MyClientProtocol
+    factory.protocol = GameClientProtocol
 
-    print("client creating connection to address {} and port {}".format(
-        address, str(port)))
+    info("client creating connection to address {} and port {}".format(
+        address, str(port)), INFO_ID)
     coro = loop.create_connection(factory, address, port)
 
     global client_protocol
-    (transport, client_protocol) = loop.run_until_complete(coro)
-    print('{}, {}'.format(transport, client_protocol))
+    transport, client_protocol = loop.run_until_complete(coro)
     loop.run_forever()
 
 
-class MyClientProtocol(WebSocketClientProtocol):
+class GameClientProtocol(WebSocketClientProtocol):
 
     def __init__(self):
         super(self.__class__, self).__init__()
         self.message_que = deque([])
 
     def receive_message(self):
-        if len(self.message_que) > 0:
+        if self.message_que:
             return self.message_que.popleft()
-        return False
+        return None
 
     def onOpen(self):
-        print("client opened connection")
+        info("opened connection {}".format(self), INFO_ID)
 
     def onMessage(self, payload, isBinary):
         assert isBinary is False
+        info('received: {}'.format(payload.decode('utf8')), INFO_ID)
         self.message_que.append(payload.decode('utf8'))
