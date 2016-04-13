@@ -148,7 +148,7 @@ class GridWorld:
 
         if(self.can_build(xCoord, yCoord)):
             self.grid[yCoord][xCoord] = True
-            self.tilePaths = self.get_path(self.grid)
+            self.tilePaths = self.dijkstras_path()
             return True
         else:
             return False
