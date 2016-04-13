@@ -28,12 +28,12 @@
 .side-creep {
     background: black;
     margin: 4px;
-    padding: 1px;
+    padding: 2px;
     box-shadow: 0 0 2px 2px #a6a6a6;
 }
 
 .side-tower {
-    padding: 1px;
+    padding: 2px;
     margin: 4px;
     box-shadow: 0 0 2px 2px #666666;
 }
