@@ -8,8 +8,8 @@ var towerImages = [], towerImageNames = [], creepImages = [],
     creepImageNames = [];
 var towerButtons = null, creepButtons = null;
 
-var TowerButtons = function (divID, towerNames, towerHotKeys,
-    towerToolTips) {
+var TowerButtons = function (divID, towerNames, towerToolTips,
+    towerImageNames, towerHotKeys) {
     this.lastButton = -1;
     this.divID = divID;
     this.divs = [];
@@ -80,8 +80,8 @@ var TowerButtons = function (divID, towerNames, towerHotKeys,
 };
 
 
-var CreepButtons = function (divID, creepNames, creepHotKeys,
-    creepToolTips) {
+var CreepButtons = function (divID, creepNames, creepImageNames,
+    creepToolTips, creepHotKeys) {
     this.divID = divID;
     this.divs = [];
     this.images = [];
@@ -198,9 +198,9 @@ function initSideBar() {
     }
 
     towerButtons = new TowerButtons("#towerButtons",
-        towerNames, towerHotKeys, towerToolTips);
+        towerNames, towerImageNames, towerToolTips, towerHotKeys);
     creepButtons = new CreepButtons("#creepButtons",
-        creepNames, creepHotKeys, creepToolTips);
+        creepNames, creepImageNames, creepToolTips, creepHotKeys);
     if (myGrid) {
         myGrid.setOffset($("#gameFrame").offset());
     }
