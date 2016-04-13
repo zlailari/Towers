@@ -83,6 +83,7 @@
                     this.elem.uiChatboxInputBox.focus();
                     $(".ui-icon.ui-icon-minusthick").text("Minimize");
                 } else {
+                    this.elem.uiChatboxInputBox.blur();
                     $("#gameFrame").focus();
                     $(".ui-icon.ui-icon-minusthick").text("Expand");
                 }
