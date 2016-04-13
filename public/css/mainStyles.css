@@ -4,10 +4,38 @@
     https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 */
 
-.tooltip-inner {
-    max-width: 150px;
-    /* If max-width does not work, try using width instead */
-    width: 150px; 
+
+.tower-tooltip + .tooltip.top > .tooltip-inner {
+    background-color: navy;
+}
+
+.tower-tooltip + .tooltip.top > .tooltip-arrow {
+    border-top-color: navy;
+}
+
+.creep-tooltip + .tooltip.top > .tooltip-inner {
+    background-color: green;
+}
+
+.creep-tooltip + .tooltip.top > .tooltip-arrow {
+    border-top-color: green;
+}
+
+.tooltip.top > .tooltip-inner {
+    white-space:pre-wrap;
+}
+
+.side-creep {
+    background: black;
+    margin: 4px;
+    padding: 1px;
+    box-shadow: 0 0 2px 2px #a6a6a6;
+}
+
+.side-tower {
+    padding: 1px;
+    margin: 4px;
+    box-shadow: 0 0 2px 2px #666666;
 }
 
 .content {
