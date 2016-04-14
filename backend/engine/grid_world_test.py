@@ -71,5 +71,9 @@ class TestGridWorld(unittest.TestCase):
 
 		self.assertEqual(self.grid_world.get_path(self.grid_world.grid), bestPath)
 
+	def test_random_best_path(self):
+		self.grid_world.build_tower(2,2)
+		print self.grid_world.dijkstras_path()
+
 if __name__ == '__main__':
 	unittest.main()
