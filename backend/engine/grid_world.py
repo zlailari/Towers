@@ -1,4 +1,4 @@
-from Queue import *
+from queue import *
 from heapq import *
 import math
 
