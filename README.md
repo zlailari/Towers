@@ -12,7 +12,19 @@ Setup npm and start server:
 
 > npm install
 
-> node server.js
+## To Run:
+#### Easy Mode:
+
+> bash quickstart.sh
+
+#### More involved:
+
+> node server.js &
+
+> cd backend
+
+> python start_test_game_server.py &
+
 
 ## To Run:
 #### Easy Mode:
