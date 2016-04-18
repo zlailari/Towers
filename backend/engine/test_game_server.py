@@ -41,24 +41,24 @@ class GameRunner:
 
         # 3 sets of spawns
         # Separated by initialSpawn time.
-      #  for _ in range(0, 5):
-      #      self.level_creeps_spawn_timers.append(initialSpawn)
-      #      initialSpawn += 0.3
+        for _ in range(0, 5):
+            self.level_creeps_spawn_timers.append(initialSpawn)
+            initialSpawn += 0.3
 
-      #  initialSpawn += 3
+        initialSpawn += 3
 
-      #  for _ in range(0, 10):
-      #      self.level_creeps_spawn_timers.append(initialSpawn)
-      #      initialSpawn += 0.3
+        for _ in range(0, 10):
+            self.level_creeps_spawn_timers.append(initialSpawn)
+            initialSpawn += 0.3
 
-      #  initialSpawn += 3
+        initialSpawn += 3
 
-      #  for _ in range(0, 15):
-      #      self.level_creeps_spawn_timers.append(initialSpawn)
-      #      initialSpawn += 0.3
+        for _ in range(0, 15):
+            self.level_creeps_spawn_timers.append(initialSpawn)
+            initialSpawn += 0.3
 
-      #  for i in range(0, 30):
-      #      self.spawnCreeps.append(Creep.factory("Default", i))
+        for i in range(0, 30):
+            self.spawnCreeps.append(Creep.factory("Default", i))
 
         levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
         self.game_state = GameplayState(
