@@ -10,7 +10,7 @@ from game_pieces.tower import Tower
 from engine.message_enum import MSG
 
 # Define our globals
-TPS = 5  # ticks per second
+TPS = 30  # ticks per second
 TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
 WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
@@ -35,35 +35,35 @@ class GameRunner:
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
 
-        self.level_creeps_spawn_timers = []
-        self.spawnCreeps = []
+        self.level_creeps_spawn_timers = [5]
+        self.spawnCreeps = [Creep.factory("Default", 0)]
         initialSpawn = 0
 
         # 3 sets of spawns
         # Separated by initialSpawn time.
-        for _ in range(0, 5):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
+      #  for _ in range(0, 5):
+      #      self.level_creeps_spawn_timers.append(initialSpawn)
+      #      initialSpawn += 0.3
 
-        initialSpawn += 3
+      #  initialSpawn += 3
 
-        for _ in range(0, 10):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
+      #  for _ in range(0, 10):
+      #      self.level_creeps_spawn_timers.append(initialSpawn)
+      #      initialSpawn += 0.3
 
-        initialSpawn += 3
+      #  initialSpawn += 3
 
-        for _ in range(0, 15):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
+      #  for _ in range(0, 15):
+      #      self.level_creeps_spawn_timers.append(initialSpawn)
+      #      initialSpawn += 0.3
 
-        for i in range(0, 30):
-            self.spawnCreeps.append(Creep.factory("Default", i))
+      #  for i in range(0, 30):
+      #      self.spawnCreeps.append(Creep.factory("Default", i))
 
         levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
         self.game_state = GameplayState(
             levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
-        self.game_state.build_tower(Tower((8, 8), 10000000, 1, 1, 0))
+        self.game_state.build_tower(Tower((8, 8), 1, 1, 1, 0))
 
     def run(self):
         """Run this game, along with all its network requirements, like the websocket server.
