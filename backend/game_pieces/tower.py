@@ -8,7 +8,6 @@ class Tower:
     """Basic implementation of a tower"""
 
 
-
     def __init__(self, loc, health, cooldown, fire_range, id, tower_type=1):
         # TODO, make tower_type control other values
 

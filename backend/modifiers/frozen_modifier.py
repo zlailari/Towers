@@ -13,7 +13,7 @@ class frozen_modifier (Modifiers):
         self.counter = 60
         pass
 
-    # Counter update for the modifier. 
+    # Counter update for the modifier.
     def update(self):
 
         if(self.counter == 0):
