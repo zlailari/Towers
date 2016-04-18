@@ -26,10 +26,15 @@ class Creep:
         self.id = id # The unique ID of the creep
         self.bounty = bounty
         self.live = True
+        self.modifiers = []
 
     # We generate a json for movement. Passed up to the gameplay_state
     def update(self, path, dt, gameState):
         if self.live:
+
+            for i in range(0, len(self.modifiers)):
+                self.modifiers[i].update()
+
          #   print(self.cellPos)
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
             self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
@@ -59,6 +64,10 @@ class Creep:
     def dest(self, path):
         return path[self.loc]
 
+    #The creep has an array of modifiers and we append the modifications to this array. For each tick, we check if the modifier has expired.
+    #If it has not expired, we renew the effect for another tick.
+    def modify(self, modification):
+        self.modifiers.append(modification)
 
     def take_damage(self, amount, gameState):
         self.health -= amount

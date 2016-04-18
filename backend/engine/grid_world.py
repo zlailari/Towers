@@ -1,5 +1,6 @@
 from queue import *
 from engine.tile_effects import tile_effects
+from engine.tile_effects import fire
 
 
 class GridWorld:
@@ -26,6 +27,12 @@ class GridWorld:
             for j in range(0,height):
                 new.append(tile_effects())
             self.effects.append(new)
+
+    #adds the effect to the effects list on a particular tile
+    def add_effect(self,loc, type):
+        if(type=="fire"):
+            self.effects[loc[0]][loc[1]].append(fire(25))
+
 
 
         #self.effects[8][0] = tile_effects()

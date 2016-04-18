@@ -8,6 +8,9 @@ class tile_effects:
         self.effects = [];
         #self.effects.append(fire(25)) #Please note that this is for testing purposes. It sets everything on fire.
 
+    #adds the effect to the effects on the tile
+    def append(self, effect):
+        self.effects.append(effect)
 
         #iterates through the effects and calls their update methods
     def update(self):

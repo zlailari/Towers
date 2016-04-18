@@ -2,7 +2,7 @@ from game_states.game_state import GameState
 from engine.grid_world import GridWorld
 
 from game_pieces.creep import Creep
-from game_pieces.tower import Tower
+from game_pieces.tower_factory import Tower_factory
 from engine.util import dump_obj_dict
 from engine.message_enum import MSG # message type enum
 
@@ -90,7 +90,7 @@ class GameplayState(GameState):
 
     #Changed, should only take in coordinates and tower type
     def build_tower(self, coordinates, towerType):
-        tower = Tower.factory(towerType,coordinates, len(self.all_towers))
+        tower = Tower_factory.factory(towerType,coordinates, len(self.all_towers))
         if tower.price > self.gold:
             return False
 
@@ -104,6 +104,12 @@ class GameplayState(GameState):
         else:
             # TODO, send why build_tower failed (money, illegal position, etc)
             return False
+
+    #Assigns an id to spawn creep for pvp use. Hook this up to a button and deal with it.
+    def spawn_creep(self, creepType):
+        id = len(self.all_creeps)
+        self.cur_level.spawnCreep(creepType, id)
+
 
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:

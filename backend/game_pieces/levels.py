@@ -8,12 +8,19 @@ level_three = {'creep_type': CREEP_TYPES['basic'], 'amount': 7}
 
 class Levels:
 
+    #Method to spawn creeps used for pvp
+    def spawnCreep(self, creepType, creepID):
+        spawn_timers = []
+        spawn_timers.append(0)
+        spawn_creeps = []
+        spawn_creeps.append(Creep.factory(creepType, creepID))
+
 
     #Auto generates leveled based on parameters
     def createLevel(initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType):
         level_creep_spawn_timers =[]
         spawnCreeps = []
-        spawn = initialDelay;
+        spawn = initialDelay
 
         for k in range (0,numWaves):
             for i in range (0,numCreeps):
