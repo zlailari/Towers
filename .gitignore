@@ -1,5 +1,5 @@
 virtenv-towers/
-
 *.pyc
 
+node_modules/
 package.json
