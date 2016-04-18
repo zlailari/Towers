@@ -2,7 +2,6 @@
 var ws = new WebSocket('ws://localhost:9000/');
 ws.onopen = function() {
     console.log('CONNECT');
-    ws.send("I'm the client!");
 };
 
 ws.onclose = function() {
@@ -17,12 +16,12 @@ ws.onmessage = function(event) {
                 chatbox.addMsg(msg.id, msg.msg);
             }
         }
-        if (msg.type == 'gameUpdate') {
+        if (msg.type == 'game_update') {
             playerState = msg['playerState'];
             attacksMade = msg['attacksMade'];
             creeps = msg['creeps'];
         }
-        if (msg.type == 'towerUpdate') {
+        if (msg.type == 'tower_update') {
             if (msg['towerAccepted'] && myGrid) {
                 myGrid.towerAccepted(msg['tower']);
             } else {
@@ -51,7 +50,7 @@ ws.towerRequest = function(id, msg) {
     //     "y": 4
     // }
     ws.send(JSON.stringify({
-        type: "towerRequest",
+        type: "tower_request",
         id: id,
         msg: msg
     }));
@@ -63,7 +62,7 @@ ws.creepRequest = function(id, msg) {
     //     "creepID": 1,
     // }
     ws.send(JSON.stringify({
-        type: "creepRequest",
+        type: "creep_request",
         id: id,
         msg: msg
     }));

@@ -45,7 +45,6 @@ var Cell = function (Grid, ctx, row, col) {
                 ctx.fillStyle = "#FFFFFF";
                 this.img = towerImages[parseFloat(this.type)
                     - parseFloat(CellType.ARROW)];
-                
                 break;
             default:
                 console.log("ERROR: Illegal CellType: " + this.type);
@@ -62,7 +61,7 @@ var Cell = function (Grid, ctx, row, col) {
         }
         // Highlight square on hover
         if (this.hover) {
-            if (towerButtons.getLastButton()) {
+            if (towerButtons.wasPressed()) {
                 ctx.lineWidth = highlightSize;
                 ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,
