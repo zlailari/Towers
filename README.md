@@ -12,6 +12,8 @@ Setup npm and start server:
 
 > npm install
 
+> node server.js
+
 ## To Run:
 #### Easy Mode:
 
