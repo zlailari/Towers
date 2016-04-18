@@ -87,55 +87,31 @@ class GridWorld:
         if(xCoord == 0):
             if(yCoord == 0):
                 neighbors.append((xCoord + 1, yCoord + 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
             elif(yCoord == self.height - 1):
                 neighbors.append((xCoord + 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
             else:
                 neighbors.append((xCoord + 1, yCoord - 1))
                 neighbors.append((xCoord + 1, yCoord + 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
         elif(xCoord == self.width - 1):
             if(yCoord == 0):
                 neighbors.append((xCoord - 1, yCoord + 1))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
             elif(yCoord == self.height - 1):
                 neighbors.append((xCoord - 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord - 1, yCoord))
             else:
                 neighbors.append((xCoord - 1, yCoord + 1))
                 neighbors.append((xCoord - 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
         else:
             if(yCoord == 0):
                 neighbors.append((xCoord + 1, yCoord + 1))
                 neighbors.append((xCoord - 1, yCoord + 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
             elif(yCoord == self.height - 1):
                 neighbors.append((xCoord + 1, yCoord - 1))
                 neighbors.append((xCoord - 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord - 1, yCoord))
             else:
                 neighbors.append((xCoord - 1, yCoord + 1))
                 neighbors.append((xCoord - 1, yCoord - 1))
                 neighbors.append((xCoord + 1, yCoord - 1))
                 neighbors.append((xCoord + 1, yCoord + 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
 
         return neighbors
     
@@ -190,14 +166,25 @@ class GridWorld:
 
         while not frontier.empty():
             current = frontier.get()
+            neighbors = self.get_neighbors(*current)
+            diagonal_neighbors = self.get_neighbors_diagonal(*current)
+            all_neighbors = neighbors + diagonal_neighbors
 
-            for neighbor in self.get_neighbors_diagonal(*current):
-                new_cost = cost_so_far[current] + math.hypot(neighbor[0] - current[0],neighbor[1] - current[1])
-                if not self.grid[neighbor[1]][neighbor[0]]:
-                    if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
-                        cost_so_far[neighbor] = new_cost
-                        frontier.put(neighbor, new_cost)
-                        came_from[neighbor] = current
+            for neighbor in all_neighbors:
+                can_move_diagonally = 0
+                if neighbor in diagonal_neighbors:
+                    intersecting_neighbors = list(neighbor.get_neighbors & all_neighbors)
+                    for tile in intersecting_neighbors:
+                        if self.grid[tile[1]][tile[0]]
+                            can_move_diagonally += 1
+
+                if not can_move_diagonally == 2:
+                    new_cost = cost_so_far[current] + math.hypot(neighbor[0] - current[0],neighbor[1] - current[1])
+                    if not self.grid[neighbor[1]][neighbor[0]]:
+                        if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
+                            cost_so_far[neighbor] = new_cost
+                            frontier.put(neighbor, new_cost)
+                            came_from[neighbor] = current
 
         ##print came_from
         return came_from
