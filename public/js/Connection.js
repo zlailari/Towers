@@ -1,5 +1,12 @@
 // setup websocket with callbacks
-var ws = new WebSocket('ws://localhost:9000/');
+
+var re = /(.*\:)(.*)/;
+var hostParts = location.origin.match(re);
+
+var host = hostParts[1].replace(/^http/, 'ws');
+var port = 9000;
+var ws = new WebSocket(host + port);
+
 ws.onopen = function() {
     console.log('CONNECT');
 };

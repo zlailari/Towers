@@ -20,7 +20,7 @@ INFO_ID = 'network.py' # used to id info output
 class Network:
 
     def __init__(self):
-        address = '127.0.0.1'
+        address = '0.0.0.0'
         port = '9000'
 
         # start the websocket server running on a different process

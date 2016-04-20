@@ -30,7 +30,7 @@ def format_msg(text, m_type):
     """Format the given string text to JSON for sending over the network."""
     return utf(json.dumps({'text': text, 'type': m_type.name}))
 
-def start_server_process(address="127.0.0.1", port="9000"):
+def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
     p = Process(target=start_server, args=(address, port))
     p.start()
@@ -45,7 +45,7 @@ def start_server(address, port):
 
     composite_address = 'ws://' + address + ':' + port
     info("starting websocket server at {}".format(composite_address), INFO_ID)
-    factory = WebSocketServerFactory(composite_address, debug=False)
+    factory = WebSocketServerFactory(composite_address)
     factory.protocol = GameServerProtocol
 
     loop = asyncio.new_event_loop()
