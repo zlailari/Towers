@@ -9,7 +9,7 @@ class acts as the interface to them, so that the gameloop
 doesn't need to care about how they work or what they do."""
 import json
 from ws_server import ws_server as server
-from ws_server.gameloop_client_identifier import GAMELOOP_CLIENT_IDENTIFIER
+from ws_server.identifiers import GAMELOOP_CLIENT_IDENTIFIER
 import engine.ws_client as client
 import time
 from engine.util import utf, obj_from_json, dump_obj_dict, info
@@ -19,15 +19,15 @@ INFO_ID = 'network.py' # used to id info output
 
 class Network:
 
-    def __init__(self):
-        address = '127.0.0.1'
+    def __init__(self, create_server):
+        address = '0.0.0.0'
         port = '9000'
 
-        # start the websocket server running on a different process
-        server.start_server_process(address, port)
-
-        # sleeping probably not necessary, but can't hurt
-        time.sleep(1)
+        if create_server:
+            # start the websocket server running on a different process
+            server.start_server_process(address, port)
+            # sleeping probably not necessary, but can't hurt
+            time.sleep(1)
 
         # set the gameloops client running on a different thread.
         client.start_client_thread(address, port)
@@ -45,6 +45,7 @@ class Network:
         # identify this client as the gameloop server
         identifier_msg = {'type': MSG.identifier.name, 'secret': GAMELOOP_CLIENT_IDENTIFIER}
         self.send_message(identifier_msg)
+        # TODO: add a server response to this handshake to confirm the server has accepted you
 
     def receive(self):
         """Returns a Python object (a dict) built from the raw JSON.
@@ -56,9 +57,6 @@ class Network:
         as_obj = obj_from_json(as_json)
         info('received (type {}): {}'.format(as_obj['type'], as_json), INFO_ID)
         return as_obj
-
-    def send(self, gamestate):
-        pass
 
     def send_message(self, data):
         """Given a Python object, convert it to JSON and send it."""

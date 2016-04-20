@@ -6,34 +6,100 @@ Each player has their web-browser client which connects to this server.
 
 More details are in engin/ws_client.py."""
 import asyncio
+import json
 
 from engine.util import utf, obj_from_json, info
 from multiprocessing import Process
-from engine.message_enum import *
-from ws_server.gameloop_client_identifier import GAMELOOP_CLIENT_IDENTIFIER
-import json
+from engine.message_enum import MSG
+from ws_server.identifiers import GAMELOOP_CLIENT_IDENTIFIER, PLAYER_IDENTIFIER
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
     WebSocketServerFactory
 
 
 # List of connected clients
-connected = []
-
-# Reference to the client which is the
-# game engine client.
-gameloop_client = None
-server_loop = None
+# connected = []
+lobbies = []  # lobbies are lists of users in different games
+MAX_LOBBY_SIZE = 4  # how many users can be in a lobby?
 
 INFO_ID = 'server'
+
 
 def format_msg(text, m_type):
     """Format the given string text to JSON for sending over the network."""
     return utf(json.dumps({'text': text, 'type': m_type.name}))
 
-def start_server_process(address="127.0.0.1", port="9000"):
+
+def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
     p = Process(target=start_server, args=(address, port))
     p.start()
+
+
+def create_lobby(gameengine_client):
+    """Given an engine_client connection, create a lobby for it."""
+    lobbies.append([gameengine_client]
+                   )  # first item in a lobby list is always the gameengine client
+    info('lobby created with gameloop client {}'.format(gameengine_client), INFO_ID)
+
+
+def send_lobby_list(player_connection):
+    """Send the player connection a list of available lobbies."""
+    message = {
+        'type': MSG.lobby_info.name,
+        'lobbies': []
+    }
+    for lobby in lobbies:
+        lobby_info = {
+            'amnt_players': len(lobby) - 1,
+            'max_size': MAX_LOBBY_SIZE,
+            'players': []
+        }
+        message['lobbies'].append(lobby_info)
+
+    as_json = json.dumps(message)
+    info('lobby info: {}'.format(as_json), INFO_ID)
+    player_connection.sendMessage(utf(as_json), False)
+
+
+def get_lobby(connection):
+    """Given a player or engine's connection, return the lobby in which they reside"""
+    for each in lobbies:
+        if connection in each:
+            return each
+    info('ERROR! Expected a player to be in a lobby, but they were not!', INFO_ID)
+
+
+def get_lobby_engine(lobby):
+    """Given a lobby, return its gameloop engine connection."""
+    assert len(lobby) > 0
+    return lobby[0]  # gameloop engine always resides in first index
+
+
+def add_player(player_connection):
+    """Add the player to the lobby with the fewest players."""
+    least = float('inf')
+    handle = None
+    for each in lobbies:
+        if len(each) < least and len(each) < MAX_LOBBY_SIZE + 1:
+            # + 1 since the engine resides in the list as well
+            least = len(each)
+            handle = each
+    if handle is not None:
+        handle.append(player_connection)
+        handle[0].sendMessage(format_msg(
+            'a user has joined your lobby.', MSG.info))
+    else:
+        info('ERROR! Player tried to connect, but no lobbies were available!', INFO_ID)
+        # ask an existing gameloop server to spinoff another gameloop server
+        get_lobby_engine(lobbies[0]).sendMessage(format_msg(
+            'master ws server requesting new game instance', MSG.instance_request
+        ))
+
+        # while that's spinning up, tell the player to try connecting again
+        player_connection.sendMessage(format_msg(
+            'all lobbies were full, creating new lobby, try reconnecting again soon', MSG.reconnect_request
+        ))
+        player_connection.sendClose()
 
 
 def start_server(address, port):
@@ -45,15 +111,12 @@ def start_server(address, port):
 
     composite_address = 'ws://' + address + ':' + port
     info("starting websocket server at {}".format(composite_address), INFO_ID)
-    factory = WebSocketServerFactory(composite_address, debug=False)
+    factory = WebSocketServerFactory(composite_address)
     factory.protocol = GameServerProtocol
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop = asyncio.get_event_loop()
-
-    global server_loop
-    server_loop = loop
 
     coro = loop.create_server(factory, address, port)
     server = loop.run_until_complete(coro)
@@ -77,13 +140,14 @@ class GameServerProtocol(WebSocketServerProtocol):
         info("Client connecting: {0}".format(request.peer), INFO_ID)
 
     def onOpen(self):
-        connected.append(self)
-        if gameloop_client:
-            gameloop_client.sendMessage(format_msg(
-                'a user has connected', MSG.info), False)
-        info("connections: " + str(len(connected)), INFO_ID)
-        self.sendMessage(format_msg(
-            'you have joined the server.', MSG.info), False)
+        # connected.append(self)
+        # if gameloop_client:
+        #    gameloop_client.sendMessage(format_msg(
+        #        'a user has connected', MSG.info), False)
+        # info("connections: " + str(len(connected)), INFO_ID)
+        # self.sendMessage(format_msg(
+        #    'you have joined the server.', MSG.info), False)
+        pass  # nothing really happens until the new connection identifies itself
 
     def onMessage(self, payload, isBinary):
         assert isBinary is False
@@ -103,6 +167,8 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.handleTowerUpdate(as_string)
         elif m_type == MSG.identifier.name:
             self.handleIdentifier(as_string)
+        elif m_type == MSG.instance_request.name:
+            self.handleInstanceRequest(as_string)
         else:
             info('warning! server does not handle message with type {}'.format(
                 m_type), INFO_ID)
@@ -113,12 +179,24 @@ class GameServerProtocol(WebSocketServerProtocol):
         unpacked = obj_from_json(json_msg)
         assert 'secret' in unpacked
         if unpacked['secret'] == GAMELOOP_CLIENT_IDENTIFIER:
-            global gameloop_client
-            gameloop_client = self
+            create_lobby(self)
             info("game engine client registered", INFO_ID)
+        elif unpacked['secret'] == PLAYER_IDENTIFIER:
+            add_player(self)
+            send_lobby_list(self)
         else:
-            info('game client authentication failed with bad secret: {}'.format(unpacked['secret']))
+            info(
+                'new connection failed to identify itself as user or gameloop client.', INFO_ID)
 
+    def handleInstanceRequest(self, json_msg):
+        # someone wants a new game instance, so tell a game engine to spin one
+        # up
+        engine = get_lobby_engine[lobbies[0]]
+        assert engine is not None
+        engine.sendMessage(format_msg(
+            'ws master server requesting new game instance',
+            MSG.instance_request
+        ))
 
     def handleChat(self, json_msg):
         self.broadcast_message(json_msg)
@@ -127,19 +205,23 @@ class GameServerProtocol(WebSocketServerProtocol):
         self.broadcast_message(json_msg)
 
     def handleTowerRequest(self, json_msg):
-        gameloop_client.sendMessage(utf(json_msg), False)
+        lobby = get_lobby(self)
+        get_lobby_engine(lobby).sendMessage(utf(json_msg), False)
 
     def handleTowerUpdate(self, json_msg):
         self.broadcast_message(json_msg)
 
     def broadcast_message(self, msg):
-        assert len(connected) > 0
-        for client in connected:
+        """Broadcast a message to rest of the sender's lobby"""
+        lobby = get_lobby(self)
+        assert len(lobby) > 0
+        for client in lobby:
             # Don't send to yourself
-            if client == self:
-                continue
-            client.sendMessage(utf(msg), False)
+            if client != self:
+                client.sendMessage(utf(msg), False)
 
     def onClose(self, wasClean, code, reason):
         info("WebSocket connection closed: {0}".format(reason), INFO_ID)
-        connected.remove(self)
+        lobby = get_lobby(self)
+        if lobby:
+            lobby.remove(self)

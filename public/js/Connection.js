@@ -1,6 +1,10 @@
 // setup websocket with callbacks
 var ws = new WebSocket('ws://localhost:9000/');
 ws.onopen = function() {
+    ws.send(JSON.stringify({
+        type: 'identifier',
+        secret: 'PLAYER'
+    }))
     console.log('CONNECT');
 };
 
@@ -29,6 +33,9 @@ ws.onmessage = function(event) {
                 console.log("Tower denied");
                 // towerDenied();
             }
+        }
+        if (msg.type == 'lobby_info') {
+            console.log(msg);
         }
     }
 };

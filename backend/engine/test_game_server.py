@@ -8,6 +8,7 @@ from game_pieces.levels import Levels
 from game_states.gameplay_state import GameplayState
 from game_pieces.tower import Tower
 from engine.message_enum import MSG
+from engine.util import info
 
 # Define our globals
 TPS = 5  # ticks per second
@@ -15,13 +16,15 @@ TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
 WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
 
+INFO_ID = 'game engine'
+
 
 class GameRunner:
     """This class runs the ENTIRE game backend, from the websocket server
     to the game engine loop to the websocket client that connects the
     game engine loop to the server."""
 
-    def __init__(self, print_gametick=False, print_on_receive=False):
+    def __init__(self, print_gametick=False, print_on_receive=False, create_server=True):
 
         #self.level_creeps_spawn_timers = [1,2,3,4,5]
         #self.spawnCreeps = []
@@ -31,7 +34,7 @@ class GameRunner:
 
         # game_state = MainMenu()
 
-        self.network = Network()
+        self.network = Network(create_server)
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
 
@@ -94,16 +97,24 @@ class GameRunner:
                 msg['msg']['towerID']
             )
             success = self.game_state.build_tower(tower)
+            towerUpdate = None
             if success:
                 towerUpdate = {
                     'type': 'tower_update',
                     'towerAccepted': 'true',
                     'tower': tower
                 }
-                self.network.send_message(towerUpdate)
             else:
-                # TODO, tell client request failed and why
-                pass
+                towerUpdate = {
+                    'type': 'tower_update',
+                    'towerAccepted': 'false',
+                    'reason': 'TODO'
+                }
+            self.network.send_message(towerUpdate)
+        elif msg['type'] == MSG.instance_request.name:
+            # the server is requesting that we create a new game instance
+            info('trying to create a new game instance...', INFO_ID)
+            GameRunner(create_server=False)
 
     def game_loop(self, dt):
         # Receive and process messages from clients
