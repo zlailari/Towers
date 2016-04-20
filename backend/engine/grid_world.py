@@ -21,7 +21,7 @@ class GridWorld:
             for j in range(self.height):
                 self.vertices.append((i, j))
 
-        self.tilePaths = self.get_path(self.grid)
+        self.tilePaths = self.dijkstras_path(self.grid)
 
     def is_blocked(self, x, y):
         return self.grid[y][x]
@@ -87,55 +87,31 @@ class GridWorld:
         if(xCoord == 0):
             if(yCoord == 0):
                 neighbors.append((xCoord + 1, yCoord + 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
             elif(yCoord == self.height - 1):
                 neighbors.append((xCoord + 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
             else:
                 neighbors.append((xCoord + 1, yCoord - 1))
                 neighbors.append((xCoord + 1, yCoord + 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
         elif(xCoord == self.width - 1):
             if(yCoord == 0):
                 neighbors.append((xCoord - 1, yCoord + 1))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
             elif(yCoord == self.height - 1):
                 neighbors.append((xCoord - 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord - 1, yCoord))
             else:
                 neighbors.append((xCoord - 1, yCoord + 1))
                 neighbors.append((xCoord - 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
         else:
             if(yCoord == 0):
                 neighbors.append((xCoord + 1, yCoord + 1))
                 neighbors.append((xCoord - 1, yCoord + 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
             elif(yCoord == self.height - 1):
                 neighbors.append((xCoord + 1, yCoord - 1))
                 neighbors.append((xCoord - 1, yCoord - 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord - 1, yCoord))
             else:
                 neighbors.append((xCoord - 1, yCoord + 1))
                 neighbors.append((xCoord - 1, yCoord - 1))
                 neighbors.append((xCoord + 1, yCoord - 1))
                 neighbors.append((xCoord + 1, yCoord + 1))
-                neighbors.append((xCoord, yCoord - 1))
-                neighbors.append((xCoord + 1, yCoord))
-                neighbors.append((xCoord, yCoord + 1))
-                neighbors.append((xCoord - 1, yCoord))
 
         return neighbors
     
@@ -148,7 +124,7 @@ class GridWorld:
 
         if(self.can_build(xCoord, yCoord)):
             self.grid[yCoord][xCoord] = True
-            self.tilePaths = self.dijkstras_path()
+            self.tilePaths = self.dijkstras_path(self.grid)
             return True
         else:
             return False
@@ -179,7 +155,7 @@ class GridWorld:
                         came_from[next] = current
         return came_from
 
-    def dijkstras_path(self):
+    def dijkstras_path(self, grid):
 
         frontier = PriorityQueue()
         frontier.put(self.endpoint, 0)
@@ -190,14 +166,25 @@ class GridWorld:
 
         while not frontier.empty():
             current = frontier.get()
+            neighbors = self.get_neighbors(*current)
+            diagonal_neighbors = self.get_neighbors_diagonal(*current)
+            all_neighbors = neighbors + diagonal_neighbors
 
-            for neighbor in self.get_neighbors_diagonal(*current):
-                new_cost = cost_so_far[current] + math.hypot(neighbor[0] - current[0],neighbor[1] - current[1])
-                if not self.grid[neighbor[1]][neighbor[0]]:
-                    if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
-                        cost_so_far[neighbor] = new_cost
-                        frontier.put(neighbor, new_cost)
-                        came_from[neighbor] = current
+            for neighbor in all_neighbors:
+                can_move_diagonally = 0
+                if neighbor in diagonal_neighbors:
+                    intersecting_neighbors = set(self.get_neighbors(neighbor[0], neighbor[1])).intersection(all_neighbors)
+                    for tile in intersecting_neighbors:
+                        if self.grid[tile[1]][tile[0]]:
+                            can_move_diagonally += 1
+
+                if not can_move_diagonally == 2:
+                    new_cost = cost_so_far[current] + math.hypot(neighbor[0] - current[0],neighbor[1] - current[1])
+                    if not grid[neighbor[1]][neighbor[0]]:
+                        if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
+                            cost_so_far[neighbor] = new_cost
+                            frontier.put(neighbor, new_cost)
+                            came_from[neighbor] = current
 
         ##print came_from
         return came_from
@@ -227,7 +214,7 @@ class GridWorld:
         copy_board[yCoord][xCoord] = True
 
         # calculate the paths of the new board
-        copy_path = self.get_path(copy_board)
+        copy_path = self.dijkstras_path(copy_board)
 
         for x in range(self.width):
             for y in range(self.height):
