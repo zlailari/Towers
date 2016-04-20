@@ -1,8 +1,7 @@
 from game_pieces.tower import Tower
 import engine.util
 from shots.shot import shot
-from shots.fire import fire
-from shots.laser import laser
+from shots.poison import poison
 from modifiers.dot_modifier import Dot_modifier
 import json
 
@@ -37,7 +36,7 @@ class Poison_tower (Tower):
                         if self.can_fire():
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id, creep.loc))
+                            myAttacks.append(poison(self.id, creep.loc))
         return myAttacks;
 
     #Override for ice_tower

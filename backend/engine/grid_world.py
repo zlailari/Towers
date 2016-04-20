@@ -1,9 +1,8 @@
+from tile_effects import Tile_effects
+from tile_effects import fire
 from queue import *
 from heapq import *
 import math
-from tile_effects import tile_effects
-from tile_effects import fire
-
 
 class GridWorld:
 
