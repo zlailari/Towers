@@ -35,35 +35,15 @@ class GameRunner:
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
 
-        self.level_creeps_spawn_timers = []
-        self.spawnCreeps = []
-        initialSpawn = 0
 
-        # 3 sets of spawns
-        # Separated by initialSpawn time.
-        for _ in range(0, 5):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
+        #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
+        levels = Levels.createLevel(0,0.3,2,1,3,"Default")
+        self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
 
-        initialSpawn += 3
-
-        for _ in range(0, 10):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
-
-        initialSpawn += 3
-
-        for _ in range(0, 15):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
-
-        for i in range(0, 30):
-            self.spawnCreeps.append(Creep.factory("Default", i))
-
-        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
-        self.game_state = GameplayState(
-            levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
-        self.game_state.build_tower(Tower((8, 8), 10000000, 1, 1, 0))
+        #levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
+        #self.game_state = GameplayState(
+        #    levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
+        #self.game_state.build_tower(Tower((8, 8), 10000000, 1, 1, 0))
 
     def run(self):
         """Run this game, along with all its network requirements, like the websocket server.
@@ -82,19 +62,24 @@ class GameRunner:
             # do any cleanup you want to do here
             pass
 
+
     def process_message(self, msg):
         if msg['type'] == MSG.tower_request.name:
+
+            # This is the old way we built towers which worked
+
             # Make a new tower TODO, don't hardcode stuff
-            tower = Tower(
-                (msg['msg']['x'], msg['msg']['y']),
-                1000,
-                1,
-                3,
-                len(self.game_state.all_towers),
-                msg['msg']['towerID']
-            )
-            success = self.game_state.build_tower(tower)
-            if success:
+            # tower = Tower(
+            #     (msg['msg']['x'], msg['msg']['y']),
+            #     1000,
+            #     1,
+            #     3,
+            #     len(self.game_state.all_towers),
+            #     msg['msg']['towerID']
+            # )
+            tower = self.game_state.build_tower(
+                (msg['msg']['x'], msg['msg']['y']), msg['msg']['towerID'])
+            if tower:
                 towerUpdate = {
                     'type': 'tower_update',
                     'towerAccepted': 'true',

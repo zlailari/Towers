@@ -13,6 +13,8 @@ class Creep:
 
     def factory(type,id):
         if type == "Default": return Creep((0,0),"default",.3,100,id, 15)
+        if type == "Strong": return Creep((0,0),"strong",.1,500,id,30)
+        if type == "Weak": return Creep((0,0),"weak",.6,50,id,30)
     factory = staticmethod(factory)
 
     def __init__(self, loc, creep_type, speed, health,id, bounty):
@@ -24,13 +26,20 @@ class Creep:
         self.id = id # The unique ID of the creep
         self.bounty = bounty
         self.live = True
+        self.modifiers = []
 
     # We generate a json for movement. Passed up to the gameplay_state
     def update(self, path, dt, gameState):
         if self.live:
+
+            for i in range(0, len(self.modifiers)):
+                self.modifiers[i].update()
+
          #   print(self.cellPos)
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
             self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
+            #gameState.world.effects[self.loc[0]][self.loc[1]].effects[0].on_move(self,gameState); We assumed there was fire.
+
          #   print(self.dest(path))
          #   print(direction)
          #   print(self.cellPos)
@@ -55,6 +64,10 @@ class Creep:
     def dest(self, path):
         return path[self.loc]
 
+    #The creep has an array of modifiers and we append the modifications to this array. For each tick, we check if the modifier has expired.
+    #If it has not expired, we renew the effect for another tick.
+    def modify(self, modification):
+        self.modifiers.append(modification)
 
     def take_damage(self, amount, gameState):
         self.health -= amount

@@ -1,6 +1,9 @@
 from queue import *
 from heapq import *
 import math
+from tile_effects import tile_effects
+from tile_effects import fire
+
 
 class GridWorld:
 
@@ -22,6 +25,25 @@ class GridWorld:
                 self.vertices.append((i, j))
 
         self.tilePaths = self.dijkstras_path(self.grid)
+
+        # Creates the tile effects double array. Sets everything as a tile effect (which holds another array of effects).
+        # Will need to change tile_effect later so that not everything is on fire.
+        self.effects = []
+        for i in range(0,width):
+            new = []
+            for j in range(0,height):
+                new.append(tile_effects())
+            self.effects.append(new)
+
+    #adds the effect to the effects list on a particular tile
+    def add_effect(self,loc, type):
+        if(type=="fire"):
+            self.effects[loc[0]][loc[1]].append(fire(25))
+
+
+
+        #self.effects[8][0] = tile_effects()
+
 
     def is_blocked(self, x, y):
         return self.grid[y][x]
