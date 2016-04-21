@@ -1,5 +1,5 @@
 #this class keeps an array of tile effects that are currently affecting a tile.
-class Tile_effects:
+class tile_effects():
 
 
     def __init__(self):
