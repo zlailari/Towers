@@ -44,6 +44,6 @@ class Ice_tower (Tower):
     def fire(self, target, gameState):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
-        target.take_damage(self.damage , gameState);
+        target.take_damage(self.damage , gameState)
         target.modify(Frozen_modifier(target))
 
