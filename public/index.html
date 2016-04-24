@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Tower Wars</title> 
+  <title>Tower Wars</title>
   <link rel="stylesheet" type="text/css" href="css/mainStyles.css" />
 
   <!-- External Dependencies -->
@@ -17,6 +17,7 @@
   <script type="text/javascript" src="js/Connection.js"></script>
   <script type="text/javascript" src="js/chatbox.js"></script>
   <script type="text/javascript" src="js/gamestate.js"></script>
+  <script type="text/javascript" src="js/lobby.js"></script>
 </head>
 <body>
   <div class="header">
@@ -25,13 +26,21 @@
 
   <div class="content">
     <div class="sideBarWrapper">
-      <div class="sideBarItem" id="towerButtons"></div>
-      <div class="sideBarItem" id="creepButtons"></div>
+      <div class="sideBarItem" id="towerButtons">
+        <div class="sideBarImages" id="towerImages"></div>
+      </div>
+      <div class="sideBarItem" id="creepButtons">
+        <div class="sideBarTitle">
+          <p align="center"><strong>Creeps</strong></p>
+        </div>
+        <div class="sideBarImages" id="creepImages"></div>
+      </div>
     </div>
 
     <div class="gameWrapper">
       <div class="stateWrapper">
-        <div class="tab">My Game</div>
+        <div class="stateBarItem" id="tabs"></div>
+        <div class="stateBarItem" id="gameInfo"></div>
       </div>
       <div class="canvas">
         <canvas id="gameFrame"></canvas>
@@ -40,7 +49,20 @@
 
     <!-- Inital home for chat box -->
     <div id="chat_div"></div>
-  </div>
+
+    <!-- Modal -->
+    <div id="lobby" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Lobby Information</h4>
+          </div>
+          <div class="modal-body" id='lobby'/>
+        </div>
+      </div>
+    </div>
   <script src="js/AssetLoader.js"></script>
   <script src="js/Cell.js"></script>
   <script src="js/Grid.js"></script>

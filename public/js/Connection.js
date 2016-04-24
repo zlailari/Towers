@@ -7,16 +7,19 @@ var host = hostParts[1].replace(/^http/, 'ws');
 var port = 9000;
 var ws = new WebSocket(host + port);
 
+var userID = 0;
+
 ws.onopen = function() {
     console.log('CONNECT');
 };
 
 ws.onclose = function() {
     console.log('DISCONNECT');
+
 };
 
 ws.onmessage = function(event) {
-    msg = safeParseJSON(event.data);
+    var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
         if (msg.type == 'chat') {
             if (chatbox) {
@@ -24,17 +27,21 @@ ws.onmessage = function(event) {
             }
         }
         if (msg.type == 'game_update') {
-            playerState = msg['playerState'];
-            attacksMade = msg['attacksMade'];
-            creeps = msg['creeps'];
+            // var id = msg.id; placeholder
+            var id = userID;
+            if (id == userID) {
+                playerState = msg['playerState'];
+            }
+            allAttacks[id] = msg['attacksMade'];
+            allCreeps[id] = msg['creeps'];
         }
         if (msg.type == 'tower_update') {
             if (msg['towerAccepted'] && myGrid) {
                 myGrid.towerAccepted(msg['tower']);
             } else {
-                // Placeholder until I can get a popup box working
-                console.log("Tower denied");
-                // towerDenied();
+                var reason = msg['reason'];
+                var reason = "Placeholder";
+                towerDenied(reason);
             }
         }
     }
@@ -75,4 +82,27 @@ ws.creepRequest = function(id, msg) {
     }));
 };
 
-var userID = 0; // Placeholder
+ws.requestGameStart = function(is, msg) {
+    // msg format is:
+    // {
+    //     "lobbyID": 1,
+    // }
+    /* ws.send(JSON.stringify({
+        type: "game_start_request",
+        id: id,
+        msg: msg
+    }));*/
+};
+
+ws.requestLobby = function(id, msg) {
+    // msg format is:
+    // {
+    //     "lobbyID": 1,
+    // }
+    console.log("Requested lobby " + msg['lobbyID']);
+    /* ws.send(JSON.stringify({
+        type: "lobby_request",
+        id: id,
+        msg: msg
+    }));*/
+};

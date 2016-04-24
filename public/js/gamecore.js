@@ -1,10 +1,12 @@
 /* Create a global for the grid */
 
 var myGrid = null;
-
+var playerGrids = null, allCreeps, allAttacks = null;
 var playerState = null, creeps = null, attacksMade = null;
 
 $(document).ready(function()  {
+    enterLobby();
+    initTabs();
     var gameCan = document.getElementById("gameFrame");
     var gameCtx = gameCan.getContext("2d");
 
@@ -14,8 +16,13 @@ $(document).ready(function()  {
     gameCan.width = 800;
 
     var gameOffset = $("#gameFrame").offset();
+    playerGrids = [];
+    playerGrids[0] = new Grid(gameCan, gameCtx, gameOffset);
+    playerGrids[1] = new Grid(gameCan, gameCtx, gameOffset);
+    myGrid = playerGrids[0];
 
-    myGrid = new Grid(gameCan, gameCtx, gameOffset);
+    allCreeps = [];
+    allAttacks = [];
 
     gameCan.onmousemove = function (e) {
         myGrid.mouseMove(e.pageX, e.pageY);
@@ -42,16 +49,19 @@ $(document).ready(function()  {
     }
 
     function render () {
-        stateManager.draw();
+        var currentTab = tabManager.getCurrentTab();
+        myGrid = playerGrids[currentTab];
+        var gameOffset = $("#gameFrame").offset();
+        myGrid.setOffset(gameOffset);
         myGrid.draw(gameCtx);
-
+        creeps = allCreeps[currentTab];
         if (creeps) {
             // DONT REPLICATE THIS, just trying to get something to work for MVP
             for (var i = 0; i < creeps.length; i++) {
                 drawCreep(gameCtx, creeps[i]);
             }
         }
-
+        attacksMade = allAttacks[currentTab];
         // this is also temp for demo
         if (attacksMade) {
             // attacks come in as a dictionary like-> towerID: [creepIDs, ...]
