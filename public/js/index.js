@@ -17,7 +17,28 @@ $(document).ready(function() {
     });
 
     $('.submit-login').on('click', function() {
-        console.log('login');
+        data = {
+            username: $('#username').val(),
+            password: $('#password').val()
+        };
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/login",
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                username: $('#username').val(),
+                password: $('#password').val(),
+            }),
+            success: function (data) {
+                return data;
+            },
+            error: function (error) {
+                console.log(error);
+                return "Error!";
+            }
+        });
     });
 
     $('#signup').on('click', function() {
