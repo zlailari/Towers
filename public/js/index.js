@@ -27,4 +27,5 @@ $(document).ready(function() {
 
 function findGame() {
     $('.introduction').fadeOut(500);
+    $('.overlay').fadeOut(400);
 }
