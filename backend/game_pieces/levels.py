@@ -26,7 +26,7 @@ class Levels:
             for i in range (0,numCreeps):
                 level_creep_spawn_timers.append(spawn)
                 spawn += delayBetweenCreeps
-                spawnCreeps.append(Creep.factory(creepType,k*i))
+                spawnCreeps.append(Creep.factory(creepType,k*numCreeps + i))
             spawn += delayBetweenWaves
 
         return Levels(level_creep_spawn_timers,spawnCreeps)
