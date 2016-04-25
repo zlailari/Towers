@@ -20,6 +20,7 @@ from ws_server import Lobby
 # List of connected clients
 # connected = []
 lobbies = []  # lobbies are lists of users in different games
+all_connections = []
 MAX_LOBBY_SIZE = 4  # how many users can be in a lobby?
 lobby_count = 0  # used to determine new lobby IDs, don't decrement
 
@@ -86,11 +87,7 @@ def send_lobby_list(player_connection):
 
 
 def broadcast_lobby_list():
-    # TODO this only sends to people already in lobbies...
-    everyone = []
-    for lobby in lobbies:
-        everyone.extend(lobby.get_players())
-    for connection in everyone:
+    for connection in all_connections:
         send_lobby_list(connection)
 
 
@@ -252,6 +249,7 @@ class GameServerProtocol(WebSocketServerProtocol):
             create_lobby(self)
             info("game engine client registered", INFO_ID)
         elif unpacked['secret'] == PLAYER_IDENTIFIER:
+            all_connections.append(self)
             send_lobby_list(self)
         else:
             info(
@@ -261,6 +259,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         unpacked = obj_from_json(json_msg)
         requested_lobby_id = int(unpacked['id'])
         requested_lobby_id = int(unpacked['msg']['lobby_id'])
+        print('handleLobbyJoinRequest {}'.format(self))
         add_player(self, requested_lobby_id)
 
     def handleInstanceRequest(self, json_msg):
@@ -303,6 +302,8 @@ class GameServerProtocol(WebSocketServerProtocol):
 
     def onClose(self, wasClean, code, reason):
         info("WebSocket connection closed: {0}".format(reason), INFO_ID)
+        if self in all_connections:
+            all_connections.remove(self)
         lobby = get_players_lobby(self)
         if lobby:
             lobby.remove_player(self)
