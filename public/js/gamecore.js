@@ -5,7 +5,7 @@ var playerGrids = null, allCreeps, allAttacks = null;
 var playerState = null, creeps = null, attacksMade = null;
 
 $(document).ready(function()  {
-    enterLobby();
+    lobbyManager.enterLobby();
     initTabs();
     var gameCan = document.getElementById("gameFrame");
     var gameCtx = gameCan.getContext("2d");

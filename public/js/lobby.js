@@ -10,7 +10,7 @@ var LobbyManager = function () {
     this.inLobby = false;
 
     this.enterLobby = function() {
-        if (inLobby) {
+        if (this.inLobby) {
             return;
         }
         this.inLobby = true;
@@ -18,7 +18,7 @@ var LobbyManager = function () {
     };
 
     this.exitLobby = function() {
-        if (!inLobby) {
+        if (!this.inLobby) {
             return;
         }
         this.inLobby = false;
