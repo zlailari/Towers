@@ -5,7 +5,7 @@ var playerGrids = null, allCreeps, allAttacks = null;
 var playerState = null, creeps = null, attacksMade = null;
 
 $(document).ready(function()  {
-    enterLobby();
+    lobbyManager.enterLobby();
     initTabs();
     var gameCan = document.getElementById("gameFrame");
     var gameCtx = gameCan.getContext("2d");
@@ -79,7 +79,7 @@ $(document).ready(function()  {
                         projectiles.push(
                             new Projectile(
                             gameCtx, attack,
-                            attacksMade[attack][shot], 10)
+                            attacksMade[attack][shot], 15)
                             );
                     }
                 }

@@ -1,14 +1,29 @@
 /* Takes care of setting up the various things for the lobby
 */
 
-var lobbyManager = null;
-
 var LobbyManager = function () {
     this.divs = [];
     this.buttons = [];
     this.msgs = [];
     this.searching = true;
     this.joinedID = -1;
+    this.inLobby = false;
+
+    this.enterLobby = function() {
+        if (this.inLobby) {
+            return;
+        }
+        this.inLobby = true;
+        $("#lobby").modal({backdrop:'static'});
+    };
+
+    this.exitLobby = function() {
+        if (!this.inLobby) {
+            return;
+        }
+        this.inLobby = false;
+        $("#lobby").modal("hide");
+    };
 
     this.updateText = function(id, numPlayers, maxPlayers) {
         if (this.searching) {
@@ -134,17 +149,4 @@ var LobbyManager = function () {
     };
 };
 
-function enterLobby () {
-    if (lobbyManager) {
-        return;
-    }
-    $("#lobby").modal({backdrop:'static'});
-    lobbyManager = new LobbyManager();
-    for (var i = 0; i < 3; i++) {
-        lobbyManager.addNewLobby(i, 0, 3);
-    }
-}
-
-function exitLobby () {
-    $("#lobby").modal("hide");
-}
+lobbyManager = new LobbyManager();

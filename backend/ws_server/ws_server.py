@@ -26,9 +26,12 @@ lobby_count = 0  # used to determine new lobby IDs, don't decrement
 INFO_ID = 'server'
 
 
-def format_msg(text, m_type):
+def format_msg(text, m_type, msg=None):
     """Format the given string text to JSON for sending over the network."""
-    return utf(json.dumps({'text': text, 'type': m_type.name}))
+    if msg is not None:
+        return utf(json.dumps({'text': text, 'type': m_type.name}.update(msg)))
+    else:
+        return utf(json.dumps({'text': text, 'type': m_type.name}))
 
 def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
@@ -102,10 +105,15 @@ def add_player(player_connection, lobby_id):
             lobby.add_player(player_connection)
             player_connection.sendMessage(format_msg(
                 'joined lobby {}'.format(lobby_id),
-                MSG.lobby_joined
+                MSG.lobby_joined,
+                {
+                    'lobbyID': lobby_id,
+                    'maxPlayers': lobby.get_id(),
+                    'numPlayers': lobby.size()
+                }
             ))
             # the lobby changed, so broadcast that to everyone
-            broadcast_lobby_list()
+            # broadcast_lobby_list()
         else:
             # lobby was full
             player_connection.sendMessage(format_msg(
@@ -246,6 +254,7 @@ class GameServerProtocol(WebSocketServerProtocol):
     def handleLobbyJoinRequest(self, json_msg):
         unpacked = obj_from_json(json_msg)
         requested_lobby_id = int(unpacked['id'])
+        requested_lobby_id = int(unpacked['msg']['lobbyID'])
         add_player(self, requested_lobby_id)
 
     def handleInstanceRequest(self, json_msg):

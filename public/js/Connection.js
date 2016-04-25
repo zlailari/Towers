@@ -51,11 +51,10 @@ ws.onmessage = function(event) {
         }
         if (msg.type == 'lobby_info') {
             console.log(msg);
-            if (!lobbyManager) {
-                enterLobby();
-            }
             var lobbies = msg['lobbies'];
-            for (var lobby in lobbies) {
+            console.log(lobbies);
+            for (var i = 0; i < lobbies.length; ++i) {
+                lobby = lobbies[i];
                 console.log(lobby);
                 var lbid = lobby['id'];
                 var num = lobby['num_players'];
