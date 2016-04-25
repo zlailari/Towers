@@ -41,9 +41,6 @@ class GridWorld:
 
 
 
-        #self.effects[8][0] = tile_effects()
-
-
     def is_blocked(self, x, y):
         return self.grid[y][x]
 

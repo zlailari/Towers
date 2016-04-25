@@ -10,7 +10,7 @@ from game_pieces.tower import Tower
 from engine.message_enum import MSG
 
 # Define our globals
-TPS = 5  # ticks per second
+TPS = 30  # ticks per second
 TICK_LEN = 1.0 / TPS  # never update more fequently than this interval
 WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
@@ -34,16 +34,16 @@ class GameRunner:
         self.network = Network()
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
-
-
         #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
         levels = Levels.createLevel(0,0.3,2,1,3,"Default")
         self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
+
 
         #levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
         #self.game_state = GameplayState(
         #    levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
         #self.game_state.build_tower(Tower((8, 8), 10000000, 1, 1, 0))
+
 
     def run(self):
         """Run this game, along with all its network requirements, like the websocket server.

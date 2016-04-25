@@ -67,8 +67,10 @@ class GameplayState(GameState):
             'playerState': playerState,
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
-            'path' : str(bestPath)
+            'path' : str(bestPath),
+            'effects' : self.world.effects
         }
+
         print("PlayerState:"+str(playerState) + " \nAttacks Made:" + str(attacksMade)) #needed for testing purposes
         for i in range(0,len(self.all_creeps)):
             print("Creep"+str(i)+": "+str(self.all_creeps[i]))
