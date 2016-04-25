@@ -79,7 +79,7 @@ $(document).ready(function()  {
                         projectiles.push(
                             new Projectile(
                             gameCtx, attack,
-                            attacksMade[attack][shot], 10)
+                            attacksMade[attack][shot], 15)
                             );
                     }
                 }

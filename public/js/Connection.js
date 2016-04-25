@@ -45,9 +45,6 @@ ws.onmessage = function(event) {
             }
         }
         if (msg.type == 'lobby_update') {
-            if (!lobbyManager) {
-                enterLobby();
-            }
             var lobbies = msg['lobbies'];
             for (var lobby in lobbies) {
                 var lbid = lobby['lobbyID'];

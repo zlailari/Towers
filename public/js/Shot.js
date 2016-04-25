@@ -58,26 +58,22 @@ var Projectile = function(ctx, towerID, creepID, speed) {
             direction.subtract(this.pos);
             // Distance from the target
             var distance = direction.length();
-
-            // If the distance is less than the speed,
-            // it will hit on this frame
-            if (distance < this.speed) {
-                this.hit = true;
-            } else {
-                distance = this.speed;
-            }
+            direction.normalize();
 
             // Calculate acceleration
             var acceleration = direction.clone();
-            acceleration.normalize();
             acceleration.multiplyScalar(this.speed);
 
             // Mix the acceleration into the velocity with a
-            // factor of 0.5
-            this.velocity.mix(acceleration, 0.5);
+            // factor of 2.0
+            this.velocity.mix(acceleration, 2.0);
+            this.velocity.normalize();
+            this.velocity.multiplyScalar(this.speed);
+
             // If the ||velocity|| is greater than the distance it can
             // travel in this frame, set ||velocity|| = distance
-            if (this.velocity.length() > distance) {
+            if (distance < this.speed) {
+                this.hit = true;
                 this.velocity.normalize();
                 this.velocity.multiplyScalar(distance);
             }

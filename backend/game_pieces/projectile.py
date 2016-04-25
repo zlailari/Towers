@@ -17,23 +17,18 @@ class Projectile:
             direction = np.array(self.creep.get_position()).astype(float) - self.pos
             distance = np.linalg.norm(direction)
             direction /= distance
-            acceleration = np.copy(direction)
 
+            acceleration = np.copy(direction)
             acceleration *= self.speed
+
             self.velocity = 2.0*acceleration + self.velocity
             velocityMag = np.linalg.norm(self.velocity)
             self.velocity *= self.speed/velocityMag
-            velocityMag = np.linalg.norm(self.velocity)
 
-            dot = np.dot(self.velocity, direction)
-            print dot
-            print velocityMag
-
-            if 0.9*velocityMag < dot and distance < self.speed:
-                self.velocity /= velocityMag
+            if distance < self.speed:
+                self.velocity /=  np.linalg.norm(self.velocity)
                 self.velocity *= distance
                 self.hit = True
-
 
             self.pos += self.velocity
 
