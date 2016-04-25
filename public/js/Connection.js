@@ -26,7 +26,7 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
-        var id = userID;
+        var id = msg.player_id;
         if (msg.type == 'assign_id') {
             userID = msg['user_id'];
             tabManager.addTab(userID);

@@ -117,12 +117,28 @@ def get_lobby_engine(lobby):
     return lobby[0]  # gameloop engine always resides in first index
 
 
-def add_player(player_connection, lobby_id):
+def game_add_player(game, player_id):
+    """Tell a game instance to add this player."""
+    print('sending message to gamerunner to add player {}'.format(player_id))
+    message = format_msg(
+        'add this player to your game',
+        MSG.game_add_player,
+        {
+            'player_id': player_id
+        }
+    )
+    print('message: {}'.format(message))
+    game.sendMessage(message)
+
+
+def lobby_add_player(player_connection, lobby_id):
     """Add a player to the lobby which has lobby_id."""
     if lobby_id in range(len(lobbies)):
         lobby = lobbies[lobby_id]
         if not lobby.is_full():
             lobby.add_player(player_connection)
+            game_add_player(lobby.get_game_client(),
+                            user_ids[player_connection])
             message = format_msg(
                 'joined lobby {}'.format(lobby_id),
                 MSG.lobby_joined,
@@ -299,7 +315,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         unpacked = obj_from_json(json_msg)
         requested_lobby_id = int(unpacked['id'])
         requested_lobby_id = int(unpacked['msg']['lobby_id'])
-        add_player(self, requested_lobby_id)
+        lobby_add_player(self, requested_lobby_id)
 
     def handleInstanceRequest(self, json_msg):
         # someone wants a new game instance, so tell a game engine to spin one
