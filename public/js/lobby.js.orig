@@ -42,7 +42,7 @@ var LobbyManager = function () {
                     {id: id, this: this}, function(event) {
                     var id = event.data.id;
                     var msg = {
-                        "lobby_id" : id
+                        "lobbyID" : id
                     };
                     ws.requestLobby(userID, msg);
                 });
@@ -114,11 +114,8 @@ var LobbyManager = function () {
             + 'Request Game Start'
             + '</button>')
             .click({id: id}, function(event) {
-                var id = event.data.id;
-                var msg = {
-                    "lobby_id" : id
-                };
-                ws.requestGameStart(userID, msg);
+                // TODO send start of game request
+                exitLobby();
             })
             .appendTo(this.divs[-1]);
 
@@ -126,17 +123,13 @@ var LobbyManager = function () {
             '<button type="button" class="btn btn-default">'
             + 'Exit Lobby'
             + '</button>')
-            .click({id: id, this: this}, function(event) {
+            .click({this: this}, function(event) {
                 var self = event.data.this;
                 // TODO send request for lobby information
                 // when user eixts
                 self.destroy();
                 self.joinedID = -1;
-                var id = event.data.id;
-                var msg = {
-                    "lobby_id" : id
-                };
-                ws.leaveLobby(userID, msg);
+                exitLobby();
             })
             .appendTo(this.divs[-1]);
 
@@ -153,11 +146,19 @@ var LobbyManager = function () {
           + 'Join Lobby'
           + '</button>')
             .click({id: id, this: this}, function(event) {
+<<<<<<< HEAD
                 var id = event.data.id;
                 var msg = {
-                    "lobby_id" : id
+                    "lobbyID" : id
                 };
                 ws.requestLobby(userID, msg);
+=======
+            var id = event.data.id;
+            var msg = {
+                "lobbyID" : id
+            };
+            ws.requestLobby(userID, msg);
+>>>>>>> 3c82086d93a336004dca1d8d85d118447bdb849d
             })
             .appendTo(this.divs[id]);
 
@@ -175,9 +176,6 @@ var LobbyManager = function () {
         $("#lobby").modal("handleUpdate");
     };
     this.update = function(id, numPlayers, maxPlayers) {
-        if (!this.inLobby) {
-            return;
-        }
         if (this.divs.hasOwnProperty(id)) {
             if (maxPlayers > 0) {
                 this.updateText(id, numPlayers, maxPlayers);
