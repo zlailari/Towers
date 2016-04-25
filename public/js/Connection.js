@@ -106,6 +106,17 @@ ws.creepRequest = function(id, msg) {
     }));
 };
 
+ws.newLobbyRequest = function(id, msg) {
+    // msg format is:
+    // {
+    // }
+    ws.send(JSON.stringify({
+        type: "new_lobby_request",
+        id: id,
+        msg: msg
+    }));
+};
+
 ws.leaveLobby = function(id, msg) {
     // msg format is:
     // {

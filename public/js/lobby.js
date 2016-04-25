@@ -8,6 +8,30 @@ var LobbyManager = function () {
     this.searching = true;
     this.joinedID = -1;
     this.inLobby = false;
+    this.newLbBtn = {hasClick: false, bt: null};
+
+    this.enableNewLobby = function() {
+        if (this.newLbBtn.bt == null ||
+            this.newLbBtn.hasClick) {
+            return;
+        }
+        this.newLbBtn.bt.click(function(event) {
+            var msg = {};
+            ws.newLobbyRequest(userID, msg);
+        });
+        this.newLbBtn.bt.removeClass('disabled');
+        this.newLbBtn.hasClick = true;
+    };
+
+    this.disableNewLobby = function() {
+        if (this.newLbBtn.hasClick == false ||
+            this.newLbBtn.bt == null) {
+            return;
+        }
+        this.newLbBtn.bt.addClass('disabled');
+        this.newLbBtn.bt.off('click');
+        this.newLbBtn.hasClick = false;
+    };
 
     this.enterLobby = function() {
         if (this.inLobby) {
@@ -15,6 +39,12 @@ var LobbyManager = function () {
         }
         this.inLobby = true;
         $("#lobby").modal({backdrop:'static'});
+        this.newLbBtn.bt = $(
+            '<button type="button" class="btn btn-default">'
+            + 'Create New Lobby'
+            + '</button>')
+            .appendTo('#lobby.modal-footer');
+        this.enableNewLobby();
     };
 
     this.exitLobby = function() {
@@ -94,6 +124,7 @@ var LobbyManager = function () {
     };
 
     this.joinLobby = function(id, numPlayers, maxPlayers) {
+        this.disableNewLobby();
         this.searching = false;
         this.joinedID = id;
         this.destroy();
@@ -140,6 +171,7 @@ var LobbyManager = function () {
                     "lobby_id" : id
                 };
                 ws.leaveLobby(userID, msg);
+                self.enableNewLobby();
             })
             .appendTo(this.divs[-1]);
 
