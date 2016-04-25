@@ -51,7 +51,7 @@ var Grid = function (can, ctx, offset) {
     };
 
     this.mouseClick = function() {
-        if (tabManager && tabManager.getCurrentTab() == 0) {
+        if (tabManager && tabManager.getCurrentTab() == userID) {
            if (towerButtons && towerButtons.wasPressed()) {
                var last = towerButtons.getLastButton();
                var msg = {

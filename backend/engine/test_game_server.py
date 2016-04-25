@@ -125,6 +125,8 @@ class GameRunner:
         elif msg['type'] == MSG.tower_request.name:
             # Make a new tower TODO, don't hardcode stuff
             player_id = msg['player_id']
+            print('saw tower request from user {}'.format(player_id))
+            print('tower request: {}'.format(msg))
             state = self.player_states[player_id]
             tower = Tower(
                 (msg['msg']['x'], msg['msg']['y']),

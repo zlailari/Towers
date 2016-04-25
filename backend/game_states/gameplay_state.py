@@ -106,3 +106,4 @@ class GameplayState(GameState):
             if cr.loc == loc:
                 return True
         return False
+

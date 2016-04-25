@@ -1,0 +1,12 @@
+.lobby-item{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#lobby .modal-dialog {
+    width: 70%;
+}

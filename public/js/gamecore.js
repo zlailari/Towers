@@ -7,8 +7,14 @@ var playerState = null, creeps = null, attacksMade = null;
 var gameCan, gameCtx;
 
 $(document).ready(function()  {
-    lobbyManager.enterLobby();
+    lobbyManager = new LobbyManager();
+    stateManager = new StateManager();
+    tabManager = new TabManager();
+    $(document).keydown(function(e) {
+        tabManager.keypress(e);
+    });
 
+    lobbyManager.enterLobby();
     gameCan = document.getElementById("gameFrame");
     gameCtx = gameCan.getContext("2d");
 

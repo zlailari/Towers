@@ -111,12 +111,6 @@ def broadcast_lobby_list():
         send_lobby_list(connection)
 
 
-def get_lobby_engine(lobby):
-    """Given a lobby, return its gameloop engine connection."""
-    assert len(lobby) > 0
-    return lobby[0]  # gameloop engine always resides in first index
-
-
 def game_add_player(game, player_id):
     """Tell a game instance to add this player."""
     print('sending message to gamerunner to add player {}'.format(player_id))
@@ -313,7 +307,6 @@ class GameServerProtocol(WebSocketServerProtocol):
 
     def handleLobbyJoinRequest(self, json_msg):
         unpacked = obj_from_json(json_msg)
-        requested_lobby_id = int(unpacked['id'])
         requested_lobby_id = int(unpacked['msg']['lobby_id'])
         lobby_add_player(self, requested_lobby_id)
 
@@ -336,7 +329,7 @@ class GameServerProtocol(WebSocketServerProtocol):
 
     def handleTowerRequest(self, json_msg):
         lobby = get_players_lobby(self)
-        get_lobby_engine(lobby).sendMessage(utf(json_msg), False)
+        lobby.get_game_client().sendMessage(utf(json_msg), False)
 
     def handleTowerUpdate(self, json_msg):
         self.broadcast_to_lobby(json_msg)
