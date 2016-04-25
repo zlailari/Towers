@@ -1,10 +1,10 @@
 /* Create a global for the grid */
 
 var myGrid = null;
-var playerGrids = null, allCreeps, allAttacks = null;
+var playerGrids = [], allCreeps = [], allAttacks = [];
 var playerState = null, creeps = null, attacksMade = null;
 
-$(document).ready(function()  {
+beginGame = function() {
     lobbyManager.enterLobby();
     initTabs();
     var gameCan = document.getElementById("gameFrame");
@@ -14,12 +14,6 @@ $(document).ready(function()  {
 
     gameCan.height = 600;
     gameCan.width = 800;
-
-    var gameOffset = $("#gameFrame").offset();
-    playerGrids = [];
-    playerGrids[0] = new Grid(gameCan, gameCtx, gameOffset);
-    playerGrids[1] = new Grid(gameCan, gameCtx, gameOffset);
-    myGrid = playerGrids[0];
 
     allCreeps = [];
     allAttacks = [];
@@ -78,4 +72,4 @@ $(document).ready(function()  {
             }
         }
     }
-});
+};

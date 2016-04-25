@@ -40,11 +40,12 @@ var StateManager = function () {
     };
 };
 
-var TabManager = function(numTabs) {
+var TabManager = function() {
     this.tabs = [];
     this.hotKeyCodes = [];
-    this.currentTab = 0;
+    this.currentTab = -1;
     var keyCodeStart = 49;
+    var nextIndex = 1;
 
     function tabClick (event) {
         var self = event.data.this;
@@ -55,9 +56,9 @@ var TabManager = function(numTabs) {
     }
 
     this.keypress = function(e) {
-        for (var i = 0; i < this.hotKeyCodes.length; ++i) {
-            if (e.which == this.hotKeyCodes[i]) {
-                this.tabs[i].click();
+        for (var id in this.hotKeyCodes) {
+            if (e.which == this.hotKeyCodes[id]) {
+                this.tabs[id].click();
             }
         }
     };
@@ -66,75 +67,66 @@ var TabManager = function(numTabs) {
 
     this.destroyTabs = function() {
         this.currentTab = 0;
-        for (var i = 1; i < this.tabs.length; ++i) {
-            this.tabs[i].remove();
-        }
-        this.tabs.length = 1;
-        this.hotKeyCodes.length = 1;
-    };
-    this.addTabs = function(numTabs) {
-        var currentNumTabs = this.tabs.length;
-        for (var i = currentNumTabs; i < numTabs + currentNumTabs; ++i) {
-            var tooltip = "Click to see player " + i + "'s game\n"
-                + "Hotkey: " + parseFloat(i + 1);
-            this.tabs[i] = $('<div class="tabNotClicked"'
-                + 'data-toggle="tooltip"'
-                + 'title="' + tooltip + '"'
-                + 'data-placement="auto"'
-                + '/>')
-                .appendTo($("#tabs"))
-                .text("Player " + i)
-                .tooltip()
-                .click({id: i, this: this}, function(event) {
-                    var self = event.data.this;
-                    var id = event.data.id;
-                    var lastID = self.currentTab;
-                    self.currentTab = id;
-                    if (lastID != id) {
-                        self.tabs[lastID].removeClass("tabClicked");
-                        self.tabs[lastID].addClass("tabNotClicked");
-
-                        self.tabs[id].removeClass("tabNotClicked");
-                        self.tabs[id].addClass("tabClicked");
-                    }
-
-                });
-            this.hotKeyCodes[i] = keyCodeStart + i;
+        for (var id in this.tabs) {
+            this.tabs[id].remove();
+            delete this.tabs[id];
+            delete this.hotKeyCodes[id];
         }
     };
+    this.addTab = function(id) {
+        if (this.tabs.hasOwnProperty(id)) {
+            return;
+        }
 
-    var tooltip = "Click to see your game\n"
-        + "Hotkey: 1";
-    this.tabs[0] = $(
-        '<div class="tabClicked"'
-        + 'data-toggle="tooltip"'
-        + 'title="' + tooltip + '"'
-        + 'data-placement="auto"'
-        + '/>')
-        .appendTo($("#tabs"))
-        .text("My Game")
-        .tooltip()
-        .click({id: 0, this: this}, function(event) {
-            var self = event.data.this;
-            var id = event.data.id;
-            var lastID = self.currentTab;
-            self.currentTab = id;
-            if (lastID != id) {
-                self.tabs[lastID].removeClass("tabClicked");
-                self.tabs[lastID].addClass("tabNotClicked");
+        var index = nextIndex;
+        var tooltip = null, text = null;
+        if (id == userID) {
+            index = 0;
+            tooltip = "Click to see your game\n"
+                + "Hotkey: 1";
+            text = "My Game";
+        } else {
+            text = "Player " + nextIndex;
+            tooltip = "Click to see player " + nextIndex + "'s game\n"
+            + "Hotkey: " + parseFloat(nextIndex + 1);
+            ++nextIndex;
+        }
+        this.tabs[id] = $('<div class="tabNotClicked"'
+            + 'data-toggle="tooltip"'
+            + 'title="' + tooltip + '"'
+            + 'data-placement="auto"'
+            + '/>')
+            .text(text)
+            .tooltip()
+            .click({id: id, this: this}, function(event) {
+                var self = event.data.this;
+                var id = event.data.id;
+                var lastID = self.currentTab;
+                self.currentTab = id;
+                if (lastID != id) {
+                    self.tabs[lastID].removeClass("tabClicked");
+                    self.tabs[lastID].addClass("tabNotClicked");
 
-                self.tabs[id].removeClass("tabNotClicked");
-                self.tabs[id].addClass("tabClicked");
-            }
-        });
-    this.hotKeyCodes[0] = keyCodeStart + 0;
-    this.addTabs(numTabs);
+                    self.tabs[id].removeClass("tabNotClicked");
+                    self.tabs[id].addClass("tabClicked");
+                }
+            });
+        if (id == userID) {
+            this.tabs[id].prependTo($('#tabs'));
+            this.tabs[id].removeClass("tabNotClicked");
+            this.tabs[id].addClass("tabClicked");
+            this.currentTab = id;
+        } else {
+            this.tabs[id].appendTo($('#tabs'));
+        }
+        this.hotKeyCodes[id] = keyCodeStart + nextIndex;
+    };
 };
 
 
 function initTabs () {
     stateManager = new StateManager();
-    tabManager = new TabManager(1);
+    tabManager = new TabManager();
     $(document).keydown(function(e) {
         tabManager.keypress(e);
     });

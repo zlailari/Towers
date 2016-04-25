@@ -38,6 +38,7 @@ var LobbyManager = function () {
             return;
         }
         this.inLobby = true;
+        this.searching = true;
         $("#lobby").modal({backdrop:'static'});
         if (this.newLbBtn.bt == null) {
             this.newLbBtn.bt = $(
@@ -188,6 +189,7 @@ var LobbyManager = function () {
                 // when user eixts
                 self.destroy();
                 self.joinedID = -1;
+                self.searching = true;
                 var id = event.data.id;
                 var msg = {
                     "lobby_id" : id
