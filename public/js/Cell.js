@@ -63,7 +63,7 @@ var Cell = function (Grid, ctx, row, col) {
         }
         // Highlight square on hover
         if (this.hover) {
-            if (towerButtons.wasPressed()) {
+            if (towerButtons && towerButtons.wasPressed()) {
                 ctx.lineWidth = highlightSize;
                 ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,

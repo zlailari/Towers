@@ -1,0 +1,51 @@
+# Defines the base for a projectile class.
+#This takes a speed that is used to define the max ||v||
+#The update call causes the projectile to move towards it's target
+#Once it has it it's target, hit == True and class to update will do nothing
+#Calls to update will also do nothing if it's target is dead, and hit will be set to True
+
+import numpy as np
+
+class Projectile:
+
+    def __init__(self, start, creep, speed):
+        self.loc = np.array(start).astype(float)
+        self.velocity = np.array([0.0, 0.0])
+        self.speed = speed
+        self.creep = creep
+        self.hit = False
+
+    def update(self):
+        if self.creep.live and not self.hit:
+            creepPos = np.array(self.creep.get_position()).astype(float)
+            direction = creepPos - self.loc
+            direction /= np.linalg.norm(direction)
+            acceleration = np.copy(direction)
+
+            acceleration *= self.speed
+            self.velocity = 2.0*acceleration + self.velocity
+            velocityMag = np.linalg.norm(self.velocity)
+            self.velocity *= self.speed/velocityMag
+
+            newLoc = self.loc + self.velocity
+            currentDistance = np.linalg.norm(creepPos - self.loc)
+            newDistance = np.linalg.norm(creepPos - newLoc)
+
+            if abs(currentDistance + newDistance) < 1.2*self.speed:
+                self.velocity /= np.linalg.norm(self.velocity)
+                self.velocity *= currentDistance
+                self.hit = True
+
+            self.loc += self.velocity
+        elif not self.creep.live:
+            self.hit = True
+
+    def get_position(self):
+        return self.loc[0], self.loc[1]
+
+    def has_hit(self):
+        return self.hit
+
+    def __str__(self):
+        return 'pos:' + str(self.loc) + ' velocity: ' + str(self.velocity)
+
