@@ -6,10 +6,15 @@ var hostParts = location.origin.match(re);
 var host = hostParts[1].replace(/^http/, 'ws');
 var port = 9000;
 var ws = new WebSocket(host + port);
+// var ws = new WebSocket('ws://localhost:9000/');
 
 var userID = 0;
 
 ws.onopen = function() {
+    ws.send(JSON.stringify({
+        type: 'identifier',
+        secret: 'PLAYER'
+    }));
     console.log('CONNECT');
 };
 
@@ -21,6 +26,7 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
+        console.log(msg.type);
         // var id = msg.id; placeholder
         var id = userID;
         if (msg.type == 'chat') {
@@ -100,7 +106,19 @@ ws.creepRequest = function(id, msg) {
     }));
 };
 
-ws.requestGameStart = function(is, msg) {
+ws.leaveLobby = function(id, msg) {
+    // msg format is:
+    // {
+    //     "lobbyID": 1,
+    // }
+    ws.send(JSON.stringify({
+        type: "leave_lobby",
+        id: id,
+        msg: msg
+    }));
+};
+
+ws.requestGameStart = function(id, msg) {
     // msg format is:
     // {
     //     "lobbyID": 1,
