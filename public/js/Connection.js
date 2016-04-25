@@ -5,8 +5,8 @@ var hostParts = location.origin.match(re);
 
 var host = hostParts[1].replace(/^http/, 'ws');
 var port = 9000;
-// var ws = new WebSocket(host + port);
-var ws = new WebSocket('ws://localhost:9000/');
+var ws = new WebSocket(host + port);
+// var ws = new WebSocket('ws://localhost:9000/');
 
 var userID = 0;
 

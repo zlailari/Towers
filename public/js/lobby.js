@@ -33,12 +33,14 @@ var LobbyManager = function () {
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
-            if (numPlayers == maxPlayers) {
-                this.buttons[id].addClass('disabled');
-                this.buttons[id].off('click');
-            } else {
-                this.buttons[id].removeClass('disabled');
-                this.buttons[id].click(
+            if (numPlayers == maxPlayers &&
+                this.buttons[id].hasClick) {
+                this.buttons[id].bt.addClass('disabled');
+                this.buttons[id].bt.off('click');
+                this.buttons[id].hasClick = false;
+            } else if (this.buttons[id].hasClick == false){
+                this.buttons[id].bt.removeClass('disabled');
+                this.buttons[id].bt.click(
                     {id: id, this: this}, function(event) {
                     var id = event.data.id;
                     var msg = {
@@ -46,6 +48,7 @@ var LobbyManager = function () {
                     };
                     ws.requestLobby(userID, msg);
                 });
+                this.buttons[id].hasClick = true;
             }
         } else if (id == this.joinedID) {
             this.msgs[id].remove();
@@ -148,7 +151,7 @@ var LobbyManager = function () {
             '<div class="lobby-item"/>')
             .appendTo($("#lobby.modal-body"));
 
-        this.buttons[id] = $(
+        this.buttons[id] = {bt: $(
           '<button type="button" class="btn btn-default">'
           + 'Join Lobby'
           + '</button>')
@@ -159,7 +162,8 @@ var LobbyManager = function () {
                 };
                 ws.requestLobby(userID, msg);
             })
-            .appendTo(this.divs[id]);
+            .appendTo(this.divs[id]),
+            hasClick: true};
 
         this.msgs[id] = $(
             '<p>Lobby ' + id + ' has ' + numPlayers
@@ -167,9 +171,11 @@ var LobbyManager = function () {
             + '</p>')
             .prependTo(this.divs[id]);
 
-        if (numPlayers == maxPlayers) {
-            this.buttons[id].addClass('disabled');
-            this.buttons[id].off('click');
+        if (numPlayers == maxPlayers &&
+            this.buttons[id].hasClick) {
+            this.buttons[id].bt.addClass('disabled');
+            this.buttons[id].bt.off('click');
+            this.buttons[id].hasClick = false;
         }
 
         $("#lobby").modal("handleUpdate");
