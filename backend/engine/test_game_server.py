@@ -35,7 +35,7 @@ class GameRunner:
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
         #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
-        levels = Levels.createLevel(0,0.3,2,1,3,"Default")
+        levels = Levels.createLevel(0,0.3,2,1,1,"Default")
         self.game_state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 100)
 
 

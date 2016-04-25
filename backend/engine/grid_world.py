@@ -1,5 +1,5 @@
 from engine.tile_effects import tile_effects
-#from engine.tile_effects import fire
+from engine.effects import fire
 from queue import *
 from heapq import *
 import math

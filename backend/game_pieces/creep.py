@@ -12,8 +12,8 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-        if type == "Default": return Creep((0,0),"default",.01,100,id, 15)
-        if type == "Strong": return Creep((0,0),"strong",.0033,500,id,30)
+        if type == "Default": return Creep((0,0),"default",.02,100,id, 15)
+        if type == "Strong": return Creep((0,0),"strong",.01,500,id,30)
         if type == "Weak": return Creep((0,0),"weak",.02,50,id,30)
 
     factory = staticmethod(factory)
@@ -38,7 +38,7 @@ class Creep:
 
          #   print(self.cellPos)
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
-            self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
+            #self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
             #gameState.world.effects[self.loc[0]][self.loc[1]].effects[0].on_move(self,gameState); We assumed there was fire.
 
          #   print(self.dest(path))
@@ -52,6 +52,7 @@ class Creep:
                     self.killPlayer(gameState)
                 else:
                     self.cellPos = edgeConf[1] #this is where the creep should be in the next cell
+                    print("THE PIECE SHOULD MOVE HERE: "+str(self.cellPos[0])+" "+str(self.cellPos[1]))
                     pos = self.move_on_path(path) #move to next cell
             else:
                 self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
@@ -93,4 +94,4 @@ class Creep:
         self.speed += amount
 
     def __str__(self):  # like toString() in Java
-        return 'speed,loc,health: ' + str(self.speed) + ',' + str(self.loc) + ',' + str(self.health)
+        return 'speed,loc,health,cellpos: ' + str(self.speed) + ',' + str(self.loc) + ',' + str(self.health) + ',' + str(self.cellPos)
