@@ -30,7 +30,7 @@ ws.onmessage = function(event) {
         if (msg.type == 'assign_id') {
             userID = msg['user_id'];
             tabManager.addTab(userID);
-            beginGame(userID);
+            playerGrids[userID] = myGrid;
         }
         if (msg.type == 'chat') {
             if (chatbox) {

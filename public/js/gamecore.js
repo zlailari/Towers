@@ -1,12 +1,11 @@
 /* Create a global for the grid */
 
 var myGrid = null;
-var playerGrids = [], allCreeps = [], allAttacks = [];
+var playerGrids = [], allCreeps =[], allAttacks = [];
 var playerState = null, creeps = null, attacksMade = null;
 
-beginGame = function(userID) {
-    lobbyManager.enterLobby();
-    initTabs();
+$(document).ready(function()  {
+    // lobbyManager.enterLobby();
     var gameCan = document.getElementById("gameFrame");
     var gameCtx = gameCan.getContext("2d");
 
@@ -16,8 +15,7 @@ beginGame = function(userID) {
     gameCan.width = 800;
 
     var gameOffset = $("#gameFrame").offset();
-    playerGrids[userID] = new Grid(gameCan, gameCtx, gameOffset);
-    myGrid = playerGrids[userID];
+    myGrid = new Grid(gameCan, gameCtx, gameOffset);
 
     allCreeps = [];
     allAttacks = [];
@@ -48,7 +46,9 @@ beginGame = function(userID) {
 
     function render () {
         var currentTab = tabManager.getCurrentTab();
-        myGrid = playerGrids[currentTab];
+        if (currentTab != -1) {
+            myGrid = playerGrids[currentTab];
+        }
         var gameOffset = $("#gameFrame").offset();
         myGrid.setOffset(gameOffset);
         myGrid.draw(gameCtx);
@@ -76,4 +76,4 @@ beginGame = function(userID) {
             }
         }
     }
-};
+});

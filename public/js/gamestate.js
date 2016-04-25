@@ -123,11 +123,10 @@ var TabManager = function() {
     };
 };
 
-
-function initTabs () {
+$(document).ready(function () {
     stateManager = new StateManager();
     tabManager = new TabManager();
     $(document).keydown(function(e) {
         tabManager.keypress(e);
     });
-}
+});
