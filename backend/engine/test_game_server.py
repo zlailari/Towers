@@ -1,4 +1,5 @@
 """This file acts as the main entrance point to the server."""
+import threading
 from game_pieces.creep import Creep
 from engine.clock import Clock
 # from game_states.main_menu import MainMenu
@@ -75,8 +76,18 @@ class GameRunner:
             if message and message['type'] == MSG.game_start_request.name:
                 self.start_game()
                 break
+            elif message and message['type'] == MSG.instance_request.name:
+                self.spawn_new_game()
+
+    def spawn_new_game(self):
+        print('spawning new game instance')
+        new_game = GameRunner(create_server=False)
+        t = threading.Thread(target=new_game.run)
+        t.daemon = True
+        t.start()
 
     def start_game(self):
+        print('starting game.')
         clock = Clock(TICK_LEN)
         clock.tick()  # tick once to initialize counter
 
@@ -92,6 +103,8 @@ class GameRunner:
             pass
 
     def process_message(self, msg):
+        if msg['type'] == MSG.instance_request.name:
+            self.spawn_new_game()
         if msg['type'] == MSG.tower_request.name:
             # Make a new tower TODO, don't hardcode stuff
             tower = Tower(
@@ -117,10 +130,6 @@ class GameRunner:
                     'reason': 'TODO'
                 }
             self.network.send_message(towerUpdate)
-        elif msg['type'] == MSG.instance_request.name:
-            # the server is requesting that we create a new game instance
-            info('trying to create a new game instance...', INFO_ID)
-            GameRunner(create_server=False)
 
     def game_loop(self, dt):
         # Receive and process messages from clients

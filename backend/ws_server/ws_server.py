@@ -64,6 +64,8 @@ def get_players_lobby(player_connection):
     for lobby in lobbies:
         if lobby.has_player(player_connection):
             return lobby
+
+    print('couldnt find lobby for player {}'.format(player_connection))
     return None
 
 
@@ -301,7 +303,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         lobby = get_players_lobby(self)
         if lobby:
             lobby.remove_player(self)
-            broadcast_lobby_list()
+        broadcast_lobby_list()
 
     def broadcast_message(self, msg):
         """Broadcast a message to rest of the sender's lobby"""
@@ -318,4 +320,4 @@ class GameServerProtocol(WebSocketServerProtocol):
         lobby = get_players_lobby(self)
         if lobby:
             lobby.remove_player(self)
-            broadcast_lobby_list()
+        broadcast_lobby_list()
