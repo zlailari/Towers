@@ -8,9 +8,19 @@ Make sure you have virtualenv installed
 
 > pip install autobahn
 
+Install numpy:
+
+> pip install numpy
+
 Setup npm and start server:
 
 > npm install
+
+May have to insall manually:
+
+> npm install express
+
+> npm install body-parser
 
 ## To Run:
 #### Easy Mode:
