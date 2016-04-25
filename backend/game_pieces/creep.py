@@ -12,13 +12,10 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-<<<<<<< HEAD
-        if type == "Default": return Creep((0,0),"default",.3,100,id, 15)
-        if type == "Strong": return Creep((0,0),"strong",.1,500,id,30)
-        if type == "Weak": return Creep((0,0),"weak",.6,50,id,30)
-=======
-        if type == "Default": return Creep((0,0),"default",.05,100,id, 15)
->>>>>>> 95b99bd991ad7e09f2a3c0823cea0b5e42b6e963
+        if type == "Default": return Creep((0,0),"default",.01,100,id, 15)
+        if type == "Strong": return Creep((0,0),"strong",.0033,500,id,30)
+        if type == "Weak": return Creep((0,0),"weak",.02,50,id,30)
+
     factory = staticmethod(factory)
 
     def __init__(self, loc, creep_type, speed, health,id, bounty):
@@ -35,7 +32,6 @@ class Creep:
     # We generate a json for movement. Passed up to the gameplay_state
     def update(self, path, dt, gameState):
         if self.live:
-<<<<<<< HEAD
 
             for i in range(0, len(self.modifiers)):
                 self.modifiers[i].update()
@@ -48,14 +44,7 @@ class Creep:
          #   print(self.dest(path))
          #   print(direction)
          #   print(self.cellPos)
-=======
-            direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
-            #self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
 
-            print(self.dest(path))
-            print(direction)
-            print(self.cellPos)
->>>>>>> 95b99bd991ad7e09f2a3c0823cea0b5e42b6e963
             edgeConf = engine.util.edge(self.cellPos , direction) #check if at edge and new position
 
             if edgeConf[0]: # returns true if creep should move
