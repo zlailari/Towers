@@ -39,11 +39,13 @@ var LobbyManager = function () {
         }
         this.inLobby = true;
         $("#lobby").modal({backdrop:'static'});
-        this.newLbBtn.bt = $(
-            '<button type="button" class="btn btn-default">'
-            + 'Create New Lobby'
-            + '</button>')
-            .appendTo('#lobby.modal-footer');
+        if (this.newLbBtn.bt == null) {
+            this.newLbBtn.bt = $(
+                '<button type="button" class="btn btn-default">'
+                + 'Create New Lobby'
+                + '</button>')
+                .appendTo('#lobby.modal-footer');
+        }
         this.enableNewLobby();
     };
 
@@ -51,8 +53,24 @@ var LobbyManager = function () {
         if (!this.inLobby) {
             return;
         }
+        this.destroy();
         this.inLobby = false;
         $("#lobby").modal("hide");
+    };
+
+    this.beginCountdown = function(time) {
+        var intervalID = setInterval(function(self) {
+            $('#lobby.modal-title').
+            text("Game starting in: " + time);
+            if (--time == 0) {
+                window.clearInterval(intervalID);
+                var msg = {
+                    "lobby_id" : this.joinedID
+                };
+                ws.requestGameStart(userID, msg);
+                self.exitLobby();
+            }
+        }, 1000, this);
     };
 
     this.updateText = function(id, numPlayers, maxPlayers) {
@@ -87,6 +105,9 @@ var LobbyManager = function () {
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
+            if (numPlayers == maxPlayers) {
+                this.beginCountdown(10);
+            }
         }
         $("#lobby").modal("handleUpdate");
     };
@@ -142,17 +163,18 @@ var LobbyManager = function () {
             '<div class="lobby-item"/>')
             .appendTo($("#lobby.modal-body"));
 
-
         this.buttons[0] = $(
             '<button type="button" class="btn btn-default">'
             + 'Request Game Start'
             + '</button>')
-            .click({id: id}, function(event) {
+            .click({this:this, id: id}, function(event) {
+                var self = event.data.this;
                 var id = event.data.id;
                 var msg = {
                     "lobby_id" : id
                 };
                 ws.requestGameStart(userID, msg);
+                self.exitLobby();
             })
             .appendTo(this.divs[-1]);
 
@@ -222,7 +244,7 @@ var LobbyManager = function () {
             } else {
                 this.remove(id);
             }
-        } else {
+        } else if (this.searching) {
             this.addNewLobby(id, numPlayers, maxPlayers);
         }
     };
