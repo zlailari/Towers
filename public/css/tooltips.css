@@ -1,0 +1,41 @@
+.tower-tooltip + .tooltip.top .tooltip-inner {
+    background-color: navy;
+}
+
+.tower-tooltip + .tooltip.top .tooltip-arrow {
+    border-top-color: navy;
+}
+
+.creep-tooltip + .tooltip.top .tooltip-inner {
+    background-color: green;
+}
+
+.creep-tooltip + .tooltip.top .tooltip-arrow {
+    border-top-color: green;
+}
+
+#denied + .tooltip.top .tooltip-inner {
+    background-color: red;
+}
+
+#denied + .tooltip.top .tooltip-arrow {
+    border-top-color: red;
+}
+
+.tooltip.top .tooltip-inner {
+    white-space: pre-wrap;
+    background-color: navy;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color: navy;
+}
+
+.tooltip.bottom .tooltip-inner {
+    white-space: pre-wrap;
+    background-color: navy;
+}
+
+.tooltip.bottom .tooltip-arrow {
+    border-bottom-color: navy;
+}
