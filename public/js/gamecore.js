@@ -13,8 +13,7 @@ $(document).ready(function()  {
     $(document).keydown(function(e) {
         tabManager.keypress(e);
     });
-
-    lobbyManager.enterLobby();
+    lobbyManager.init();
     gameCan = document.getElementById("gameFrame");
     gameCtx = gameCan.getContext("2d");
 

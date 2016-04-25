@@ -42,6 +42,9 @@ class GameRunner:
         self.game_states = []
         self.player_states = {}
 
+    def add_player(self, player_id):
+        """Add a player to the game by giving them their own state."""
+
         self.level_creeps_spawn_timers = [5]
         self.spawnCreeps = [Creep.factory("Default", 0)]
         initialSpawn = 0
@@ -67,8 +70,6 @@ class GameRunner:
         for i in range(0, 30):
             self.spawnCreeps.append(Creep.factory("Default", i))
 
-    def add_player(self, player_id):
-        """Add a player to the game by giving them their own state."""
         levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
         state = GameplayState(levels, WORLD_WIDTH,
                               WORLD_HEIGHT, 100, 100, player_id)
