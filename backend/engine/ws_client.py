@@ -1,12 +1,11 @@
 """This module will act as the client owned by the gameloop to communicate
 with the server.  The organization looks like of like this:
-    
     game_loop has a ws_client
     ws_server is running
-    
+
     game_loop client (this module) connects to ws_server
     players connect to ws_server
-    
+
     game_loop sends messages to players by
     using this client to talk to the server,
     and then the server relays those on to the
@@ -28,6 +27,7 @@ client_protocol = None
 
 INFO_ID = 'client'
 
+
 def get_client_protocol():
     assert client_protocol is not None
     return client_protocol
@@ -37,9 +37,9 @@ def start_client_thread(address="127.0.0.1", port=9000):
     # address and port are those of the server
 
     # start the client running in a new process
-    #p = Process(target=start_client, args=(address, port))
-    #p.start()
-    #print("client was started.")
+    # p = Process(target=start_client, args=(address, port))
+    # p.start()
+    # print("client was started.")
     t = threading.Thread(target=start_client, args=(address, port))
     t.daemon = True
     t.start()

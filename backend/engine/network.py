@@ -13,9 +13,10 @@ from ws_server.identifiers import GAMELOOP_CLIENT_IDENTIFIER
 import engine.ws_client as client
 import time
 from engine.util import utf, obj_from_json, dump_obj_dict, info
-from engine.message_enum import *
+from engine.message_enum import MSG
 
-INFO_ID = 'network.py' # used to id info output
+INFO_ID = 'network.py'  # used to id info output
+
 
 class Network:
 
@@ -33,8 +34,9 @@ class Network:
         client.start_client_thread(address, port)
 
         # there is actually a time-dependent operation going on here
-        # the client starts in a new thread, so we need to give it adequate time to spin up.
-        time.sleep(3)
+        # the client starts in a new thread, so we need to give it adequate
+        # time to spin up.
+        time.sleep(3)  # TODO: this will block the server, create setter method
 
         # this is the main handle for communicating with the server.
         # this Network class will abstract it into accessible methods like
@@ -43,16 +45,17 @@ class Network:
         assert self.client_protocol is not None
 
         # identify this client as the gameloop server
-        identifier_msg = {'type': MSG.identifier.name, 'secret': GAMELOOP_CLIENT_IDENTIFIER}
+        identifier_msg = {'type': MSG.identifier.name,
+                          'secret': GAMELOOP_CLIENT_IDENTIFIER}
         self.send_message(identifier_msg)
-        # TODO: add a server response to this handshake to confirm the server has accepted you
 
     def receive(self):
         """Returns a Python object (a dict) built from the raw JSON.
         This is done by popping messages off our network client."""
         as_json = self.client_protocol.receive_message()
         if as_json is None:
-            # if there are no messages, receive_message() returns None, and so do we
+            # if there are no messages, receive_message() returns None, and so
+            # do we
             return None
         as_obj = obj_from_json(as_json)
         info('received (type {}): {}'.format(as_obj['type'], as_json), INFO_ID)
@@ -60,7 +63,8 @@ class Network:
 
     def send_message(self, data):
         """Given a Python object, convert it to JSON and send it."""
-        assert 'type' in data, 'cannot send a message without giving it a type (e.g., the message dict needs an entry called "type"). (data object: {})'.format(str(data))
+        assert 'type' in data, 'cannot send a message without giving it a type (e.g., the message dict needs an entry called "type"). (data object: {})'.format(
+            str(data))
         as_json = json.dumps(data, default=dump_obj_dict)
         info('sending message: {}'.format(as_json), INFO_ID)
         self.client_protocol.sendMessage(utf(as_json), isBinary=False)
