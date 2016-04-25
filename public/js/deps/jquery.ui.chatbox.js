@@ -2,7 +2,7 @@
  * Copyright 2010, Wen Pu (dexterpu at gmail dot com)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
- * 
+ *
  * Check out http://www.cs.illinois.edu/homes/wenpu1/chatbox.html for document
  *
  * Depends on jquery.ui.core, jquery.ui.widiget, jquery.ui.effect
@@ -87,6 +87,9 @@
                     $("#gameFrame").focus();
                     $(".ui-icon.ui-icon-minusthick").text("Expand");
                 }
+            },
+            focus: function() {
+              this.elem.uiChatboxInputBox.focus();
             },
             _scrollToBottom: function() {
                 var box = this.elem.uiChatboxLog;
@@ -249,5 +252,5 @@
     _position: function(offset) {
       this.uiChatbox.css("right", offset);
     }
-  } );
+  });
 }(jQuery));

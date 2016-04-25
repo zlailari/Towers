@@ -12,7 +12,7 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-        if type == "Default": return Creep((0,0),"default",.3,100,id, 15)
+        if type == "Default": return Creep((0,0),"default",.05,100,id, 15)
     factory = staticmethod(factory)
 
     def __init__(self, loc, creep_type, speed, health,id, bounty):
@@ -28,12 +28,9 @@ class Creep:
     # We generate a json for movement. Passed up to the gameplay_state
     def update(self, path, dt, gameState):
         if self.live:
-         #   print(self.cellPos)
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
-            self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
-         #   print(self.dest(path))
-         #   print(direction)
-         #   print(self.cellPos)
+            #self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
+
             edgeConf = engine.util.edge(self.cellPos , direction) #check if at edge and new position
 
             if edgeConf[0]: # returns true if creep should move
@@ -42,6 +39,8 @@ class Creep:
                 else:
                     self.cellPos = edgeConf[1] #this is where the creep should be in the next cell
                     pos = self.move_on_path(path) #move to next cell
+            else:
+                self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
             return {self.id : self.loc} , {self.id : (self.cellPos)}
 
     def move_to_dest(self, dest):
@@ -74,6 +73,9 @@ class Creep:
 
     def adjust_speed(self, amount):
         self.speed += amount
+
+    def get_position(self):
+        return self.loc[0], self.loc[1]
 
     def __str__(self):  # like toString() in Java
         return 'speed,loc,health: ' + str(self.speed) + ',' + str(self.loc) + ',' + str(self.health)

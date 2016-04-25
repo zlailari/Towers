@@ -30,7 +30,6 @@ def format_msg(text, m_type):
     """Format the given string text to JSON for sending over the network."""
     return utf(json.dumps({'text': text, 'type': m_type.name}))
 
-
 def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
     p = Process(target=start_server, args=(address, port))
@@ -70,8 +69,8 @@ def send_lobby_list(player_connection):
     for lobby in lobbies:
         lobby_info = {
             'id': lobby.get_id(),
-            'amnt_players': lobby.size(),
-            'max_size': MAX_LOBBY_SIZE,
+            'num_players': lobby.size(),
+            'max_players': MAX_LOBBY_SIZE,
             'players': []
         }
         message['lobbies'].append(lobby_info)
@@ -81,6 +80,7 @@ def send_lobby_list(player_connection):
 
 
 def broadcast_lobby_list():
+    # TODO this only sends to people already in lobbies...
     everyone = []
     for lobby in lobbies:
         everyone.extend(lobby.get_players())

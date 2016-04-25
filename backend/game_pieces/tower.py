@@ -1,6 +1,5 @@
 import engine.util
-import json 
-
+import json
 
 class Tower:
     """Basic implementation of a tower"""

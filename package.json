@@ -1,0 +1,10 @@
+{
+  "name": "Towers",
+  "version": "0.0.1",
+  "description": "Towers and creeps",
+  "dependencies": {
+    "body-parser": "~1.15.0",
+    "express": "~4.13.4",
+    "victor": "^1.1.0"
+  }
+}

@@ -73,6 +73,7 @@ class GameplayState(GameState):
             'attacksMade': attacksMade,
             'path' : str(bestPath)
         }
+
         return update
 
     def set_level(self, level):

@@ -5,24 +5,46 @@
 */
 
 
-.tower-tooltip + .tooltip.top > .tooltip-inner {
+.tower-tooltip + .tooltip.top .tooltip-inner {
     background-color: navy;
 }
 
-.tower-tooltip + .tooltip.top > .tooltip-arrow {
+.tower-tooltip + .tooltip.top .tooltip-arrow {
     border-top-color: navy;
 }
 
-.creep-tooltip + .tooltip.top > .tooltip-inner {
+.creep-tooltip + .tooltip.top .tooltip-inner {
     background-color: green;
 }
 
-.creep-tooltip + .tooltip.top > .tooltip-arrow {
+.creep-tooltip + .tooltip.top .tooltip-arrow {
     border-top-color: green;
 }
 
-.tooltip.top > .tooltip-inner {
-    white-space:pre-wrap;
+#denied + .tooltip.top .tooltip-inner {
+    background-color: red;
+}
+
+#denied + .tooltip.top .tooltip-arrow {
+    border-top-color: red;
+}
+
+.tooltip.top .tooltip-inner {
+    white-space: pre-wrap;
+    background-color: navy;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color: navy;
+}
+
+.tooltip.bottom .tooltip-inner {
+    white-space: pre-wrap;
+    background-color: navy;
+}
+
+.tooltip.bottom .tooltip-arrow {
+    border-bottom-color: navy;
 }
 
 .side-creep {
@@ -72,22 +94,47 @@
 
 .sideBarItem {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     margin: auto;
     max-width: 200px;
 }
 
-.sideButton {
-    margin: 5px;
+.sideBarImages {
+    display: flex;
+    flex-flow: row wrap;
 }
 
-.tab {
+.stateBarItem {
+    display: flex;
+    flex-flow: row wrap;
+    width: 50%;
+    height: 40px;
+}
+
+.stateBarItem + #tabs{
+    justify-content: flex-start;
+}
+
+.stateBarItem + #gameInfo{
+    justify-content: flex-end;
+}
+
+.tabNotClicked {
     margin: 5px;
     border-top: 4px solid #bdc3c7;
     border-bottom: 4px solid #bdc3c7;
     border-left: 4px solid #bdc3c7;
     border-right: 4px solid #bdc3c7;
-    padding: 1px;
+    padding: 2px;
+}
+
+.tabClicked {
+    margin: 5px;
+    border-top: 4px solid #262626;
+    border-bottom: 4px solid #262626;
+    border-left: 4px solid #262626;
+    border-right: 4px solid #262626;
+    padding: 2px;
 }
 
 .ui-chatbox {
@@ -182,3 +229,15 @@
     /*max-height: 325px;*/
 }
 
+.lobby-item{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#lobby .modal-dialog {
+    width: 70%;
+}
