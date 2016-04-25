@@ -33,6 +33,20 @@ var LobbyManager = function () {
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
+            if (numPlayers == maxPlayers) {
+                this.buttons[id].addClass('disabled');
+                this.buttons[id].off('click');
+            } else {
+                this.buttons[id].removeClass('disabled');
+                this.buttons[id].click(
+                    {id: id, this: this}, function(event) {
+                    var id = event.data.id;
+                    var msg = {
+                        "lobbyID" : id
+                    };
+                    ws.requestLobby(userID, msg);
+                });
+            }
         } else if (id == this.joinedID) {
             this.msgs[id].remove();
             this.msgs[id] = $(
@@ -40,10 +54,6 @@ var LobbyManager = function () {
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
-
-            if (numPlayers == maxPlayers) {
-                this.buttons[id].addClass('disabled');
-            }
         }
         $("#lobby").modal("handleUpdate");
     };
@@ -136,12 +146,11 @@ var LobbyManager = function () {
           + 'Join Lobby'
           + '</button>')
             .click({id: id, this: this}, function(event) {
-            var id = event.data.id;
-            var msg = {
-                "lobbyID" : id
-            };
-            ws.requestLobby(userID, msg);
-            event.data.this.joinLobby(id, 0, 0);
+                var id = event.data.id;
+                var msg = {
+                    "lobbyID" : id
+                };
+                ws.requestLobby(userID, msg);
             })
             .appendTo(this.divs[id]);
 
@@ -150,6 +159,11 @@ var LobbyManager = function () {
             + '/' + maxPlayers + ' players'
             + '</p>')
             .prependTo(this.divs[id]);
+
+        if (numPlayers == maxPlayers) {
+            this.buttons[id].addClass('disabled');
+            this.buttons[id].off('click');
+        }
 
         $("#lobby").modal("handleUpdate");
     };

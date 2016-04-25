@@ -48,16 +48,16 @@ ws.onmessage = function(event) {
             var lobbies = msg['lobbies'];
             for (var i = 0; i < lobbies.length; ++i) {
                 var lobby = lobbies[i];
-                var lbid = lobby['lobbyID'];
-                var num = lobby['numPlayers'];
-                var max = lobby['maxPlayers'];
+                var lbid = lobby['lobby_id'];
+                var num = lobby['num_players'];
+                var max = lobby['max_players'];
                 lobbyManager.update(lbid, num, max);
             }
         }
         if (msg.type == 'lobby_joined') {
-            var lbid2 = msg['lobbyID'];
-            var num2 = msg['numPlayers'];
-            var max2 = msg['maxPlayers'];
+            var lbid2 = msg['lobby_id'];
+            var num2 = msg['num_players'];
+            var max2 = msg['max_players'];
             lobbyManager.joinLobby(lbid2, num2, max2);
         } else if (msg.type == 'lobby_dne') {
             // placeholder
