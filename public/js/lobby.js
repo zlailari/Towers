@@ -34,12 +34,15 @@ var LobbyManager = function () {
     };
 
     this.enterLobby = function() {
-        if (this.inLobby) {
-            return;
-        }
         this.inLobby = true;
+        if (!chatbox.isVisible()) {
+            chatbox.toggleBox();
+        }
         this.searching = true;
         $("#lobby").modal({backdrop:'static'});
+    };
+
+    this.init = function() {
         if (this.newLbBtn.bt == null) {
             this.newLbBtn.bt = $(
                 '<button type="button" class="btn btn-default">'
@@ -48,15 +51,10 @@ var LobbyManager = function () {
                 .appendTo('#lobby.modal-footer');
         }
         this.enableNewLobby();
-        if (!chatbox.isVisible()) {
-            chatbox.toggleBox();
-        }
+        this.searching = true;
     };
 
     this.exitLobby = function() {
-        if (!this.inLobby) {
-            return;
-        }
         this.destroy();
         this.inLobby = false;
         $("#lobby").modal("hide");
@@ -227,9 +225,6 @@ var LobbyManager = function () {
         $("#lobby").modal("handleUpdate");
     };
     this.update = function(id, numPlayers, maxPlayers) {
-        if (!this.inLobby) {
-            return;
-        }
         if (this.divs.hasOwnProperty(id)) {
             if (maxPlayers > 0) {
                 this.updateText(id, numPlayers, maxPlayers);

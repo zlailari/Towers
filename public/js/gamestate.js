@@ -86,10 +86,10 @@ var TabManager = function() {
                 + "Hotkey: 1";
             text = "My Game";
         } else {
-            text = "Player " + nextIndex;
-            tooltip = "Click to see player " + nextIndex + "'s game\n"
-            + "Hotkey: " + parseFloat(nextIndex + 1);
             ++nextIndex;
+            text = "Player " + index;
+            tooltip = "Click to see player " + index + "'s game\n"
+            + "Hotkey: " + parseFloat(index + 1);
         }
         this.tabs[id] = $('<div class="tabNotClicked"'
             + 'data-toggle="tooltip"'
@@ -119,6 +119,6 @@ var TabManager = function() {
         } else {
             this.tabs[id].appendTo($('#tabs'));
         }
-        this.hotKeyCodes[id] = keyCodeStart + nextIndex;
+        this.hotKeyCodes[id] = keyCodeStart + index;
     };
 };

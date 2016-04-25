@@ -5,8 +5,8 @@ var hostParts = location.origin.match(re);
 
 var host = hostParts[1].replace(/^http/, 'ws');
 var port = 9000;
-// var ws = new WebSocket(host + port);
-var ws = new WebSocket('ws://localhost:9000/');
+var ws = new WebSocket(host + port);
+// var ws = new WebSocket('ws://localhost:9000/');
 
 var userID = 0;
 
@@ -137,7 +137,7 @@ ws.newLobbyRequest = function(id, msg) {
 ws.leaveLobby = function(id, msg) {
     // msg format is:
     // {
-    //     "lobbyID": 1,
+    //     "lobby_id": 1,
     // }
     ws.send(JSON.stringify({
         type: "leave_lobby",
@@ -149,7 +149,7 @@ ws.leaveLobby = function(id, msg) {
 ws.requestGameStart = function(id, msg) {
     // msg format is:
     // {
-    //     "lobbyID": 1,
+    //     "lobby_id": 1,
     // }
     ws.send(JSON.stringify({
         type: "game_start_request",
@@ -161,9 +161,9 @@ ws.requestGameStart = function(id, msg) {
 ws.requestLobby = function(id, msg) {
     // msg format is:
     // {
-    //     "lobbyID": 1,
+    //     "lobby_id": 1,
     // }
-    // console.log("Requested lobby " + msg['lobbyID']);
+    // console.log("Requested lobby " + msg['lobby_id']);
     ws.send(JSON.stringify({
         type: "lobby_request",
         player_id: id,

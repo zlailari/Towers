@@ -185,3 +185,63 @@
     min-height: 650px;
     /*max-height: 325px;*/
 }
+.introduction {
+    font-family: 'Oswald', sans-serif;
+
+    position: absolute;
+    height: 500px;
+    width: 750px;
+    top: 100px;
+    left: 100px;
+
+    margin: 0 auto;
+
+    border: 1px solid #fff;
+    border-radius: 3px;
+
+    text-align: center;
+    background-color: #1f1d20;
+
+    box-shadow: 0 0 70px rgba(90,80,155,0.6);
+    z-index: 5;
+}
+
+.button-default {
+    width: 7em;
+
+    margin: auto;
+    margin-top: 16px;
+    padding: 15px 20px 16px;
+
+    border: 1px solid #fff;
+    border-radius: 3px;
+
+    text-decoration: none;
+    color: #333;
+    background-color: #eee;
+    font-size: 26px;
+}
+
+.button-default:hover {
+    text-decoration: none;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.welcome {
+    margin-top: 100px !important;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
+    overflow-x: hidden;
+}
