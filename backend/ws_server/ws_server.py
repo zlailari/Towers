@@ -181,7 +181,7 @@ def auto_add_player(player_connection):
     else:
         info('ERROR! Player tried to connect, but no lobbies were available!', INFO_ID)
         # ask an existing gameloop server to spinoff another gameloop server
-        get_lobby_engine(lobbies[0]).sendMessage(format_msg(
+        lobbies[0].get_game_client().sendMessage(format_msg(
             'master ws server requesting new game instance', MSG.instance_request
         ))
 
