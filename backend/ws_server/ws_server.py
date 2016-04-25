@@ -54,7 +54,10 @@ def assign_user_id(connection):
     user_ids[connection] = uid
     connection.sendMessage(format_msg(
         'you have been assigned a user id',
-        MSG.assign_id
+        MSG.assign_id,
+        {
+            'user_id': uid
+        }
     ))
 
 
@@ -270,7 +273,10 @@ class GameServerProtocol(WebSocketServerProtocol):
             ))
             self.broadcast_to_lobby(format_msg(
                 'the game is starting, get ready',
-                MSG.game_start
+                MSG.game_start,
+                {
+                    'players': [user_ids[player] for player in lobby.get_players()]
+                }
             ), send_self=True)
 
     def handleIdentifier(self, json_msg):
