@@ -122,11 +122,3 @@ var TabManager = function() {
         this.hotKeyCodes[id] = keyCodeStart + nextIndex;
     };
 };
-
-$(document).ready(function () {
-    stateManager = new StateManager();
-    tabManager = new TabManager();
-    $(document).keydown(function(e) {
-        tabManager.keypress(e);
-    });
-});

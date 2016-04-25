@@ -26,7 +26,7 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
-        var id = msg.id;
+        var id = msg.player_id;
         if (msg.type == 'assign_id') {
             userID = msg['user_id'];
             tabManager.addTab(userID);
@@ -92,7 +92,7 @@ ws.sendChat = function(id, msg) {
     // msg is literally msg
     ws.send(JSON.stringify({
         type: "chat",
-        id: id,
+        player_id: id,
         msg: msg
     }));
 };
@@ -106,7 +106,7 @@ ws.towerRequest = function(id, msg) {
     // }
     ws.send(JSON.stringify({
         type: "tower_request",
-        id: id,
+        player_id: id,
         msg: msg
     }));
 };
@@ -118,7 +118,7 @@ ws.creepRequest = function(id, msg) {
     // }
     ws.send(JSON.stringify({
         type: "creep_request",
-        id: id,
+        player_id: id,
         msg: msg
     }));
 };
@@ -129,7 +129,7 @@ ws.newLobbyRequest = function(id, msg) {
     // }
     ws.send(JSON.stringify({
         type: "new_lobby_request",
-        id: id,
+        player_id: id,
         msg: msg
     }));
 };
@@ -141,7 +141,7 @@ ws.leaveLobby = function(id, msg) {
     // }
     ws.send(JSON.stringify({
         type: "leave_lobby",
-        id: id,
+        player_id: id,
         msg: msg
     }));
 };
@@ -153,7 +153,7 @@ ws.requestGameStart = function(id, msg) {
     // }
     ws.send(JSON.stringify({
         type: "game_start_request",
-        id: id,
+        player_id: id,
         msg: msg
     }));
 };
@@ -166,7 +166,7 @@ ws.requestLobby = function(id, msg) {
     // console.log("Requested lobby " + msg['lobbyID']);
     ws.send(JSON.stringify({
         type: "lobby_request",
-        id: id,
+        player_id: id,
         msg: msg
     }));
 };

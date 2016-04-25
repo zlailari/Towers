@@ -48,6 +48,9 @@ var LobbyManager = function () {
                 .appendTo('#lobby.modal-footer');
         }
         this.enableNewLobby();
+        if (!chatbox.isVisible()) {
+            chatbox.toggleBox();
+        }
     };
 
     this.exitLobby = function() {
@@ -57,6 +60,9 @@ var LobbyManager = function () {
         this.destroy();
         this.inLobby = false;
         $("#lobby").modal("hide");
+        if (chatbox.isVisible()) {
+            chatbox.toggleBox();
+        }
     };
 
     this.beginCountdown = function(time) {
@@ -82,8 +88,7 @@ var LobbyManager = function () {
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
-            if (numPlayers == maxPlayers &&
-                this.buttons[id].hasClick) {
+            if (numPlayers == maxPlayers && this.buttons[id].hasClick) {
                 this.buttons[id].bt.addClass('disabled');
                 this.buttons[id].bt.off('click');
                 this.buttons[id].hasClick = false;
@@ -124,25 +129,11 @@ var LobbyManager = function () {
     };
 
     this.destroy = function() {
-        for (var i in this.divs) {
-            if (this.divs.hasOwnProperty(i)) {
-                this.divs[i].remove();
-                delete this.divs[i];
+        for (var id in this.divs) {
+            if (this.divs.hasOwnProperty(id)) {
+                this.remove(id);
             }
         }
-
-        for (var j in this.msgs) {
-            if (this.msgs.hasOwnProperty(j)) {
-                delete this.msgs[j];
-            }
-        }
-
-        for (var k in this.buttons) {
-            if (this.buttons.hasOwnProperty(k)) {
-                delete this.buttons[k];
-            }
-        }
-        $("#lobby").modal("handleUpdate");
     };
 
     this.joinLobby = function(id, numPlayers, maxPlayers) {
@@ -227,8 +218,7 @@ var LobbyManager = function () {
             + '</p>')
             .prependTo(this.divs[id]);
 
-        if (numPlayers == maxPlayers &&
-            this.buttons[id].hasClick) {
+        if (numPlayers == maxPlayers && this.buttons[id].hasClick) {
             this.buttons[id].bt.addClass('disabled');
             this.buttons[id].bt.off('click');
             this.buttons[id].hasClick = false;
@@ -251,5 +241,3 @@ var LobbyManager = function () {
         }
     };
 };
-
-lobbyManager = new LobbyManager();

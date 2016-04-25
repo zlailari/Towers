@@ -24,9 +24,9 @@ class GameplayState(GameState):
         self.all_creeps = []
         self.all_towers = []
         #self.set_level(level)
-        self.lives = lives;
-        self.gold = gold; # starting gold
-        self.counter = 0;
+        self.lives = lives
+        self.gold = gold # starting gold
+        self.counter = 0
 
         #bill.kill(yanming);
 
@@ -104,3 +104,4 @@ class GameplayState(GameState):
             if cr.loc == loc:
                 return True
         return False
+

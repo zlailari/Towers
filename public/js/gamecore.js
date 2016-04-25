@@ -4,10 +4,19 @@ var myGrid = null;
 var playerGrids = [], allCreeps =[], allAttacks = [];
 var playerState = null, creeps = null, attacksMade = null;
 
+var gameCan, gameCtx;
+
 $(document).ready(function()  {
-    // lobbyManager.enterLobby();
-    var gameCan = document.getElementById("gameFrame");
-    var gameCtx = gameCan.getContext("2d");
+    lobbyManager = new LobbyManager();
+    stateManager = new StateManager();
+    tabManager = new TabManager();
+    $(document).keydown(function(e) {
+        tabManager.keypress(e);
+    });
+
+    lobbyManager.enterLobby();
+    gameCan = document.getElementById("gameFrame");
+    gameCtx = gameCan.getContext("2d");
 
     var frequency = 60;
 
