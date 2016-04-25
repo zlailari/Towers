@@ -1,14 +1,16 @@
 /* Create a global for the grid */
 
 var myGrid = null;
-var playerGrids = null, allCreeps, allAttacks = null;
+var playerGrids = [], allCreeps =[], allAttacks = [];
 var playerState = null, creeps = null, attacksMade = null;
+
+var gameCan, gameCtx;
 
 $(document).ready(function()  {
     lobbyManager.enterLobby();
-    initTabs();
-    var gameCan = document.getElementById("gameFrame");
-    var gameCtx = gameCan.getContext("2d");
+
+    gameCan = document.getElementById("gameFrame");
+    gameCtx = gameCan.getContext("2d");
 
     var frequency = 60;
 
@@ -16,10 +18,7 @@ $(document).ready(function()  {
     gameCan.width = 800;
 
     var gameOffset = $("#gameFrame").offset();
-    playerGrids = [];
-    playerGrids[0] = new Grid(gameCan, gameCtx, gameOffset);
-    playerGrids[1] = new Grid(gameCan, gameCtx, gameOffset);
-    myGrid = playerGrids[0];
+    myGrid = new Grid(gameCan, gameCtx, gameOffset);
 
     allCreeps = [];
     allAttacks = [];
@@ -50,7 +49,9 @@ $(document).ready(function()  {
 
     function render () {
         var currentTab = tabManager.getCurrentTab();
-        myGrid = playerGrids[currentTab];
+        if (currentTab != -1) {
+            myGrid = playerGrids[currentTab];
+        }
         var gameOffset = $("#gameFrame").offset();
         myGrid.setOffset(gameOffset);
         myGrid.draw(gameCtx);

@@ -105,7 +105,7 @@ class GameRunner:
     def process_message(self, msg):
         if msg['type'] == MSG.instance_request.name:
             self.spawn_new_game()
-        if msg['type'] == MSG.tower_request.name:
+        elif msg['type'] == MSG.tower_request.name:
             # Make a new tower TODO, don't hardcode stuff
             tower = Tower(
                 (msg['msg']['x'], msg['msg']['y']),

@@ -38,6 +38,7 @@ var LobbyManager = function () {
             return;
         }
         this.inLobby = true;
+        this.searching = true;
         $("#lobby").modal({backdrop:'static'});
         if (this.newLbBtn.bt == null) {
             this.newLbBtn.bt = $(

@@ -26,9 +26,12 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
-        console.log(msg);
-        // var id = msg.id; placeholder
         var id = userID;
+        if (msg.type == 'assign_id') {
+            userID = msg['user_id'];
+            tabManager.addTab(userID);
+            playerGrids[userID] = myGrid;
+        }
         if (msg.type == 'chat') {
             if (chatbox) {
                 chatbox.addMsg(msg.id, msg.msg);
@@ -57,6 +60,7 @@ ws.onmessage = function(event) {
                 var lbid = lobby['lobby_id'];
                 var num = lobby['num_players'];
                 var max = lobby['max_players'];
+                var players = lobby['players'];
                 lobbyManager.update(lbid, num, max);
             }
         }
@@ -67,6 +71,19 @@ ws.onmessage = function(event) {
             lobbyManager.joinLobby(lbid2, num2, max2);
         } else if (msg.type == 'lobby_dne') {
             // placeholder
+        }
+
+        if (msg.type == 'game_start') {
+            var players2 = msg['players'];
+            for (var k = 0; k < players2.length; k++) {
+                var newID = players2[k];
+                tabManager.addTab(newID);
+                if (!playerGrids.hasOwnProperty(newID)) {
+                    var gameOffset2 = $("#gameFrame").offset();
+                    playerGrids[newID] = new Grid(gameCan, gameCtx, gameOffset2);
+                }
+            }
+            lobbyManager.exitLobby();
         }
     }
 };
