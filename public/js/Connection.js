@@ -26,7 +26,7 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
-        console.log(msg.type);
+        console.log(msg);
         // var id = msg.id; placeholder
         var id = userID;
         if (msg.type == 'chat') {
@@ -61,7 +61,6 @@ ws.onmessage = function(event) {
             }
         }
         if (msg.type == 'lobby_joined') {
-            console.log(msg);
             var lbid2 = msg['lobby_id'];
             var num2 = msg['num_players'];
             var max2 = msg['max_players'];

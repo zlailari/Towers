@@ -35,6 +35,7 @@ def format_msg(text, m_type, msg=None):
     else:
         return utf(json.dumps(full))
 
+
 def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
     p = Process(target=start_server, args=(address, port))
@@ -116,7 +117,7 @@ def add_player(player_connection, lobby_id):
             )
             player_connection.sendMessage(message)
             # the lobby changed, so broadcast that to everyone
-            # broadcast_lobby_list()
+            broadcast_lobby_list()
         else:
             # lobby was full
             player_connection.sendMessage(format_msg(
@@ -236,6 +237,8 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.handleInstanceRequest(as_string)
         elif m_type == MSG.lobby_request.name:
             self.handleLobbyJoinRequest(as_string)
+        elif m_type == MSG.leave_lobby.name:
+            self.handleLeaveLobby(as_string)
         else:
             info('warning! server does not handle message with type {}'.format(
                 m_type), INFO_ID)
@@ -257,7 +260,7 @@ class GameServerProtocol(WebSocketServerProtocol):
     def handleLobbyJoinRequest(self, json_msg):
         unpacked = obj_from_json(json_msg)
         requested_lobby_id = int(unpacked['id'])
-        requested_lobby_id = int(unpacked['msg']['lobbyID'])
+        requested_lobby_id = int(unpacked['msg']['lobby_id'])
         add_player(self, requested_lobby_id)
 
     def handleInstanceRequest(self, json_msg):
@@ -283,6 +286,12 @@ class GameServerProtocol(WebSocketServerProtocol):
 
     def handleTowerUpdate(self, json_msg):
         self.broadcast_message(json_msg)
+
+    def handleLeaveLobby(self, json_msg):
+        lobby = get_players_lobby(self)
+        if lobby:
+            lobby.remove_player(self)
+            broadcast_lobby_list()
 
     def broadcast_message(self, msg):
         """Broadcast a message to rest of the sender's lobby"""

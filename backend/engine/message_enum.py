@@ -2,4 +2,4 @@ from enum import Enum
 
 # enums for determing types of messages
 # MSG_TYPES.chat = 1, etc.
-MSG = Enum('MSG', 'chat tower_update tower_request game_update identifier info instance_request reconnect_request lobby_info lobby_full lobby_dne lobby_joined lobby_request')
+MSG = Enum('MSG', 'chat tower_update tower_request game_update identifier info instance_request reconnect_request lobby_info lobby_full lobby_dne lobby_joined lobby_request leave_lobby')
