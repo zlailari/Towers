@@ -4,7 +4,7 @@ var myGrid = null;
 var playerGrids = [], allCreeps = [], allAttacks = [];
 var playerState = null, creeps = null, attacksMade = null;
 
-beginGame = function() {
+beginGame = function(userID) {
     lobbyManager.enterLobby();
     initTabs();
     var gameCan = document.getElementById("gameFrame");
@@ -14,6 +14,10 @@ beginGame = function() {
 
     gameCan.height = 600;
     gameCan.width = 800;
+
+    var gameOffset = $("#gameFrame").offset();
+    playerGrids[userID] = new Grid(gameCan, gameCtx, gameOffset);
+    myGrid = playerGrids[userID];
 
     allCreeps = [];
     allAttacks = [];

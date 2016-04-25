@@ -30,9 +30,7 @@ ws.onmessage = function(event) {
         if (msg.type == 'assign_id') {
             userID = msg['user_id'];
             tabManager.addTab(userID);
-            var gameOffset = $("#gameFrame").offset();
-            playerGrids[userID] = new Grid(gameCan, gameCtx, gameOffset);
-            beginGame();
+            beginGame(userID);
         }
         if (msg.type == 'chat') {
             if (chatbox) {
