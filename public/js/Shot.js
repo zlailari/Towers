@@ -74,7 +74,7 @@ var Projectile = function(ctx, towerID, creepID, speed) {
             var newDistance = creepPos.distance(newPos);
             // Checks to see if the projectile will hit, with a fudge factor
             // of 3 pixels
-            if (abs(currentDistance + newDistance - this.speed) < 3.0) {
+            if (Math.abs(currentDistance + newDistance - this.speed) < 3.0) {
                 this.hit = true;
                 this.velocity.normalize();
                 this.velocity.multiplyScalar(currentDistance);
