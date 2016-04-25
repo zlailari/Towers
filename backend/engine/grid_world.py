@@ -1,5 +1,5 @@
 from engine.tile_effects import tile_effects
-from engine.effects import fire
+from engine.effects import *
 from queue import *
 from heapq import *
 import math
@@ -38,6 +38,8 @@ class GridWorld:
     def add_effect(self,loc, type):
         if(type=="fire"):
             self.effects[loc[0]][loc[1]].append(fire(25))
+        if(type == "stun"):
+            self.effects[loc[0]][loc[1]].append(stun(10))
 
 
 

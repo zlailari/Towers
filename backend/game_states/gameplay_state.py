@@ -123,3 +123,10 @@ class GameplayState(GameState):
             if cr.loc == loc and cr.live:
                 return True
         return False
+
+    def apply_mod_loc(self, loc, mod):
+        for cr in self.all_creeps:
+            if cr.loc == loc and cr.live:
+                cr.modify(mod)
+        
+
