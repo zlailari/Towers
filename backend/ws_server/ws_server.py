@@ -259,7 +259,6 @@ class GameServerProtocol(WebSocketServerProtocol):
         unpacked = obj_from_json(json_msg)
         requested_lobby_id = int(unpacked['id'])
         requested_lobby_id = int(unpacked['msg']['lobby_id'])
-        print('handleLobbyJoinRequest {}'.format(self))
         add_player(self, requested_lobby_id)
 
     def handleInstanceRequest(self, json_msg):
