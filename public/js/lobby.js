@@ -188,6 +188,7 @@ var LobbyManager = function () {
                 // when user eixts
                 self.destroy();
                 self.joinedID = -1;
+                self.searching = true;
                 var id = event.data.id;
                 var msg = {
                     "lobby_id" : id

@@ -5,6 +5,7 @@ The game_loop has a client that connects to this server.
 Each player has their web-browser client which connects to this server.
 
 More details are in engin/ws_client.py."""
+import random
 import json
 import asyncio
 from multiprocessing import Process
@@ -21,6 +22,7 @@ from ws_server import Lobby
 # connected = []
 lobbies = []  # lobbies are lists of users in different games
 all_connections = []
+user_ids = {}
 MAX_LOBBY_SIZE = 4  # how many users can be in a lobby?
 lobby_count = 0  # used to determine new lobby IDs, don't decrement
 
@@ -41,6 +43,19 @@ def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
     p = Process(target=start_server, args=(address, port))
     p.start()
+
+
+def assign_user_id(connection):
+    rand_range = 999999
+    uid = random.randint(1, rand_range)
+    while uid in user_ids.values():
+        uid = random.randint(1, rand_range)
+
+    user_ids[connection] = uid
+    connection.sendMessage(format_msg(
+        'you have been assigned a user id',
+        MSG.assign_id
+    ))
 
 
 def create_lobby(gameengine_client):
@@ -80,7 +95,7 @@ def send_lobby_list(player_connection):
             'lobby_id': lobby.get_id(),
             'num_players': lobby.size(),
             'max_players': MAX_LOBBY_SIZE,
-            'players': []
+            'players': [user_ids[player] for player in lobby.get_players()]
         }
         message['lobbies'].append(lobby_info)
 
@@ -253,6 +268,10 @@ class GameServerProtocol(WebSocketServerProtocol):
                 'start running the game',
                 MSG.game_start_request
             ))
+            self.broadcast_to_lobby(format_msg(
+                'the game is starting, get ready',
+                MSG.game_start
+            ), send_self=True)
 
     def handleIdentifier(self, json_msg):
         """Handle identification messages, such as the server
@@ -263,6 +282,7 @@ class GameServerProtocol(WebSocketServerProtocol):
             create_lobby(self)
             info("game engine client registered", INFO_ID)
         elif unpacked['secret'] == PLAYER_IDENTIFIER:
+            assign_user_id(self)
             all_connections.append(self)
             send_lobby_list(self)
         else:
@@ -287,17 +307,17 @@ class GameServerProtocol(WebSocketServerProtocol):
         ))
 
     def handleChat(self, json_msg):
-        self.broadcast_message(json_msg)
+        self.broadcast_to_lobby(json_msg)
 
     def handleGameUpdate(self, json_msg):
-        self.broadcast_message(json_msg)
+        self.broadcast_to_lobby(json_msg)
 
     def handleTowerRequest(self, json_msg):
         lobby = get_players_lobby(self)
         get_lobby_engine(lobby).sendMessage(utf(json_msg), False)
 
     def handleTowerUpdate(self, json_msg):
-        self.broadcast_message(json_msg)
+        self.broadcast_to_lobby(json_msg)
 
     def handleLeaveLobby(self, json_msg):
         lobby = get_players_lobby(self)
@@ -305,12 +325,11 @@ class GameServerProtocol(WebSocketServerProtocol):
             lobby.remove_player(self)
         broadcast_lobby_list()
 
-    def broadcast_message(self, msg):
+    def broadcast_to_lobby(self, msg, send_self=False):
         """Broadcast a message to rest of the sender's lobby"""
         lobby = get_players_lobby(self)
         for client in lobby.get_all():
-            # Don't send to yourself
-            if client != self:
+            if send_self or client != self:
                 client.sendMessage(utf(msg), False)
 
     def onClose(self, wasClean, code, reason):
