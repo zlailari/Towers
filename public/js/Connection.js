@@ -44,24 +44,23 @@ ws.onmessage = function(event) {
                 towerDenied(reason);
             }
         }
-        if (msg.type == 'lobby_update') {
+        if (msg.type == 'lobby_info') {
             var lobbies = msg['lobbies'];
-            for (var lobby in lobbies) {
+            for (var i = 0; i < lobbies.length; ++i) {
+                var lobby = lobbies[i];
                 var lbid = lobby['lobbyID'];
                 var num = lobby['numPlayers'];
                 var max = lobby['maxPlayers'];
-                if (msg['allLobbies']) {
-                    lobbyManager.addNewLobby(lbid, num, max);
-                } else if (msg['lobbyUpdate']) {
-                    if (max > 0) {
-                        lobbyManager.updateText(lbid, num, max);
-                    } else {
-                        lobbyManager.remove(id);
-                    }
-                } else if (msg['lobbyJoined']) {
-                    lobbyManager.joinLobby(lbid, num, max);
-                }
+                lobbyManager.update(lbid, num, max);
             }
+        }
+        if (msg.type == 'lobby_joined') {
+            var lbid2 = msg['lobbyID'];
+            var num2 = msg['numPlayers'];
+            var max2 = msg['maxPlayers'];
+            lobbyManager.joinLobby(lbid2, num2, max2);
+        } else if (msg.type == 'lobby_dne') {
+            // placeholder
         }
     }
 };
@@ -106,11 +105,11 @@ ws.requestGameStart = function(is, msg) {
     // {
     //     "lobbyID": 1,
     // }
-    /* ws.send(JSON.stringify({
+    ws.send(JSON.stringify({
         type: "game_start_request",
         id: id,
         msg: msg
-    }));*/
+    }));
 };
 
 ws.requestLobby = function(id, msg) {
@@ -118,10 +117,10 @@ ws.requestLobby = function(id, msg) {
     // {
     //     "lobbyID": 1,
     // }
-    console.log("Requested lobby " + msg['lobbyID']);
-    /* ws.send(JSON.stringify({
+    // console.log("Requested lobby " + msg['lobbyID']);
+    ws.send(JSON.stringify({
         type: "lobby_request",
         id: id,
         msg: msg
-    }));*/
+    }));
 };

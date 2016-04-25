@@ -40,16 +40,22 @@ var LobbyManager = function () {
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
+
+            if (numPlayers == maxPlayers) {
+                this.buttons[id].addClass('disabled');
+            }
         }
         $("#lobby").modal("handleUpdate");
     };
 
     this.remove = function(id) {
-        this.divs[id].remove();
-        delete this.divs[id];
-        delete this.msgs[id];
-        delete this.buttons[id];
-        $("#lobby").modal("handleUpdate");
+        if (this.divs.hasOwnProperty(id)) {
+            this.divs[id].remove();
+            delete this.divs[id];
+            delete this.msgs[id];
+            delete this.buttons[id];
+            $("#lobby").modal("handleUpdate");
+        }
     };
 
     this.destroy = function() {
@@ -146,6 +152,17 @@ var LobbyManager = function () {
             .prependTo(this.divs[id]);
 
         $("#lobby").modal("handleUpdate");
+    };
+    this.update = function(id, numPlayers, maxPlayers) {
+        if (this.divs.hasOwnProperty(id)) {
+            if (maxPlayers > 0) {
+                this.updateText(id, numPlayers, maxPlayers);
+            } else {
+                this.remove(id);
+            }
+        } else {
+            this.addNewLobby(id, numPlayers, maxPlayers);
+        }
     };
 };
 
