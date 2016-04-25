@@ -69,8 +69,14 @@ class GameRunner:
         self.game_state.build_tower(Tower((8, 8), 1, 1, 1, 0))
 
     def run(self):
-        """Run this game, along with all its network requirements, like the websocket server.
-        Runs in a blocking infinite loop."""
+        # wait until a request comes in to start the game, then start the game
+        while True:
+            message = self.network.receive()
+            if message and message['type'] == MSG.game_start_request.name:
+                self.start_game()
+                break
+
+    def start_game(self):
         clock = Clock(TICK_LEN)
         clock.tick()  # tick once to initialize counter
 

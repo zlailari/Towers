@@ -230,15 +230,27 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.handleTowerUpdate(as_string)
         elif m_type == MSG.identifier.name:
             self.handleIdentifier(as_string)
-        elif m_type == MSG.instance_request.name:
+        elif m_type == MSG.instance_request.name or m_type == MSG.new_lobby_request.name:
             self.handleInstanceRequest(as_string)
         elif m_type == MSG.lobby_request.name:
             self.handleLobbyJoinRequest(as_string)
         elif m_type == MSG.leave_lobby.name:
             self.handleLeaveLobby(as_string)
+        elif m_type == MSG.game_start_request.name:
+            self.handleStartGame(as_string)
         else:
             info('warning! server does not handle message with type {}'.format(
                 m_type), INFO_ID)
+
+    def handleStartGame(self, json_msg):
+        # start the sender's game
+        lobby = get_players_lobby(self)
+        if lobby is not None:
+            game = lobby.get_game_client()
+            game.sendMessage(format_msg(
+                'start running the game',
+                MSG.game_start_request
+            ))
 
     def handleIdentifier(self, json_msg):
         """Handle identification messages, such as the server

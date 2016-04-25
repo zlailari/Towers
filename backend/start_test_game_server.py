@@ -13,5 +13,6 @@ if '-h' in args or 'help' in args:
     print("\tprint_on_receive: print to terminal every time a message is received from the network to the gameloop.")
     quit()
 
-game_runner = GameRunner(print_gametick=print_gametick, print_on_receive=print_on_receive)
+game_runner = GameRunner(print_gametick=print_gametick,
+                         print_on_receive=print_on_receive)
 game_runner.run()
