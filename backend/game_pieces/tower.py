@@ -37,7 +37,6 @@ class Tower:
                             myAttacks.append(laser(self.id,creep.id))
         return myAttacks;
 
-
     def can_fire(self):
         """True if the cooldown has warn off."""
         return self.time_since_last_fire >= self.cooldown

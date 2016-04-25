@@ -72,8 +72,8 @@ class GameplayState(GameState):
         }
 
         #print("PlayerState:"+str(playerState) + " \nAttacks Made:" + str(attacksMade)) #needed for testing purposes
-        for i in range(0,len(self.all_creeps)):
-           print("Creep"+str(i)+": "+str(self.all_creeps[i]))
+  #      for i in range(0,len(self.all_creeps)):
+  #         print("Creep"+str(i)+": "+str(self.all_creeps[i]))
 
         # Updates all effects in the world (decreases their counter by one). Each gridworld holds an effects 2d array that stores a tile_effects object.
         for i in range(0,self.world.width):
@@ -95,6 +95,10 @@ class GameplayState(GameState):
         tower = Tower_factory.factory(towerType,coordinates, len(self.all_towers))
 
         # TODO, send why build_tower failed (money, illegal position, etc)
+        if tower.tower_type == "failure":
+            print(tower.tower_type)
+            return False
+
         if tower.price > self.gold:
             return False
 
