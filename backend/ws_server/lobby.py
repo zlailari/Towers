@@ -15,6 +15,9 @@ class Lobby:
     def get_players(self):
         return self.players
 
+    def get_max_size(self):
+        return self.max_size
+
     def get_all(self):
         """Get all the participants of this lobby, including the game engine."""
         return self.players + [self.game_client]

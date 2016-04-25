@@ -28,10 +28,12 @@ INFO_ID = 'server'
 
 def format_msg(text, m_type, msg=None):
     """Format the given string text to JSON for sending over the network."""
+    full = {'text': text, 'type': m_type.name}
     if msg is not None:
-        return utf(json.dumps({'text': text, 'type': m_type.name}.update(msg)))
+        full.update(msg)
+        return utf(json.dumps(full))
     else:
-        return utf(json.dumps({'text': text, 'type': m_type.name}))
+        return utf(json.dumps(full))
 
 def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
@@ -71,7 +73,7 @@ def send_lobby_list(player_connection):
     }
     for lobby in lobbies:
         lobby_info = {
-            'id': lobby.get_id(),
+            'lobby_id': lobby.get_id(),
             'num_players': lobby.size(),
             'max_players': MAX_LOBBY_SIZE,
             'players': []
@@ -99,19 +101,20 @@ def get_lobby_engine(lobby):
 
 def add_player(player_connection, lobby_id):
     """Add a player to the lobby which has lobby_id."""
-    if lobby_id in range(lobbies):
+    if lobby_id in range(len(lobbies)):
         lobby = lobbies[lobby_id]
         if not lobby.is_full():
             lobby.add_player(player_connection)
-            player_connection.sendMessage(format_msg(
+            message = format_msg(
                 'joined lobby {}'.format(lobby_id),
                 MSG.lobby_joined,
                 {
-                    'lobbyID': lobby_id,
-                    'maxPlayers': lobby.get_id(),
-                    'numPlayers': lobby.size()
+                    'lobby_id': lobby.get_id(),
+                    'max_players': lobby.get_max_size(),
+                    'num_players': lobby.size()
                 }
-            ))
+            )
+            player_connection.sendMessage(message)
             # the lobby changed, so broadcast that to everyone
             # broadcast_lobby_list()
         else:
@@ -218,7 +221,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         message = obj_from_json(as_string)
         assert 'type' in message
         m_type = message['type']
-        info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
+        # info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
         if m_type == MSG.chat.name:
             self.handleChat(as_string)
         elif m_type == MSG.tower_request.name:

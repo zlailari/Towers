@@ -26,6 +26,7 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
+        console.log(msg.type);
         // var id = msg.id; placeholder
         var id = userID;
         if (msg.type == 'chat') {
@@ -50,27 +51,23 @@ ws.onmessage = function(event) {
             }
         }
         if (msg.type == 'lobby_info') {
-            console.log(msg);
             var lobbies = msg['lobbies'];
-            console.log(lobbies);
             for (var i = 0; i < lobbies.length; ++i) {
-                lobby = lobbies[i];
-                console.log(lobby);
-                var lbid = lobby['id'];
+                var lobby = lobbies[i];
+                var lbid = lobby['lobby_id'];
                 var num = lobby['num_players'];
                 var max = lobby['max_players'];
-                if (msg['allLobbies']) {
-                    lobbyManager.addNewLobby(lbid, num, max);
-                } else if (msg['lobby_info']) {
-                    if (max > 0) {
-                        lobbyManager.updateText(lbid, num, max);
-                    } else {
-                        lobbyManager.remove(id);
-                    }
-                } else if (msg['lobbyJoined']) {
-                    lobbyManager.joinLobby(lbid, num, max);
-                }
+                lobbyManager.update(lbid, num, max);
             }
+        }
+        if (msg.type == 'lobby_joined') {
+            console.log(msg);
+            var lbid2 = msg['lobby_id'];
+            var num2 = msg['num_players'];
+            var max2 = msg['max_players'];
+            lobbyManager.joinLobby(lbid2, num2, max2);
+        } else if (msg.type == 'lobby_dne') {
+            // placeholder
         }
     }
 };
@@ -115,11 +112,11 @@ ws.requestGameStart = function(is, msg) {
     // {
     //     "lobbyID": 1,
     // }
-    /* ws.send(JSON.stringify({
+    ws.send(JSON.stringify({
         type: "game_start_request",
         id: id,
         msg: msg
-    }));*/
+    }));
 };
 
 ws.requestLobby = function(id, msg) {
@@ -127,10 +124,10 @@ ws.requestLobby = function(id, msg) {
     // {
     //     "lobbyID": 1,
     // }
-    console.log("Requested lobby " + msg['lobbyID']);
-    /* ws.send(JSON.stringify({
+    // console.log("Requested lobby " + msg['lobbyID']);
+    ws.send(JSON.stringify({
         type: "lobby_request",
         id: id,
         msg: msg
-    }));*/
+    }));
 };

@@ -90,5 +90,5 @@ class GameClientProtocol(WebSocketClientProtocol):
 
     def onMessage(self, payload, isBinary):
         assert isBinary is False
-        info('received: {}'.format(payload.decode('utf8')), INFO_ID)
+        # info('received: {}'.format(payload.decode('utf8')), INFO_ID)
         self.message_que.append(payload.decode('utf8'))
