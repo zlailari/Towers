@@ -24,22 +24,22 @@ def edge(position, direction):
 
     if direction[X_COORD] == -1 and direction[Y_COORD] == 0: #going left
         if position[X_COORD] <= 0:  # currently at left edge of box
-            return True, (1, position[Y_COORD] % 1) # move to right edge of next box
+            return True, (1, position[Y_COORD]) # move to right edge of next box
         return False, (-1,0)
 
     elif direction[X_COORD] == 1 and direction[Y_COORD] == 0: #going right
         if position[X_COORD] >= 1:# right edge of box
-            return True, (0, position[Y_COORD] % 1) # move to left edge of next box
+            return True, (0, position[Y_COORD]) # move to left edge of next box
         return False, (1,0)
 
     elif direction[Y_COORD] == -1 and direction[X_COORD] == 0: #going down
         if position[Y_COORD] <= 0:  # bottom edge of box
-            return True, (position[X_COORD] % 1, 1)  # move to top of next box
+            return True, (position[X_COORD], 1)  # move to top of next box
         return False, (0,-1)
 
     elif direction[Y_COORD] == 1 and direction[X_COORD] == 0: #going up
         if position[Y_COORD] >= 1:  # top edge of box
-            return True, (position[X_COORD] % 1, 0) #move to bottom of next box
+            return True, (position[X_COORD], 0) #move to bottom of next box
         return False, (0,1)
 
     elif direction[X_COORD] == -1 and direction[Y_COORD] == -1: # going top left
@@ -84,13 +84,13 @@ def at_top(coord):
     return coord[Y_COORD]<=0
 
 def at_bottom(coord):
-    return coord[Y_COORD]>=0
+    return coord[Y_COORD]>=1
 
 def at_left(coord):
     return coord[X_COORD]<=0
 
 def at_right(coord):
-    return coord[Y_COORD]>=0
+    return coord[X_COORD]>=1
 
 
 def utf(i):

@@ -120,6 +120,6 @@ class GameplayState(GameState):
 
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:
-            if cr.loc == loc:
+            if cr.loc == loc and cr.live:
                 return True
         return False
