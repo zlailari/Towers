@@ -8,15 +8,25 @@ var LobbyManager = function () {
     this.buttons = [];
     this.msgs = [];
     this.searching = true;
+    this.joinedID = -1;
 
     this.updateText = function(id, numPlayers, maxPlayers) {
-    this.msgs[id].remove();
-
-    this.msgs[id] = $(
-        '<p>Lobby ' + id + ' has ' + numPlayers
-        + '/' + maxPlayers + ' players'
-        + '</p>')
-        .prependTo(this.divs[id]);
+        if (this.searching) {
+            this.msgs[id].remove();
+            this.msgs[id] = $(
+                '<p>Lobby ' + id + ' has ' + numPlayers
+                + '/' + maxPlayers + ' players'
+                + '</p>')
+                .prependTo(this.divs[id]);
+        } else if (id == this.joinedID) {
+            this.msgs[id].remove();
+            this.msgs[id] = $(
+                '<p>You are in lobby ' + id + ' has ' + numPlayers
+                + '/' + maxPlayers + ' players'
+                + '</p>')
+                .prependTo(this.divs[id]);
+        }
+        $("#lobby").modal("handleUpdate");
     };
 
     this.remove = function(id) {
@@ -51,12 +61,13 @@ var LobbyManager = function () {
 
     this.joinLobby = function(id, numPlayers, maxPlayers) {
         this.searching = false;
+        this.joinedID = id;
         this.destroy();
         this.divs[id] = $(
             '<div class="lobby-item"/>')
             .appendTo($("#lobby.modal-body"));
 
-        this.msgs[0] = $(
+        this.msgs[id] = $(
             '<p>You are in lobby ' + id + ' has ' + numPlayers
             + '/' + maxPlayers + ' players'
             + '</p>')
@@ -82,9 +93,11 @@ var LobbyManager = function () {
             + 'Exit Lobby'
             + '</button>')
             .click({this: this}, function(event) {
+                var self = event.data.this;
                 // TODO send request for lobby information
                 // when user eixts
-                event.data.this.destroy();
+                self.destroy();
+                self.joinedID = -1;
                 exitLobby();
             })
             .appendTo(this.divs[-1]);
@@ -122,6 +135,9 @@ var LobbyManager = function () {
 };
 
 function enterLobby () {
+    if (lobbyManager) {
+        return;
+    }
     $("#lobby").modal({backdrop:'static'});
     lobbyManager = new LobbyManager();
     for (var i = 0; i < 3; i++) {

@@ -77,5 +77,8 @@ class Creep:
     def adjust_speed(self, amount):
         self.speed += amount
 
+    def get_position(self):
+        return self.loc[0], self.loc[1]
+
     def __str__(self):  # like toString() in Java
         return 'speed,loc,health: ' + str(self.speed) + ',' + str(self.loc) + ',' + str(self.health)

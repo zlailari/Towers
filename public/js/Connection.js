@@ -21,14 +21,14 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
+        // var id = msg.id; placeholder
+        var id = userID;
         if (msg.type == 'chat') {
             if (chatbox) {
                 chatbox.addMsg(msg.id, msg.msg);
             }
         }
         if (msg.type == 'game_update') {
-            // var id = msg.id; placeholder
-            var id = userID;
             if (id == userID) {
                 playerState = msg['playerState'];
             }
@@ -36,12 +36,34 @@ ws.onmessage = function(event) {
             allCreeps[id] = msg['creeps'];
         }
         if (msg.type == 'tower_update') {
-            if (msg['towerAccepted'] && myGrid) {
-                myGrid.towerAccepted(msg['tower']);
-            } else {
+            if (msg['towerAccepted'] && playerGrids[id]) {
+                playerGrids[id].towerAccepted(msg['tower']);
+            } else if (id == userID) {
                 var reason = msg['reason'];
                 var reason = "Placeholder";
                 towerDenied(reason);
+            }
+        }
+        if (msg.type == 'lobby_update') {
+            if (!lobbyManager) {
+                enterLobby();
+            }
+            var lobbies = msg['lobbies'];
+            for (var lobby in lobbies) {
+                var lbid = lobby['lobbyID'];
+                var num = lobby['numPlayers'];
+                var max = lobby['maxPlayers'];
+                if (msg['allLobbies']) {
+                    lobbyManager.addNewLobby(lbid, num, max);
+                } else if (msg['lobbyUpdate']) {
+                    if (max > 0) {
+                        lobbyManager.updateText(lbid, num, max);
+                    } else {
+                        lobbyManager.remove(id);
+                    }
+                } else if (msg['lobbyJoined']) {
+                    lobbyManager.joinLobby(lbid, num, max);
+                }
             }
         }
     }

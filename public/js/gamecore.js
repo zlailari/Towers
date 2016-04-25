@@ -48,6 +48,8 @@ $(document).ready(function()  {
         }
     }
 
+    var projectiles = [];
+
     function render () {
         var currentTab = tabManager.getCurrentTab();
         myGrid = playerGrids[currentTab];
@@ -72,9 +74,22 @@ $(document).ready(function()  {
                     for (var shot in attacksMade[attack]) {
                         // getting each towerID, creepID pair
                         // this is why we must send stuff as array of objects...
-                        drawShot(gameCtx, attack, attacksMade[attack][shot]);
+                        // drawShot(gameCtx, attack, attacksMade[attack][shot]);
+
+                        projectiles.push(
+                            new Projectile(
+                            gameCtx, attack,
+                            attacksMade[attack][shot], 10)
+                            );
                     }
                 }
+            }
+        }
+        for (var k = projectiles.length - 1; k >= 0; k--) {
+            if (projectiles[k].hit) {
+                projectiles.splice(k, 1);
+            } else {
+                projectiles[k].draw();
             }
         }
     }

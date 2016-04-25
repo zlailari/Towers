@@ -17,12 +17,13 @@ $(document).ready(function() {
     });
     chatbox = box.chatbox("option", "boxManager");
     // Minimize the chatbox after instantiation
-    chatbox.toggleBox();
+    // chatbox.toggleBox();
 
     // Add listener to expand the chat box when enter is pressed
     $(document).keydown(function(e) {
         // key value 13 = 'Enter'
         if (e.which == $.ui.keyCode.ENTER) {
+            chatbox.focus();
             if (!chatbox.isVisible()) {
                 chatbox.toggleBox();
             }
