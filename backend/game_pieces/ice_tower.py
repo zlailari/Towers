@@ -13,14 +13,14 @@ class Ice_tower (Tower):
 
         self.loc = loc
         self.health = 25 #?
-        self.cooldown = 1
+        self.cooldown = 3
         self.fire_range = 2
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "ice_tower"
 
         self.price = 30
         self.upgrade_price = 10
-        self.damage = 10
+        self.damage = 15
         self.time_since_last_fire = self.cooldown
         self.upgrade_level = 0
         self.max_upgrade_level = 3
@@ -48,7 +48,7 @@ class Ice_tower (Tower):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
         target.take_damage(self.damage , gameState)
-        target.modify(Frozen_modifier(target))
+        target.modify(Frozen_modifier(target.id, gameState))
 
     def upgrade(self):
         if self.upgrade_level < self.max_upgrade_level:

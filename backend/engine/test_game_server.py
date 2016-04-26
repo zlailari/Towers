@@ -45,7 +45,7 @@ class GameRunner:
         """Add a player to the game by giving them their own state."""
 
         #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
-        levels = Levels.createLevel(10,0.5,10,5,3,"Default")
+        levels = Levels.createLevel(5,0.5,10,5,3,"Default")
         state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 10000, player_id)
 
         self.game_states.append(state)

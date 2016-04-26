@@ -22,6 +22,7 @@ class Creep:
         self.loc = loc
         self.type = creep_type
         self.speed = speed # Gotta go fast
+        self.base_speed = speed # needed for slow modifiers
         self.health = health
         self.cellPos = (0,0)
         self.id = id # The unique ID of the creep
@@ -30,7 +31,7 @@ class Creep:
         self.modifiers = []
 
 
-    #Calls creep move on all the effect tiles.
+    #Calls creep move on all the effect tiles.????
     def creepMove(self, gamestate):
         temp = gamestate.world.effects[self.loc[0]][self.loc[1]].effects
         for i in range(0, len(temp)):
@@ -40,8 +41,18 @@ class Creep:
     def update(self, path, dt, gameState):
         if self.live:
 
+            #Update counters for creep modifiers
             for i in range(0, len(self.modifiers)):
-                self.modifiers[i].update()
+                self.modifiers[i].update(self.id, gameState)
+
+            # Remove the expired modifiers
+            a = self.modifiers
+            for b in reversed(a):
+                if b.counter <0:
+                    a.remove(b)
+            self.modifiers = a
+
+
 
          #   print(self.cellPos)
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
@@ -53,8 +64,6 @@ class Creep:
            # print(direction)
            # print(self.cellPos)
            # print("------")
-
-
 
             edgeConf = engine.util.edge(self.cellPos , direction) #check if at edge and new position
 
