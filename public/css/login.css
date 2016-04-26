@@ -1,0 +1,121 @@
+.login-top {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  border-radius: 3px;
+}
+
+.login-top #login {
+  border-right: 1px solid #ddd;
+  box-shadow: 1px 0 0 #fff;
+}
+
+.login-top #login-trigger,
+.login-top #signup a {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 8px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.login-top #signup a {
+  border-radius: 0 3px 3px 0;
+}
+
+.login-top #login-trigger {
+  border-radius: 3px 0 0 3px;
+}
+
+.login-top #login-trigger:hover,
+.login-top #login .active,
+.login-top #signup a:hover {
+  background: #777;
+}
+
+.login-top #login-content {
+  margin: 0 auto;
+  display: none;
+  z-index: 10;
+  background: #1f1d20;
+  padding: 15px;
+  border-radius: 3px 0 3px 3px;
+}
+
+.login-top li #login-content {
+  right: 0;
+  width: 300px;
+}
+
+/*--------------------*/
+
+#inputs input {
+  padding: 6px 5px;
+  margin: 0 0 5px 0;
+  width: 238px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px #ccc inset;
+}
+
+#inputs input:focus {
+  background-color: #fff;
+  border-color: #e8c291;
+  outline: none;
+  box-shadow: 0 0 0 1px #e8c291 inset;
+}
+
+/*--------------------*/
+
+#login #actions {
+  margin: 10px 0 0 0;
+}
+
+#login #submit {
+  background-color: #d14545;
+  background-image: linear-gradient(top, #e97171, #d14545);
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.5);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;    
+  border: 1px solid #7e1515;
+  float: left;
+  height: 30px;
+  padding: 0;
+  width: 100px;
+  cursor: pointer;
+  font: bold 14px Arial, Helvetica;
+  color: #fff;
+}
+
+#login #submit:hover,
+#login #submit:focus {
+  background-color: #e97171;
+  background-image: linear-gradient(top, #d14545, #e97171);
+}
+
+#login #submit:active {
+  outline: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;   
+}
+
+#login #submit::-moz-focus-inner {
+  border: none;
+}
+
+#login label {
+  line-height: 30px;
+  color: #fff;
+  font-weight: normal;
+}
+
+#login label input {
+  position: relative;
+  top: 2px;
+  right: 2px;
+}

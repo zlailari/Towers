@@ -51,17 +51,18 @@ var Grid = function (can, ctx, offset) {
     };
 
     this.mouseClick = function() {
-
-        if (towerButtons.wasPressed()) {
-            var last = towerButtons.getLastButton();
-            var msg = {
-                "towerID": last,
-                "x": this.focusCell.col,
-                "y": this.focusCell.row
-            };
-            ws.towerRequest(userID, msg);
-        } else {
-            this.focusCell.type = (this.focusCell.type + 1) % 4;
+        if (tabManager && tabManager.getCurrentTab() == userID) {
+           if (towerButtons && towerButtons.wasPressed()) {
+               var last = towerButtons.getLastButton();
+               var msg = {
+                   "towerID": last,
+                   "x": this.focusCell.col,
+                   "y": this.focusCell.row
+               };
+               ws.towerRequest(userID, msg);
+           } else {
+               this.focusCell.type = (this.focusCell.type + 1) % 2;
+           }
         }
     };
 

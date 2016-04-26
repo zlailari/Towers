@@ -2,3 +2,6 @@ virtenv-towers/
 *.pyc
 
 node_modules/
+
+db.json
+*.DS_store

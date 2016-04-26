@@ -31,9 +31,6 @@ class Creep:
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
             #self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
 
-            print(self.dest(path))
-            print(direction)
-            print(self.cellPos)
             edgeConf = engine.util.edge(self.cellPos , direction) #check if at edge and new position
 
             if edgeConf[0]: # returns true if creep should move
@@ -76,6 +73,9 @@ class Creep:
 
     def adjust_speed(self, amount):
         self.speed += amount
+
+    def get_position(self):
+        return self.loc[0], self.loc[1]
 
     def __str__(self):  # like toString() in Java
         return 'speed,loc,health: ' + str(self.speed) + ',' + str(self.loc) + ',' + str(self.health)

@@ -1,8 +1,11 @@
 <!doctype html>
 <html>
 <head>
-  <title>Tower Wars</title> 
+  <title>Tower Wars</title>
   <link rel="stylesheet" type="text/css" href="css/mainStyles.css" />
+  <link rel="stylesheet" type="text/css" href="css/tooltips.css" />
+  <link rel="stylesheet" type="text/css" href="css/login.css" />
+  <link rel="stylesheet" type="text/css" href="css/lobby.css" />
 
   <!-- External Dependencies -->
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
@@ -17,6 +20,7 @@
   <script type="text/javascript" src="js/Connection.js"></script>
   <script type="text/javascript" src="js/chatbox.js"></script>
   <script type="text/javascript" src="js/gamestate.js"></script>
+  <script type="text/javascript" src="js/lobby.js"></script>
 </head>
 <body>
   <div class="header">
@@ -25,13 +29,50 @@
 
   <div class="content">
     <div class="sideBarWrapper">
-      <div class="sideBarItem" id="towerButtons"></div>
-      <div class="sideBarItem" id="creepButtons"></div>
+      <div class="sideBarItem" id="towerButtons">
+        <div class="sideBarImages" id="towerImages"></div>
+      </div>
+      <div class="sideBarItem" id="creepButtons">
+        <div class="sideBarTitle">
+          <p align="center"><strong>Creeps</strong></p>
+        </div>
+        <div class="sideBarImages" id="creepImages"></div>
+      </div>
     </div>
 
+    <div class="overlay"></div>
     <div class="gameWrapper">
+      <div class="introduction">
+        <h2 class="welcome">Welcome to Towers!</h2>
+        <div class="wait-animation"></div>
+        <div class="search-status"></div>
+        <ul class="login-top">
+          <li id="login">
+            <a id="login-trigger" href="#">
+              Log in <span>▼</span>
+            </a>
+            <div id="login-content">
+              <form>
+                <fieldset id="inputs">
+                  <input id="username" type="email" name="Email" placeholder="Your email address" required>
+                  <input id="password" type="password" name="Password" placeholder="Password" required>
+                </fieldset>
+                <fieldset id="actions">
+                  <input type="submit" id="submit" value="Log in" class="submit-login">
+                  <label><input type="checkbox" checked="checked"> Keep me signed in</label>
+                </fieldset>
+              </form>
+            </div>
+          </li>
+          <li id="signup">
+            <a href="">Register (Keep track of stats)</a>
+          </li>
+        </ul>
+        <div class="play-now button-default">Play Now</div>
+      </div>
       <div class="stateWrapper">
-        <div class="tab">My Game</div>
+        <div class="stateBarItem" id="tabs"></div>
+        <div class="stateBarItem" id="gameInfo"></div>
       </div>
       <div class="canvas">
         <canvas id="gameFrame"></canvas>
@@ -40,7 +81,21 @@
 
     <!-- Inital home for chat box -->
     <div id="chat_div"></div>
-  </div>
+
+    <!-- Modal -->
+    <div id="lobby" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" id='lobby'>
+            <h4 class="modal-title" id='lobby'>Lobby Information</h4>
+          </div>
+          <div class="modal-body" id='lobby'></div>
+          <div class="modal-footer" id='lobby'></div>
+        </div>
+      </div>
+    </div>
   <script src="js/AssetLoader.js"></script>
   <script src="js/Cell.js"></script>
   <script src="js/Grid.js"></script>
@@ -48,6 +103,8 @@
   <script src="js/sidebar.js"></script>
   <script src="js/Creep.js"></script>
   <script src="js/Shot.js"></script>
+
+  <script src="js/index.js"></script>
 </body>
 </html>
 

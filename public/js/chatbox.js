@@ -23,6 +23,7 @@ $(document).ready(function() {
     $(document).keydown(function(e) {
         // key value 13 = 'Enter'
         if (e.which == $.ui.keyCode.ENTER) {
+            chatbox.focus();
             if (!chatbox.isVisible()) {
                 chatbox.toggleBox();
             }

@@ -1,0 +1,13 @@
+when player connects, they are automatically sent lobby_info:
+{"lobbies": [{"players": [], "max_size": 4, "amnt_players": 4}, {"players": [], "max_size": 4, "amnt_players": 2}], "type": "lobby_info"}
+eventually, the 'players' list in that json message will be player IDs.
+Front end should: display these lobby choices graphically so the user can pick one, along with the choice to make a new lobby
+
+if a client wants to request to join a lobby:
+type: 'lobby_request'
+id: [whatever id it wants to join]
+
+errors on joining a lobby:
+lobby_full
+lobby_dne
+otherwise, success: lobby_joined
