@@ -87,6 +87,7 @@ class GameplayState(GameState):
             for j in range(0,self.world.height):
                 self.world.effects[i][j].update()
 
+
         return update
 
     def set_level(self, level):
