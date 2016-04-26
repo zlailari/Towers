@@ -47,14 +47,6 @@ var TabManager = function() {
     var keyCodeStart = 49;
     var nextIndex = 1;
 
-    function tabClick (event) {
-        var self = event.data.this;
-        var id = event.data.id;
-        self.currentTab = id;
-        myGrid = playerGrids[id];
-         console.log("Tab " + id + " clicked");
-    }
-
     this.keypress = function(e) {
         for (var id in this.hotKeyCodes) {
             if (e.which == this.hotKeyCodes[id]) {
@@ -65,12 +57,23 @@ var TabManager = function() {
 
     this.getCurrentTab = function() { return this.currentTab; };
 
-    this.destroyTabs = function() {
-        this.currentTab = 0;
-        for (var id in this.tabs) {
+    this.removeTab = function(id) {
+        if (this.tabs.hasOwnProperty(id)) {
             this.tabs[id].remove();
             delete this.tabs[id];
             delete this.hotKeyCodes[id];
+        }
+    };
+
+    this.destroyTabs = function() {
+        this.currentTab = userID;
+        nextIndex = 1;
+        for (var id in this.tabs) {
+            if (id != userID) {
+                this.tabs[id].remove();
+                delete this.tabs[id];
+                delete this.hotKeyCodes[id];
+            }
         }
     };
     this.addTab = function(id) {

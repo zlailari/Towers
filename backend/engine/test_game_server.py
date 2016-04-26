@@ -45,12 +45,19 @@ class GameRunner:
         """Add a player to the game by giving them their own state."""
 
         #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
-        levels = Levels.createLevel(0,0.5,2,5,3,"Default")
+        levels = Levels.createLevel(10,0.5,10,5,3,"Default")
         state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 10000, player_id)
 
         self.game_states.append(state)
         self.player_states[player_id] = state
         print('added player, and state for player {}'.format(player_id))
+
+    def remove_player(self, player_id):
+        if player_id in self.player_states:
+            state = self.player_states[player_id]
+            del self.player_states[player_id]
+            self.game_states.remove(state)
+            print('removing player and state for player {}'.format(player_id))
 
     def run(self):
         # wait until a request comes in to start the game, then start the game
@@ -66,6 +73,9 @@ class GameRunner:
             elif message and message['type'] == MSG.game_add_player.name:
                 player_id = message['player_id']
                 self.add_player(player_id)
+            elif message and message['type'] == MSG.game_remove_player.name:
+                player_id = message['player_id']
+                self.remove_player(player_id)
 
     def spawn_new_game(self):
         print('spawning new game instance')
@@ -131,6 +141,9 @@ class GameRunner:
         elif msg['type'] == MSG.game_add_player.name:
             player_id = msg['player_id']
             self.add_player(player_id)
+        elif msg['type'] == MSG.game_remove_player.name:
+            player_id = message['player_id']
+            self.remove_player(player_id)
 
     def game_loop(self, dt):
         # Receive and process messages from clients
