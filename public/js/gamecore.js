@@ -66,6 +66,7 @@ $(document).ready(function()  {
             }
         }
         var shots = allShots[currentTab];
+
         if (shots) {
             // Shots come in as array with creepid, towerid, type (+ extra per type)
             for (var j = 0; j < shots.length; j++) {

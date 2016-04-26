@@ -1,5 +1,6 @@
 drawShot = function(ctx, shot) {
     if (shot.type == "laser") {
+
         ctx.beginPath();
 
         for (var i = 0; i < myGrid.towers.length; i++) {

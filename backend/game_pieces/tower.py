@@ -19,7 +19,7 @@ class Tower:
 
         self.price = 20
         self.damage = 40
-        self.time_since_last_fire = 0
+        self.time_since_last_fire = cooldown
         self.upgrade_level = 0
         self.max_upgrade_level = 3
 

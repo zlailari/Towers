@@ -29,7 +29,7 @@ class GameplayState(GameState):
         self.counter = 0;
         self.player_id = player_id
 
-        # bill.kill(yanming);
+        # bill.kill(yanming);t
 
     # Calls all update methods within the game and returns dictionaries to be
     # converted to json with the player status (gold lives enemies left) and
@@ -41,7 +41,7 @@ class GameplayState(GameState):
 
         creepLoc = {} # Dicitonary of creep locations
         creepProgress = {} # Dictionary of creep progresses
-        attacksMade = {} # Dictionary of attacks made by towers
+        attacksMade = [] # Dictionary of attacks made by towers
 
         # Update all creeps and get location location and movement progress
         bestPath = self.world.tilePaths
@@ -56,7 +56,6 @@ class GameplayState(GameState):
         for tower in self.all_towers:
             #attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
             attacksMade = attacksMade + tower.update(dt,self.all_creeps,self)
-
         enemies = 0
         for creep in self.all_creeps:
             if creep.live:
