@@ -11,15 +11,44 @@ var LobbyManager = function () {
     this.joinedID = -1;
     this.inLobby = false;
     this.newLbBtn = {hasClick: false, bt: null};
+    this.canCreateLobby = true;
+    this.gameFull = false;
+
+    this.remove = function(id) {
+        if (this.divs.hasOwnProperty(id)) {
+            this.divs[id].remove();
+            delete this.divs[id];
+            delete this.msgs[id];
+            delete this.buttons[id];
+            $("#lobby").modal("handleUpdate");
+        }
+    };
+
+    this.destroy = function() {
+        for (var id in this.divs) {
+            if (this.divs.hasOwnProperty(id)) {
+                this.remove(id);
+            }
+        }
+    };
 
     this.enableNewLobby = function() {
         if (this.newLbBtn.bt == null ||
             this.newLbBtn.hasClick) {
             return;
         }
-        this.newLbBtn.bt.click(function(event) {
-            var msg = {};
-            ws.newLobbyRequest(userID, msg);
+        this.newLbBtn.bt.click({this: this}, function(event) {
+            var self = event.data.this;
+            if (self.canCreateLobby) {
+                var msg = {};
+                ws.newLobbyRequest(userID, msg);
+                self.canCreateLobby = false;
+                self.newLbBtn.bt.addClass('disabled');
+                setTimeout(function(self) {
+                    self.canCreateLobby = true;
+                    self.newLbBtn.bt.removeClass('disabled');
+                }, 10000, self);
+            }
         });
         this.newLbBtn.bt.removeClass('disabled');
         this.newLbBtn.hasClick = true;
@@ -68,14 +97,18 @@ var LobbyManager = function () {
     this.beginCountdown = function(time) {
         var intervalID = setInterval(function(self) {
             $('#lobby.modal-title').
-            text("Game starting in: " + time);
-            if (--time == 0) {
+                text("Game starting in: " + time);
+            if ((--time == 0) && (self.gameFull == true)) {
                 window.clearInterval(intervalID);
                 var msg = {
                     "lobby_id" : this.joinedID
                 };
                 ws.requestGameStart(userID, msg);
                 self.exitLobby();
+            } else if (self.gameFull == false) {
+                window.clearInterval(intervalID);
+                $('#lobby.modal-title').
+                    text("Lobby Information");
             }
         }, 1000, this);
     };
@@ -113,27 +146,12 @@ var LobbyManager = function () {
                 .prependTo(this.divs[id]);
             if (numPlayers == maxPlayers) {
                 this.beginCountdown(10);
+                this.gameFull = true;
+            } else {
+                this.gameFull = false;
             }
         }
         $("#lobby").modal("handleUpdate");
-    };
-
-    this.remove = function(id) {
-        if (this.divs.hasOwnProperty(id)) {
-            this.divs[id].remove();
-            delete this.divs[id];
-            delete this.msgs[id];
-            delete this.buttons[id];
-            $("#lobby").modal("handleUpdate");
-        }
-    };
-
-    this.destroy = function() {
-        for (var id in this.divs) {
-            if (this.divs.hasOwnProperty(id)) {
-                this.remove(id);
-            }
-        }
     };
 
     this.joinLobby = function(id, numPlayers, maxPlayers) {
@@ -181,6 +199,7 @@ var LobbyManager = function () {
                 self.destroy();
                 self.joinedID = -1;
                 self.searching = true;
+                self.gameFull = false;
                 var id = event.data.id;
                 var msg = {
                     "lobby_id" : id

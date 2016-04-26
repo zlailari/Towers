@@ -157,6 +157,17 @@ def lobby_add_player(player_connection, lobby_id):
             MSG.lobby_dne
         ))
 
+def game_remove_player(game, player_id):
+    print('sending message to remove player {}'.format(player_id))
+    message = format_msg(
+        'remove this player from your game',
+        MSG.game_remove_player,
+        {
+            'player_id': player_id
+        }
+    )
+    print('message: {}'.format(message))
+    game.sendMessage(message)
 
 def remove_player(player_connection):
     """Remove a player from a lobby."""
@@ -319,7 +330,6 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert engine is not None
         engine.sendMessage(format_msg(
             'ws master server requesting new game instance',
-            MSG.instance_request
         ))
 
     def handleChat(self, json_msg):
@@ -339,6 +349,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         lobby = get_players_lobby(self)
         if lobby:
             lobby.remove_player(self)
+            game_remove_player(lobby.get_game_client(), user_ids[self])
         broadcast_lobby_list()
 
     def broadcast_to_lobby(self, msg, send_self=False):
