@@ -20,6 +20,9 @@ class Fire_tower (Tower):
         self.damage = 0
         self.time_since_last_fire = 0
 
+        self.curr_level = 1; #max level is 4
+        self.levels = [50, 100, 150]
+
         pass
 
     #Override for firing fire
@@ -43,3 +46,10 @@ class Fire_tower (Tower):
         """Fire at a target tile."""
         self.time_since_last_fire = 0
         gameState.world.add_effect(loc,"fire")
+
+
+    # Makes the fire tower attack faster
+    def upgrade(self):
+        self.curr_level+=1
+        self.cooldown=self.cooldown*.70;
+

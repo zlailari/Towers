@@ -117,6 +117,17 @@ class GameplayState(GameState):
         id = len(self.all_creeps)
         self.cur_level.spawnCreep(creepType, id)
 
+    #Calls upgrade for towers. Max level 4, cost per level is stored in an array in the tower.
+    def upgradeTowers(self, id):
+        curr_level = self.all_towers[id].curr_levels;
+        cost = self.all_towers[id].levels[curr_level-1]
+
+        if(curr_level<4):
+            if(self.gold >= cost):
+                self.all_towers[id].update()
+                self.gold -= cost
+
+
 
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:

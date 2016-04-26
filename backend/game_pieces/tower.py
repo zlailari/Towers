@@ -22,6 +22,9 @@ class Tower:
         self.damage = 40
         self.time_since_last_fire = 0
 
+        self.curr_level = 1; #max level is 4
+        self.levels = [25, 50, 75]
+
     def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt
         myAttacks = [];
@@ -47,6 +50,12 @@ class Tower:
         self.time_since_last_fire = 0
         target.take_damage(self.damage , gameState)
 
-
     def get_position(self):
         return self.loc[0], self.loc[1]
+
+    #Upgrades the damage per shot
+    def upgrade(self):
+        self.curr_level +=1
+        self.damage+=10;
+        self.cooldown=self.cooldown*0.80
+

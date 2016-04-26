@@ -22,6 +22,9 @@ class Ice_tower (Tower):
         self.damage = 10
         self.time_since_last_fire = 0
 
+        self.curr_level = 1; #max level is 4
+        self.levels = [40, 80, 120]
+
         pass
 
     #Override for firing ice at a creep
@@ -46,4 +49,9 @@ class Ice_tower (Tower):
         self.time_since_last_fire = 0
         target.take_damage(self.damage , gameState)
         target.modify(Frozen_modifier(target))
+
+    #Upgrades the damage per shot and cooldown
+    def upgrade(self):
+        self.damage+=5;
+        self.cooldown=self.cooldown*0.80;
 
