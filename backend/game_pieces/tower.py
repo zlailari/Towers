@@ -21,9 +21,9 @@ class Tower:
         self.price = 20
         self.damage = 40
         self.time_since_last_fire = 0
+        self.upgrade_level = 0
+        self.max_upgrade_level = 3
 
-        self.curr_level = 1; #max level is 4
-        self.levels = [25, 50, 75]
 
     def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt
@@ -55,7 +55,11 @@ class Tower:
 
     #Upgrades the damage per shot
     def upgrade(self):
-        self.curr_level +=1
-        self.damage+=10;
-        self.cooldown=self.cooldown*0.80
+
+        if self.upgrade_level < self.max_upgrade_level:
+            self.upgrade_level += 1
+            self.upgrade_price += 7
+            self.cooldown = self.cooldown*0.80
+            return True
+        return False
 

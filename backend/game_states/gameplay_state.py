@@ -112,21 +112,18 @@ class GameplayState(GameState):
             self.all_towers.append(tower)
             return tower
 
+    #Calls upgrade for towers. Max level depends on the tower, cost per level increases as per tower.
+    def upgrade_tower(self, coordinates):
+        for tower in self.all_towers:
+            if tower.loc == coordinates:
+                if tower.upgrade_price <  self.gold:
+                    tower.upgrade()
+                    self.gold -= tower.upgrade_price
+
     #Assigns an id to spawn creep for pvp use. Hook this up to a button and deal with it.
     def spawn_creep(self, creepType):
         id = len(self.all_creeps)
         self.cur_level.spawnCreep(creepType, id)
-
-    #Calls upgrade for towers. Max level 4, cost per level is stored in an array in the tower.
-    def upgradeTowers(self, id):
-        curr_level = self.all_towers[id].curr_levels;
-        cost = self.all_towers[id].levels[curr_level-1]
-
-        if(curr_level<4):
-            if(self.gold >= cost):
-                self.all_towers[id].update()
-                self.gold -= cost
-
 
 
     def creep_in_loc(self, loc):

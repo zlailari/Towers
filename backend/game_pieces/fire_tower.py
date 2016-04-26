@@ -18,10 +18,10 @@ class Fire_tower (Tower):
 
         self.price = 40
         self.damage = 0
+        self.upgrade_price = 10
         self.time_since_last_fire = 0
-
-        self.curr_level = 1; #max level is 4
-        self.levels = [50, 100, 150]
+        self.upgrade_level = 0
+        self.max_upgrade_level = 3
 
         pass
 
@@ -47,9 +47,11 @@ class Fire_tower (Tower):
         self.time_since_last_fire = 0
         gameState.world.add_effect(loc,"fire")
 
-
-    # Makes the fire tower attack faster
     def upgrade(self):
-        self.curr_level+=1
-        self.cooldown=self.cooldown*.70;
-
+        if self.upgrade_level < self.max_upgrade_level:
+            self.upgrade_level += 1
+            self.upgrade_price += 5
+            self.cooldown = self.cooldown - .1
+            self.fire_range += .5
+            return True
+        return False
