@@ -46,6 +46,7 @@ class Creep:
            # print(direction)
            # print(self.cellPos)
            # print("------")
+
             edgeConf = engine.util.edge(self.cellPos , direction) #check if at edge and new position
 
             if edgeConf[0]: # returns true if creep should move
@@ -93,6 +94,9 @@ class Creep:
 
     def adjust_speed(self, amount):
         self.speed += amount
+
+    def get_position(self):
+        return self.loc[0], self.loc[1]
 
     def __str__(self):  # like toString() in Java
         return 'speed,loc,health,cellpos: ' + str(self.speed) + ',' + str(self.loc) + ',' + str(self.health) + ',' + str(self.cellPos)

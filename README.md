@@ -12,6 +12,11 @@ Setup npm and start server:
 
 > npm install
 
+May have to install things manually
+> npm install express
+
+> npm install body-parser
+
 ## To Run:
 #### Easy Mode:
 

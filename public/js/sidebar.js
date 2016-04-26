@@ -8,9 +8,8 @@ var towerImages = [], towerImageNames = [], creepImages = [],
     creepImageNames = [];
 var towerButtons = null, creepButtons = null;
 
-var TowerButtons = function (divID, towerNames, towerImageNames,
-    towerToolTips, towerHotKeys) {
-    this.lastButton = -1;
+var TowerButtons = function (divID) {
+    this.lastButton = null;
     this.divID = divID;
     this.divs = [];
     this.images = [];
@@ -20,17 +19,17 @@ var TowerButtons = function (divID, towerNames, towerImageNames,
         this.images[ID].remove();
     };
 
-    this.changeTower = function (ID, name, imageName, toolTip, hotKeyKC) {
-        if (this.images[ID]) {
-            this.removeTower(ID);
+    this.changeTower = function (index, ID, name, imageName, toolTip, hotKeyKC) {
+        if (this.images[index]) {
+            this.removeTower(index);
         }
-        this.images[ID] = $(
+        this.images[index] = $(
             '<img src="' + imageName + '"'
             + 'class="tower-tooltip"'
             + 'alt="' + name + '"'
             + 'style="width:40px;height:40px;"'
             + 'data-toggle="tooltip"'
-            + 'title="' + toolTip +'"'
+            + 'data-title="' + toolTip +'"'
             + 'data-placement="auto"'
             + 'data-html="true"'
             + '/>')
@@ -45,38 +44,33 @@ var TowerButtons = function (divID, towerNames, towerImageNames,
                     self.setLastButton(tid);
                 }
             });
-        this.hotKeyCodes[ID] = hotKeyKC;
+        this.hotKeyCodes[index] = hotKeyKC;
     };
 
-    this.addTower = function (name, imageName, toolTip, hotKeyKC) {
-        var ID = this.divs.length;
-        this.divs[ID] = $('<div class="side-tower"'
+    this.addTower = function (ID, name, imageName, toolTip, hotKeyKC) {
+        var index = this.divs.length;
+        this.divs[index] = $('<div class="side-tower"'
             + 'id="tower' + ID + '"'
             + '/>')
-            .appendTo($(this.divID));
-        this.changeTower(ID, name, imageName, toolTip, hotKeyKC);
+            .appendTo(this.divID);
+        this.changeTower(index, ID, name, imageName, toolTip, hotKeyKC);
     };
 
     this.getLastButton = function() { return this.lastButton; };
-    this.clearLastButton = function() { this.lastButton = -1; };
+    this.clearLastButton = function() { this.lastButton = null; };
     this.setLastButton = function(val) { this.lastButton = val; };
     this.getDivs = function() { return this.divs; };
-    this.wasPressed = function() { return this.lastButton >= 0; };
+    this.wasPressed = function() { return this.lastButton != null; };
     this.getImages = function() { return this.images; };
     this.getHotKeyCodes = function() { return this.hotKeyCodes; };
 
     this.keypress = function (e) {
-        for (var i = 0; i < this.hotKeyCodes.length; i++) {
-            if (e.which == this.hotKeyCodes[i]) {
+        for (var i = 0; i < this.hotKeyCodes.length; ++i) {
+            if (e.which == this.hotKeyCodes[i].kc) {
                 this.images[i].click();
             }
         }
     };
-
-    for (var i = 0; i < towerNames.length; i++) {
-      this.addTower(towerNames[i], towerImageNames[i], towerToolTips[i],
-        towerHotKeys[i].kc);
-    }
 };
 
 
@@ -102,7 +96,7 @@ var CreepButtons = function (divID, creepNames, creepImageNames,
             + 'alt="' + name + '"'
             + 'style="width:40px;height:40px;"'
             + 'data-toggle="tooltip"'
-            + 'title="' + toolTip +'"'
+            + 'data-title="' + toolTip +'"'
             + 'data-placement="auto"'
             + 'data-html="true"'
             + '/>')
@@ -124,7 +118,7 @@ var CreepButtons = function (divID, creepNames, creepImageNames,
         this.divs[ID] = $('<div class="side-creep"'
             + 'id="creep' + ID + '"'
             + '/>')
-            .appendTo($(this.divID));
+            .appendTo(this.divID);
 
         this.changeCreep(ID, name, imageName, toolTip, hotKeyKC);
     };
@@ -146,24 +140,35 @@ var CreepButtons = function (divID, creepNames, creepImageNames,
     }
 };
 
-function towerDenied () {
-    $('<div class="dialog" id="dialog"'
-        + 'title="Tower cannot be created"/>')
-        .appendTo($(".content"));
-    $("#dialog").dialog({
-        open: function() {
-            var self = $(this);
-            setTimeout(function() {
-                self.dialog('close');
-            }, 1000);
-        }
-    });
+function towerDenied (reason) {
+    $('#denied').attr('data-original-title',
+        "Tower denied:\n"
+        + reason)
+        .tooltip('fixTitle');
+
+    $('#denied').tooltip('show');
+    setTimeout(function() {
+        $('#denied').tooltip('hide');
+    }, 3000);
 }
 
 function initSideBar() {
-    var towerNames = ["Arrow Tower", "Fire Tower", "Ice Tower"];
+    $('<div class="sideBarTitle"'
+        + 'id="denied"'
+        + 'data-toggle="tooltip"'
+        + 'data-title="Tower could not be created"'
+        + 'data-trigger="manual"'
+        + 'data-placement="auto"'
+        + 'data-html="true"'
+        + '/>')
+        .tooltip()
+        .html('<p align="center"><strong>Towers</strong></p>')
+        .prependTo($('#towerButtons'));
+
+    var towerNames = ["Arrow Tower", "Rocket Tower", "Ice Tower"];
+    var towerTypes = ["laser_tower", "fire_tower", "ice_tower"];
     var towerDescriptions = ["This tower shoots arrows",
-        "This tower shoots fire",
+        "This tower shoots rockets",
         "This tower shoots ice"];
     var towerPrices = ["10", "10", "10"];
     var towerHotKeys = [{s:"A", kc:65},
@@ -178,6 +183,8 @@ function initSideBar() {
         + "Cost: " + towerPrices[i] + "\n"
         + "Hotkey: " + towerHotKeys[i].s;
     }
+
+    towerButtons = new TowerButtons($("#towerImages"));
 
     var creepNames = ["1", "2", "3"];
     var creepDescriptions = ["Placeholder",
@@ -197,16 +204,19 @@ function initSideBar() {
         + "Hotkey: " + creepHotKeys[k].s;
     }
 
-    towerButtons = new TowerButtons("#towerButtons",
+    towerButtons = new TowerButtons($("#towerImages"),
         towerNames, towerImageNames, towerToolTips, towerHotKeys);
-    creepButtons = new CreepButtons("#creepButtons",
+    creepButtons = new CreepButtons($("#creepImages"),
         creepNames, creepImageNames, creepToolTips, creepHotKeys);
-    if (myGrid) {
-        myGrid.setOffset($("#gameFrame").offset());
-    }
 
     $(document).keydown(function(e) {
         towerButtons.keypress(e);
         creepButtons.keypress(e);
     });
+
+    for (var j = 0; j < towerNames.length; j++) {
+        towerButtons.addTower(towerTypes[j],
+            towerNames[j], towerImageNames[j],
+            towerToolTips[j], towerHotKeys[j]);
+    }
 }

@@ -2,11 +2,22 @@
 
 var myGrid = null;
 
-var playerState = null, creeps = null, shots = null;
+var playerGrids = [], allCreeps =[], allShots = [];
+var playerState = null, creeps = null, attacksMade = null;
+
+
+var gameCan, gameCtx;
 
 $(document).ready(function()  {
-    var gameCan = document.getElementById("gameFrame");
-    var gameCtx = gameCan.getContext("2d");
+    lobbyManager = new LobbyManager();
+    stateManager = new StateManager();
+    tabManager = new TabManager();
+    $(document).keydown(function(e) {
+        tabManager.keypress(e);
+    });
+    lobbyManager.init();
+    gameCan = document.getElementById("gameFrame");
+    gameCtx = gameCan.getContext("2d");
 
     var frequency = 60;
 
@@ -14,7 +25,6 @@ $(document).ready(function()  {
     gameCan.width = 800;
 
     var gameOffset = $("#gameFrame").offset();
-
     myGrid = new Grid(gameCan, gameCtx, gameOffset);
 
     gameCan.onmousemove = function (e) {
@@ -42,19 +52,42 @@ $(document).ready(function()  {
     }
 
     function render () {
-        stateManager.draw();
+        var currentTab = tabManager.getCurrentTab();
+        if (currentTab != -1) {
+            myGrid = playerGrids[currentTab];
+        }
+        var gameOffset = $("#gameFrame").offset();
+        myGrid.setOffset(gameOffset);
         myGrid.draw(gameCtx);
-
+        creeps = allCreeps[currentTab];
         if (creeps) {
             for (var i = 0; i < creeps.length; i++) {
                 drawCreep(gameCtx, creeps[i]);
             }
         }
-
+        /*var shots = allShots[currentTab];
         if (shots) {
+            console.log(shots);
             // Shots come in as array with creepid, towerid, type (+ extra per type)
-            for (var i = 0; i < shots.length; i++) {
-                drawShot(gameCtx, shots[i]);
+            for (var j = 0; j < shots.length; j++) {
+                drawShot(gameCtx, shots[j]);
+            }
+        }*/
+        attacksMade = allShots[currentTab];
+        // this is also temp for demo
+        if (attacksMade) {
+            console.log(attacksMade);
+            // attacks come in as a dictionary like-> towerID: [creepIDs, ...]
+            // which is why this is a bit funky
+            for (var attack in attacksMade) {
+                if (attacksMade[attack].length > 0) {
+                    // a lot funky
+                    for (var shot in attacksMade[attack]) {
+                        // getting each towerID, creepID pair
+                        // this is why we must send stuff as array of objects...
+                        drawShot(gameCtx, attack, attacksMade[attack][shot]);
+                    }
+                }
             }
         }
     }

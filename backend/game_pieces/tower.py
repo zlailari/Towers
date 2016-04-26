@@ -1,8 +1,7 @@
 import engine.util
 from shots.shot import shot
 from shots.laser import laser
-import json 
-
+import json
 
 class Tower:
     """Basic implementation of a tower"""

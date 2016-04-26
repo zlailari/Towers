@@ -51,17 +51,18 @@ var Grid = function (can, ctx, offset) {
     };
 
     this.mouseClick = function() {
-
-        if (towerButtons.wasPressed()) {
-            var last = towerButtons.getLastButton();
-            var msg = {
-                "towerID": last,
-                "x": this.focusCell.col,
-                "y": this.focusCell.row
-            };
-            ws.towerRequest(userID, msg);
-        } else {
-            this.focusCell.type = (this.focusCell.type + 1) % 4;
+        if (tabManager && tabManager.getCurrentTab() == userID) {
+           if (towerButtons && towerButtons.wasPressed()) {
+               var last = towerButtons.getLastButton();
+               var msg = {
+                   "towerID": last,
+                   "x": this.focusCell.col,
+                   "y": this.focusCell.row
+               };
+               ws.towerRequest(userID, msg);
+           } else {
+               this.focusCell.type = (this.focusCell.type + 1) % 2;
+           }
         }
     };
 
@@ -88,10 +89,10 @@ var Grid = function (can, ctx, offset) {
     this.towerAccepted = function(tower) {
         var x = tower['loc'][0];
         var y = tower['loc'][1];
-        var id = tower['tower_type'];
-
+        var type = tower['tower_type'];
+        var index = typeToNumber[type];
         this.Cells[y][x].type = parseFloat(CellType.ARROW) +
-                parseFloat(id);
+                parseFloat(index);
 
         this.towers.push(tower);
     };

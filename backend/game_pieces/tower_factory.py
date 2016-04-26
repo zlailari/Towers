@@ -12,8 +12,8 @@ class Tower_factory:
 
     #
     def factory(type,coordinate,id):
-        if type == "laser_tower": return Tower(coordinate,100,3,2,id,1) #lazer tower
-        if type == "fire_tower": return Fire_tower(id,coordinate) # fire tower
+        if type == "laser_tower": return Tower(coordinate,100,3,2,id) #lazer tower
+        if type == "fire_tower": return Fire_tower(id, coordinate) # fire tower
         if type == "wall_tower": return Wall_tower(id, coordinate)
         if type == "ice_tower": return Ice_tower(id, coordinate)
         if type == "sniper_tower": return Sniper_tower(id, coordinate)

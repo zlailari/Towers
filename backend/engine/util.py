@@ -94,6 +94,10 @@ def at_right(coord):
 
 
 def utf(i):
+    if type(i).__name__ == 'bytes':
+        return i
+    if not isinstance(i, str):
+        print(type(i))
     assert isinstance(i, str)
     return i.encode('utf-8')
 
