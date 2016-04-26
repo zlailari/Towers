@@ -132,7 +132,7 @@ class GameplayState(GameState):
     def spawn_creep(self, creepType):
         id = len(self.all_creeps)
         self.cur_level.spawnCreep(creepType, id)
-
+        print('Added {} creep'.format(creepType))
 
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:

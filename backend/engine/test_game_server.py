@@ -142,8 +142,16 @@ class GameRunner:
             player_id = msg['player_id']
             self.add_player(player_id)
         elif msg['type'] == MSG.game_remove_player.name:
-            player_id = message['player_id']
+            player_id = msg['player_id']
             self.remove_player(player_id)
+        elif msg['type'] == MSG.creep_request.name:
+            player_id = msg['player_id']
+            creep_type = msg['msg']['creepID']
+            for player in self.player_states:
+                if player != player_id:
+                    state = self.player_states[player]
+                    state.spawn_creep(creep_type)
+
 
     def game_loop(self, dt):
         # Receive and process messages from clients
