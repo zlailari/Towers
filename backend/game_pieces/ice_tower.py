@@ -19,8 +19,11 @@ class Ice_tower (Tower):
         self.tower_type = "ice_tower"
 
         self.price = 30
+        self.upgrade_price = 10
         self.damage = 10
         self.time_since_last_fire = 0
+        self.upgrade_level = 0
+        self.max_upgrade_level = 3
 
         pass
 
@@ -47,3 +50,11 @@ class Ice_tower (Tower):
         target.take_damage(self.damage , gameState)
         target.modify(Frozen_modifier(target))
 
+    def upgrade(self):
+        if self.upgrade_level < max_upgrade_level:
+            self.upgrade_level += 1
+            self.upgrade_price += 5
+            self.cooldown = self.cooldown - .1
+            self.damage += 3
+            return True
+        return False

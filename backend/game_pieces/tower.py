@@ -21,6 +21,8 @@ class Tower:
         self.price = 20
         self.damage = 40
         self.time_since_last_fire = 0
+        self.upgrade_level = 0
+        self.max_upgrade_level = 3
 
     def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt

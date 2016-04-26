@@ -112,6 +112,12 @@ class GameplayState(GameState):
             self.all_towers.append(tower)
             return tower
 
+    def upgrade_tower(self, coordinates):
+        for tower in self.all_towers:
+            if tower.loc == coordinates:
+                if tower.upgrade_price <  self.gold:
+                    tower.upgrade()
+
     #Assigns an id to spawn creep for pvp use. Hook this up to a button and deal with it.
     def spawn_creep(self, creepType):
         id = len(self.all_creeps)

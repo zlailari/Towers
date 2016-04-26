@@ -18,8 +18,11 @@ class Gattling_tower (Tower):
         self.tower_type = "gattling_tower"
 
         self.price = 30
+        self.upgrade_price = 10
         self.damage = 5
         self.time_since_last_fire = 0
+        self.upgrade_level = 0
+        self.max_upgrade_level = 3
 
         pass
 
@@ -45,3 +48,11 @@ class Gattling_tower (Tower):
         self.time_since_last_fire = 0
         target.take_damage(self.damage , gameState)
 
+    def upgrade(self):
+        if self.upgrade_level < max_upgrade_level:
+            self.upgrade_level += 1
+            self.upgrade_price += 5
+            self.cooldown = self.cooldown - .05
+            self.damage += 2
+            return True
+        return False
