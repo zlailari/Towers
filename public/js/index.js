@@ -1,6 +1,8 @@
 // Handles game start and initial user interactions
 
 $(document).ready(function() {
+    $('.introduction').modal('show');
+
     $('#login-trigger').click(function(){
         $(this).next('#login-content').slideToggle();
         $(this).toggleClass('active');
@@ -48,6 +50,5 @@ $(document).ready(function() {
 
 function findGame() {
     $('.introduction').fadeOut(500);
-    $('.overlay').fadeOut(400);
     setTimeout(lobbyManager.enterLobby, 500);
 }
