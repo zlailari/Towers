@@ -1,4 +1,6 @@
-/* Takes care of setting up the various things for the lobby
+/* Takes care of setting up the various things for the lobby.
+*  This class is rather nasty right now and needs some reworking,
+*  but it gets the job done
 */
 
 var LobbyManager = function () {
