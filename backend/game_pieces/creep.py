@@ -29,6 +29,13 @@ class Creep:
         self.live = True
         self.modifiers = []
 
+
+    #Calls creep move on all the effect tiles.
+    def creepMove(self, gamestate):
+        temp = gamestate.world.effects[self.loc[0]][self.loc[1]].effects
+        for i in range(0, len(temp)):
+            gamestate.world.effects[self.loc[0]][self.loc[1]].effects[i].on_move(self,gamestate)
+
     # We generate a json for movement. Passed up to the gameplay_state
     def update(self, path, dt, gameState):
         if self.live:
@@ -39,7 +46,7 @@ class Creep:
          #   print(self.cellPos)
             direction = (self.dest(path)[0]-self.loc[0], self.dest(path)[1]-self.loc[1])    #figure out in-cell movement vector
             #self.cellPos = (self.cellPos[0] + (self.speed*direction[0]), self.cellPos[1] + (self.speed*direction[1])) # move position in cell
-            #gameState.world.effects[self.loc[0]][self.loc[1]].effects[0].on_move(self,gameState); We assumed there was fire.
+            #gameState.world.effects[self.loc[0]][self.loc[1]].effects[0].on_move(self,gameState); #We assumed there was fire.
            # print("------")
            # print(self.loc)
            # print(self.dest(path))
@@ -47,17 +54,22 @@ class Creep:
            # print(self.cellPos)
            # print("------")
 
+
+
             edgeConf = engine.util.edge(self.cellPos , direction) #check if at edge and new position
 
             if edgeConf[0]: # returns true if creep should move
                 if(self.dest(path) == gameState.world.endpoint):
                     self.killPlayer(gameState)
+                    return {self.id : self.loc} , {self.id : (self.cellPos)}
                 else:
                     self.cellPos = edgeConf[1] #this is where the creep should be in the next cell if edgeConf[0] is true
                     #print("THE PIECE SHOULD MOVE HERE: "+str(self.cellPos[0])+" "+str(self.cellPos[1]))
                     pos = self.move_on_path(path) #move to next cell
             else: #then edgeConf[1] holds the direction
                 self.cellPos = (self.cellPos[0] + (self.speed*edgeConf[1][0]), self.cellPos[1] + (self.speed*edgeConf[1][1])) # move position in cell
+
+            self.creepMove(gameState)
             return {self.id : self.loc} , {self.id : (self.cellPos)}
 
     def move_to_dest(self, dest):

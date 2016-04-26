@@ -87,6 +87,7 @@ class GameplayState(GameState):
             for j in range(0,self.world.height):
                 self.world.effects[i][j].update()
 
+
         return update
 
     def set_level(self, level):
@@ -131,6 +132,7 @@ class GameplayState(GameState):
     def spawn_creep(self, creepType):
         id = len(self.all_creeps)
         self.cur_level.spawnCreep(creepType, id)
+        print('Added {} creep'.format(creepType))
 
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:

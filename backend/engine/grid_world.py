@@ -37,7 +37,7 @@ class GridWorld:
     #adds the effect to the effects list on a particular tile
     def add_effect(self,loc, type):
         if(type=="fire"):
-            self.effects[loc[0]][loc[1]].append(fire(25))
+            self.effects[loc[0]][loc[1]].append(fire(0.5))
         if(type == "stun"):
             self.effects[loc[0]][loc[1]].append(stun(10))
 
