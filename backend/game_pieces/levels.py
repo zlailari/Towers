@@ -10,10 +10,10 @@ class Levels:
 
     #Method to spawn creeps used for pvp
     def spawnCreep(self, creepType, creepID):
-        spawn_timers = []
-        spawn_timers.append(0)
-        spawn_creeps = []
-        spawn_creeps.append(Creep.factory(creepType, creepID))
+        #spawn_timers = []
+        self.spawnTimers.insert(self.begin,0)
+        #spawn_creeps = []
+        self.creeps.insert(self.begin,Creep.factory(creepType, creepID))
 
 
     #Auto generates leveled based on parameters
