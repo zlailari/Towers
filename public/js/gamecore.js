@@ -65,15 +65,14 @@ $(document).ready(function()  {
                 drawCreep(gameCtx, creeps[i]);
             }
         }
-        /*var shots = allShots[currentTab];
+        var shots = allShots[currentTab];
         if (shots) {
-            console.log(shots);
             // Shots come in as array with creepid, towerid, type (+ extra per type)
             for (var j = 0; j < shots.length; j++) {
                 drawShot(gameCtx, shots[j]);
             }
-        }*/
-        attacksMade = allShots[currentTab];
+        }
+        /* attacksMade = allShots[currentTab];
         // this is also temp for demo
         if (attacksMade) {
             console.log(attacksMade);
@@ -89,6 +88,6 @@ $(document).ready(function()  {
                     }
                 }
             }
-        }
+        }*/
     }
 });
