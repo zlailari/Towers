@@ -280,6 +280,8 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.handleLeaveLobby(as_string)
         elif m_type == MSG.game_start_request.name:
             self.handleStartGame(as_string)
+        elif m_type == MSG.creep_request.name:
+            self.handleCreepRequest(as_string)
         else:
             info('warning! server does not handle message with type {}'.format(
                 m_type), INFO_ID)
@@ -351,6 +353,10 @@ class GameServerProtocol(WebSocketServerProtocol):
             lobby.remove_player(self)
             game_remove_player(lobby.get_game_client(), user_ids[self])
         broadcast_lobby_list()
+
+    def handleCreepRequest(self, json_msg):
+        lobby = get_players_lobby(self)
+        lobby.get_game_client().sendMessage(utf(json_msg), False)
 
     def broadcast_to_lobby(self, msg, send_self=False):
         """Broadcast a message to rest of the sender's lobby"""

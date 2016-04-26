@@ -132,7 +132,6 @@ class GameplayState(GameState):
         id = len(self.all_creeps)
         self.cur_level.spawnCreep(creepType, id)
 
-
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:
             if cr.loc == loc and cr.live:
