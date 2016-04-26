@@ -13,9 +13,22 @@ loadImages = function() {
     creepPic.onload = function() {imageLoaded();};
     creepPic.src = ('img/Demon3.png');
 
-    towerImageNames = ["img/arrowHead.png",
-        "img/fire.png", "img/ice.png",
-        "img/delete.png", "img/upgrade.png"];
+    towerUpgrades = [
+        "/img/towers/rocket_2.png",
+        "/img/towers/rocket_3.png",
+        "/img/towers/rail_2.png",
+        "/img/towers/rail_3.png",
+        "/img/towers/laser_2.png",
+        "/img/towers/laser_3.png",
+    ];
+
+    towerImageNames = [
+        "/img/towers/rocket_1.png",
+        "/img/towers/rail_1.png",
+        "/img/towers/laser_1.png",
+        "img/delete.png",
+        "img/upgrade.png",
+    ];
     creepImageNames = ["img/Demon1.png",
         "img/Demon2.png", "img/Demon3.png"];
 
