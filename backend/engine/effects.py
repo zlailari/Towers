@@ -8,7 +8,7 @@ class effects ():
 
 #fire sublcass. Contains a counter that decrements when update is called.
 class fire(effects):
-    def __init__(self, damage, counter=500):
+    def __init__(self, damage, counter=60):
         self.counter = counter;
         self.damage = damage;
 

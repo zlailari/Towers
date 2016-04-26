@@ -11,8 +11,8 @@ class Fire_tower (Tower):
 
         self.loc = loc
         self.health = 26 #?
-        self.cooldown = 1
-        self.fire_range = 2
+        self.cooldown = 6
+        self.fire_range = 1 # PLEASE NERF FIRE TOWER
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "fire_tower"
 

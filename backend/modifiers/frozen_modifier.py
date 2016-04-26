@@ -13,7 +13,6 @@ class Frozen_modifier (Modifiers):
         self.original_speed = gamestate.all_creeps[id].base_speed
         gamestate.all_creeps[id].speed = self.original_speed/20
         self.counter = 30
-        print(str(self.original_speed))
         pass
 
     # Counter update for the modifier.
