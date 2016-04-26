@@ -3,6 +3,7 @@ from engine.effects import *
 from queue import *
 from heapq import *
 import math
+import copy
 
 class GridWorld:
 
@@ -195,7 +196,7 @@ class GridWorld:
                 if neighbor in diagonal_neighbors:
                     intersecting_neighbors = set(self.get_neighbors(neighbor[0], neighbor[1])).intersection(all_neighbors)
                     for tile in intersecting_neighbors:
-                        if self.grid[tile[1]][tile[0]]:
+                        if grid[tile[1]][tile[0]]:
                             can_move_diagonally += 1
 
                 if not can_move_diagonally == 2:
@@ -228,7 +229,7 @@ class GridWorld:
         if(self.grid[yCoord][xCoord]):  # cant build where there is already a tower
             return False
 
-        copy_board = self.grid  # create a copy of the current came board
+        copy_board = copy.deepcopy(self.grid)  # create a copy of the current came board
 
         # place a tower in the desired location
         copy_board[yCoord][xCoord] = True
