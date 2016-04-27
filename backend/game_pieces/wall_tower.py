@@ -16,6 +16,7 @@ class Wall_tower (Tower):
         self.fire_range = 0
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "wall_tower"
+        self.upgrade_price = 0
 
         self.price = 5
         self.damage = 0
