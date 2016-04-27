@@ -46,7 +46,7 @@ class GameRunner:
 
         #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
         levels = Levels.createLevel(5,0.5,10,5,3,"Default")
-        state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 10000, player_id)
+        state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 1000, player_id)
 
         self.game_states.append(state)
         self.player_states[player_id] = state
@@ -148,9 +148,11 @@ class GameRunner:
             player_id = msg['player_id']
             creep_type = msg['msg']['creepID']
             for player in self.player_states:
-                if player != player_id:
-                    state = self.player_states[player]
-                    state.spawn_creep(creep_type)
+                #if player != player_id:
+                state = self.player_states[player]
+                state.spawn_creep(creep_type)
+                self.player_states[player_id].spawned_creeps +=1
+
 
 
     def game_loop(self, dt):

@@ -18,7 +18,7 @@ class Poison_tower (Tower):
         self.tower_type = "poison_tower"
 
         self.price = 30
-        self.damage = 10
+        self.damage = 5
         self.time_since_last_fire = 0
         self.upgrade_level = 0
         self.max_upgrade_level = 3
@@ -38,9 +38,9 @@ class Poison_tower (Tower):
                     x1, y1 = creep.loc[0] , creep.loc[1]
                     if engine.util.distance(x1, y1, x2, y2) <= self.fire_range:
                         if self.can_fire():
-                            self.fire(creep.loc, gameState)
+                            self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(poison(self.id, creep.loc))
+                            myAttacks.append(poison((self.id,creep.loc)))
         return myAttacks;
 
     #Override for ice_tower

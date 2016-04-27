@@ -6,20 +6,22 @@ from game_pieces.creep import Creep
 # Each modifier holds the original values of the creep variable that it is modify. Upon the conter for the modifier reaching 0,
 # the original value for the creep is restored.
 class Dot_modifier (Modifiers):
-    def __init__(self, creep, gameState, dotAmount):
-        self.creep = creep
-        self.gameState = gameState
-        self.fireDamage = dotAmount/self.counter
-        self.counter = 60
+    def __init__(self, id, gamestate, dotAmount):
+
+        self.creep_id = id
+        self.poison = dotAmount/self.counter
+        self.counter = 90
         pass
 
     # Counter update for the modifier.
-    def update(self):
+    def update(self, id, gamestate):
 
         if(self.counter == 0):
-            self.creep.take_damage(self.fireDamage, self.gameState)
-            self.creep.modifiers.remove(self)
+            gamestate.all_creeps[id].take_damage(self.fireDamage, self.gameState)
+        elif(self.counter >0):
+            self.counter = self.counter-1
+            gamestate.all_creeps[id].take_damage(self.poison, self.gameState)
+
         else:
             self.counter = self.counter-1
-            self.creep.take_damage(self.fireDamage, self.gameState)
 

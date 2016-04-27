@@ -11,7 +11,7 @@ class Frozen_modifier (Modifiers):
         #self.creep = creep
 
         self.original_speed = gamestate.all_creeps[id].base_speed
-        gamestate.all_creeps[id].speed = self.original_speed/20
+        gamestate.all_creeps[id].speed = self.original_speed/10
         self.counter = 30
         pass
 
@@ -23,7 +23,7 @@ class Frozen_modifier (Modifiers):
             self.counter = self.counter-1
         elif(self.counter >0):
             self.counter = self.counter-1
-            gamestate.all_creeps[id].speed = self.original_speed/20
+            gamestate.all_creeps[id].speed = self.original_speed/10
         else:
             self.counter = self.counter-1
         pass

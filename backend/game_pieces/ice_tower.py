@@ -40,7 +40,7 @@ class Ice_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id, creep.id))
+                            myAttacks.append(laser(self.id, creep.loc))
         return myAttacks;
 
     #Override for ice_tower
