@@ -171,9 +171,9 @@ function initSideBar() {
         "Upgrade Tower"
     ];
     var towerTypes = [
-        "laser_tower",
         "fire_tower",
-        "ice_tower",
+        "laser_tower",
+        "gattling_tower",
         "delete_tower",
         "upgrade_tower"];
     var towerDescriptions = [
@@ -200,7 +200,7 @@ function initSideBar() {
 
     var creepTypes = ["Slow", "Default", "Fast"];
     var creepNames = ["Slow", "Normal", "Fast"];
-    var creepDescriptions = ["Slow creep with a lot of help",
+    var creepDescriptions = ["Slow creep with a lot of health",
         "Normal creep with a well rounded set of states",
         "Fast creep with a little bit of health"];
     var creepPrices = ["100", "15", "30"];
