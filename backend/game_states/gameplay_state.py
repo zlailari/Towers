@@ -61,6 +61,8 @@ class GameplayState(GameState):
             if creep.live:
                 enemies += 1
 
+        effects_json = self.world.process_effects()
+
         # Dictionary of player stats
         playerState = {
             'lives': self.lives,
@@ -73,14 +75,10 @@ class GameplayState(GameState):
             'playerState': playerState,
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
-            'effects' : self.world.effects,
+            'effects' : effects_json,
             'path': str(bestPath),
             'player_id': self.player_id
         }
-
-        #print("PlayerState:"+str(playerState) + " \nAttacks Made:" + str(attacksMade)) #needed for testing purposes
-        #for i in range(0,len(self.all_creeps)):
-        #   print("Creep"+str(i)+": "+str(self.all_creeps[i]))
 
         # Updates all effects in the world (decreases their counter by one). Each gridworld holds an effects 2d array that stores a tile_effects object.
         for i in range(0,self.world.width):
