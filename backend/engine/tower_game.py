@@ -150,7 +150,6 @@ class GameRunner:
                 for player in self.player_states:
                     #if player != player_id:
 
-
                     state = self.player_states[player]
                     state.spawn_creep(creep_type)
                     self.player_states[player_id].spawned_creeps +=1
