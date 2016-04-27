@@ -124,6 +124,7 @@ var CreepButtons = function (divID) {
                 var msg = {
                     "creepID": cid
                 };
+                console.log(msg);
                 ws.creepRequest(userID, msg);
             });
         this.hotKeyCodes[ID] = hotKeyKC;

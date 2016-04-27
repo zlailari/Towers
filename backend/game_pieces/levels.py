@@ -41,5 +41,3 @@ class Levels:
             else:
                 break
         return spawningThisTick #Returns the spawning creeps for this tick
-
-

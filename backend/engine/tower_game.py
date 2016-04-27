@@ -143,9 +143,8 @@ class GameRunner:
         elif msg['type'] == MSG.creep_request.name:
             player_id = msg['player_id']
             creep_type = msg['msg']['creepID']
-
             if((self.player_states[player_id].gold)>= creep_costs[creep_type]):
-                for player in self.player_states:
+                for player in self.player_states.keys():
                     if player != player_id:
                         state = self.player_states[player]
                         state.spawn_creep(creep_type)
