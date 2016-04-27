@@ -42,7 +42,7 @@ def format_msg(text, m_type, msg=None):
 
 def start_server_process(address="0.0.0.0", port="9000"):
     # start the server running in a new process
-    p = Process(target=start_server, args=(address, port))
+    p = Process(target=start_server, args=(address, port), daemon=True)
     p.start()
 
 
