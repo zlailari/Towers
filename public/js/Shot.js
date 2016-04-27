@@ -1,4 +1,6 @@
+race = "Human";
 drawShot = function(ctx, shot) {
+    var xpos, ypos;
     if (shot.type == "laser") {
         ctx.beginPath();
 
@@ -21,5 +23,28 @@ drawShot = function(ctx, shot) {
             }
         }
         ctx.stroke();
+    } else if (shot.type == "fire") {
+        xpos = gridToPixel(shot.loc[0]);
+        ypos = gridToPixel(shot.loc[1]);
+
+        ctx.drawImage(shotImages[race][0], xpos, ypos, 10, 20);
+    } else if (shot.type == "sniper") {
+        xpos = gridToPixel(shot.loc[0]);
+        ypos = gridToPixel(shot.loc[1]);
+
+        ctx.drawImage(shotImages[race][1], xpos, ypos, 10, 20);
+    } else if (shot.type == "gattling") {
+        xpos = gridToPixel(shot.loc[0]);
+        ypos = gridToPixel(shot.loc[1]);
+
+        ctx.drawImage(shotImages[race][2], xpos, ypos, 10, 20);
+    } else if (shot.type == "poison") {
+        xpos = gridToPixel(shot.loc[0]);
+        ypos = gridToPixel(shot.loc[1]);
+
+        ctx.drawImage(shotImages[race][3], xpos, ypos, 10, 20);
+    } else {
+        console.log("WOWO what it this shot???");
+        console.log(shot);
     }
 };

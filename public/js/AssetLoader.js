@@ -1,7 +1,10 @@
 // Loads all game images
 
 assetsLoaded = 0;
-assetsToLoad = 10;
+assetsToLoad = 18;
+
+var shotNames;
+var shotImages = {"Human": [], "Alien": []};
 
 loadImages = function() {
     // ADD ANY IMAGES TO LOAD HERE.
@@ -37,6 +40,31 @@ loadImages = function() {
         creepImages[k] = new Image();
         creepImages[k].onload = function() {imageLoaded();};
         creepImages[k].src = creepImageNames[k];
+    }
+
+    shotNames = {
+        "Human": [
+            "/img/shots/h_rocket_shot.png",
+            "/img/shots/h_sniper_shot.png",
+            "/img/shots/h_poison_shot.png",
+            "/img/shots/h_rail_shot.png",
+        ],
+        "Alien": [
+            "/img/shots/a_rocket_shot.png",
+            "/img/shots/a_sniper_shot.png",
+            "/img/shots/a_poison_shot.png",
+            "/img/shots/a_rail_shot.png",
+        ],
+    };
+    for (var q = 0; q < shotNames['Human'].length; q++) {
+        shotImages['Human'].push(new Image());
+        shotImages['Human'][q].onload = function() {imageLoaded();};
+        shotImages['Human'][q].src = shotNames['Human'][q];
+    }
+    for (var z = 0; z < shotNames['Alien'].length; z++) {
+        shotImages['Alien'].push(new Image());
+        shotImages['Alien'][z].onload = function() {imageLoaded();};
+        shotImages['Alien'][z].src = shotNames['Human'][z];
     }
 };
 

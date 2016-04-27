@@ -40,7 +40,7 @@ class Fire_tower (Tower):
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
 
-                            gameState.projectiles.append(ProjectileTile(self.loc, creep.loc, 2, "fire"))
+                            gameState.projectiles.append(ProjectileTile(self.loc, creep.loc, .0005, "fire"))
         return myAttacks;
 
     #Override for fire tower
