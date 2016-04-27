@@ -1,6 +1,8 @@
 // Handles game start and initial user interactions
 
 $(document).ready(function() {
+    $('.introduction').modal('show');
+
     $('#login-trigger').click(function(){
         $(this).next('#login-content').slideToggle();
         $(this).toggleClass('active');
@@ -17,7 +19,28 @@ $(document).ready(function() {
     });
 
     $('.submit-login').on('click', function() {
-        console.log('login');
+        data = {
+            username: $('#username').val(),
+            password: $('#password').val()
+        };
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/login",
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                username: $('#username').val(),
+                password: $('#password').val(),
+            }),
+            success: function (data) {
+                return data;
+            },
+            error: function (error) {
+                console.log(error);
+                return "Error!";
+            }
+        });
     });
 
     $('#signup').on('click', function() {
@@ -27,6 +50,5 @@ $(document).ready(function() {
 
 function findGame() {
     $('.introduction').fadeOut(500);
-    $('.overlay').fadeOut(400);
     setTimeout(lobbyManager.enterLobby, 500);
 }
