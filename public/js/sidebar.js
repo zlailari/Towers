@@ -164,26 +164,43 @@ function initSideBar() {
         .prependTo($('#towerButtons'));
 
     var towerNames = [
-        "Rocket Tower",
         "Laser Tower",
+        "Rocket Tower",
+        "Stun Trap",
+        "Sniper Tower",
+        "Wall Tower",
         "Railgun",
+        "Posion Tower",
         "Delete Tower",
         "Upgrade Tower"
     ];
     var towerTypes = [
-        "fire_tower",
         "laser_tower",
+        "fire_tower",
+        "stun_tower",
+        "sniper_tower",
+        "wall_tower",
         "gattling_tower",
+        "poison_tower",
         "delete_tower",
         "upgrade_tower"];
     var towerDescriptions = [
-        "This tower shoots rockets",
         "This tower shoots lasers",
-        "This tower shoots ???"];
-    var towerPrices = ["10", "10", "10", "-50%", "10"];
+        "This tower shoots a rocket and lights a tile on fire",
+        "Trap that stuns creeps",
+        "Long range, with high damage and a low rate of fire",
+        "Does not fire anything but blocks creeps",
+        "This tower shoots needels",
+        "This tower shoots poison",
+        "Delete a Tower", "Upgrade a tower"];
+    var towerPrices = ["10", "10", "10", "10", "10", "10", "10", "-50%", "35+5*level"];
     var towerHotKeys = [{s:"A", kc:65},
         {s:"R", kc:82},
+        {s:"T", kc:84},
+        {s:"N", kc:78},
+        {s:"W", kc:87},
         {s:"I", kc:73},
+        {s:"P", kc:80},
         {s:"L", kc:76},
         {s:"U", kc:85}];
 
@@ -226,8 +243,9 @@ function initSideBar() {
     });
 
     for (var j = 0; j < towerNames.length; j++) {
+        var name = towerImageNames[j][0];
         towerButtons.addTower(towerTypes[j],
-            towerNames[j], towerImageNames[j],
+            towerNames[j], name,
             towerToolTips[j], towerHotKeys[j]);
     }
 

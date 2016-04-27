@@ -69,6 +69,9 @@ ws.onmessage = function(event) {
             } else if (msg['towerDeleted'] && playerGrids[id]){
                 playerGrids[id].deleteTower(msg['x'],
                     msg['y']);
+            } else if (msg['towerUpgraded'] && playerGrids[id]) {
+                playerGrids[id].upgradeTower(msg['x'],
+                    msg['y']);
             } else if (id == userID) {
                 var reason = msg['reason'];
                 towerDenied(reason);

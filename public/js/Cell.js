@@ -3,9 +3,13 @@ var CellType = Object.freeze({
     BLOCKED: 1,
     BASIC_TOWER: 2,
     TRAP: 3,
-    ARROW: 100,
-    FIRE: 101,
-    ICE: 102
+    LASER: 100,
+    ROCKET: 101,
+    ELECTRIC: 102,
+    SNIPER: 103,
+    WALL: 104,
+    RAIL: 105,
+    POISON: 106
 });
 
 var CellEffect = Object.freeze({
@@ -27,6 +31,7 @@ var Cell = function (Grid, ctx, row, col) {
     this.Grid = Grid;
 
     this.img = null;
+    this.towerLevel = 0;
 
     this.draw = function(ctx) {
         var size = this.Grid.distance;
@@ -46,13 +51,17 @@ var Cell = function (Grid, ctx, row, col) {
                 ctx.fillStyle = "#000000";
                 doDraw = false;
                 break;
-            case CellType.ARROW:
-            case CellType.FIRE:
-            case CellType.ICE:
+            case CellType.LASER:
+            case CellType.ROCKET:
+            case CellType.ELECTRIC:
+            case CellType.SNIPER:
+            case CellType.WALL:
+            case CellType.RAIL:
+            case CellType.POISON:
                 ctx.fillStyle = "#FFFFFF";
                 doDraw = true;
                 this.img = towerImages[parseFloat(this.type)
-                    - parseFloat(CellType.ARROW)];
+                    - parseFloat(CellType.LASER)][this.towerLevel];
                 break;
             default:
                 console.log("ERROR: Illegal CellType: " + this.type);
@@ -95,7 +104,7 @@ var Cell = function (Grid, ctx, row, col) {
                 ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, size, size);
-                var img = towerImages[index];
+                var img = towerImages[index][0];
                 ctx.drawImage(img, (this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, drawSize, drawSize);
             } else {

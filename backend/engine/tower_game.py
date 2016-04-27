@@ -130,6 +130,18 @@ class GameRunner:
                         'player_id': player_id
                     }
                 )
+            elif msg['msg']['towerID'] == 'upgrade_tower':
+                tower_upgraded = state.upgrade_tower((x,y))
+                self.network.send_message(
+                    {
+                        'type': 'tower_update',
+                        'towerUpgraded': tower_upgraded,
+                        'x': x,
+                        'y': y,
+                        'player_id': player_id
+                    }
+                )
+
             else:
                 tower = state.build_tower((x, y), msg['msg']['towerID'])
                 towerUpdate = None
