@@ -5,9 +5,16 @@ class Lobby:
         self.players = []  # list of player connections
         self.game_client = game_client
         self.lobby_id = lobby_id
+        self.game_in_progress = False
 
     def add_player(self, player_connection):
         self.players.append(player_connection)
+
+    def is_in_game(self):
+        return self.game_in_progress
+
+    def game_is_running(self):
+        self.game_in_progress = True
 
     def get_id(self):
         return self.lobby_id
