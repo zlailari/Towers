@@ -2,6 +2,7 @@ from game_pieces.tower import Tower
 import engine.util
 from shots.shot import shot
 from shots.laser import laser
+from game_pieces.projectile import ProjectileCreep
 
 import json
 
@@ -39,7 +40,8 @@ class Gattling_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id,creep.id))
+
+                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 2, "gattling"))
         return myAttacks;
 
     #Override for ice_tower

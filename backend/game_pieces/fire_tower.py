@@ -2,6 +2,7 @@ from game_pieces.tower import Tower
 import engine.util
 from shots.shot import shot
 from shots.fire import fire
+from game_pieces.projectile import ProjectileTile
 import json
 
 # fire_tower is a subclass of tower. It sets tiles on fire but deals no damage.
@@ -38,7 +39,8 @@ class Fire_tower (Tower):
                         if self.can_fire():
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(fire(self.id, creep.id))
+
+                            gameState.projectiles.append(ProjectileTile(self.loc, creep.loc, 2, "fire"))
         return myAttacks;
 
     #Override for fire tower
