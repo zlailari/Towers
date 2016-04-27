@@ -149,4 +149,6 @@ class GameRunner:
         for player in self.player_states:
             state = self.player_states[player]
             data = state.update(dt, [])
+            if state.is_dead():
+                self.player_states.pop(player, None)  # remove player from dict
             self.network.send_message(data)

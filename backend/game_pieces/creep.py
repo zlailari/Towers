@@ -110,7 +110,7 @@ class Creep:
             self.live=False
 
     def killPlayer(self, gameState):
-            gameState.lives -=1
+            gameState.lose_life()
             self.live = False
 
     def adjust_speed(self, amount):

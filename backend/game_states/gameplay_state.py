@@ -3,7 +3,6 @@ from engine.grid_world import GridWorld
 
 from game_pieces.creep import Creep
 from game_pieces.tower_factory import Tower_factory
-from engine.util import dump_obj_dict
 from engine.message_enum import MSG  # message type enum
 
 LOCATION_INDEX = 0
@@ -115,6 +114,12 @@ class GameplayState(GameState):
             self.gold -= tower.price
             self.all_towers.append(tower)
             return tower
+
+    def lose_life(self):
+        self.lives -= 1
+
+    def is_dead(self):
+        return self.lives <= 0
 
     # Calls upgrade for towers. Max level depends on the tower, cost per level
     # increases as per tower.
