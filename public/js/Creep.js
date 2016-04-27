@@ -17,7 +17,9 @@ drawCreep = function(ctx, creep) {
     if (!creep.live) {
         return;
     }
-
+    var type = creep.type;
+    var index = creepTypeToNumber[type];
+    creepPic = creepImages[index];
     var width = 32;
     var height = 50;
 

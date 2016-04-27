@@ -12,9 +12,9 @@ class Creep:
     """So far this is just an example implementation"""
 
     def factory(type,id):
-        if type == "Default": return Creep((0,0),"default",.05,100,id, 15)
-        if type == "Strong": return Creep((0,0),"strong",.01,500,id,30)
-        if type == "Weak": return Creep((0,0),"weak",.02,50,id,30)
+        if type == "Default": return Creep((0,0),"Default",.05,100,id, 15)
+        if type == "Strong": return Creep((0,0),"Strong",.01,500,id,30)
+        if type == "Weak": return Creep((0,0),"Weak",.02,50,id,30)
 
     factory = staticmethod(factory)
 
