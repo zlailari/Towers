@@ -1,5 +1,4 @@
 """This module acts as the server in charge of everything.
-
 The game_loop has a client that connects to this server.
 
 Each player has their web-browser client which connects to this server.
@@ -93,11 +92,13 @@ def send_lobby_list(player_connection):
         'type': MSG.lobby_info.name,
         'lobbies': []
     }
+
     for lobby in lobbies:
+        max_players = MAX_LOBBY_SIZE if not lobby.is_in_game() else -1
         lobby_info = {
             'lobby_id': lobby.get_id(),
             'num_players': lobby.size(),
-            'max_players': MAX_LOBBY_SIZE,
+            'max_players': max_players,
             'players': [user_ids[player] for player in lobby.get_players()]
         }
         message['lobbies'].append(lobby_info)
@@ -299,6 +300,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         # start the sender's game
         lobby = get_players_lobby(self)
         if lobby is not None:
+            lobby.game_is_running()
             game = lobby.get_game_client()
             game.sendMessage(format_msg(
                 'start running the game',
@@ -362,7 +364,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         if lobby:
             lobby.remove_player(self)
             game_remove_player(lobby.get_game_client(),
-                user_ids[self])
+                               user_ids[self])
         broadcast_lobby_list()
 
     def handleCreepRequest(self, json_msg):
