@@ -88,7 +88,6 @@ def get_players_lobby(player_connection):
         if lobby.has_player(player_connection):
             return lobby
 
-    print('couldnt find lobby for player {}'.format(player_connection))
     return None
 
 
@@ -121,7 +120,6 @@ def broadcast_lobby_list():
 
 def game_add_player(game, player_id):
     """Tell a game instance to add this player."""
-    print('sending message to gamerunner to add player {}'.format(player_id))
     message = format_msg(
         'add this player to your game',
         MSG.game_add_player,
@@ -129,7 +127,6 @@ def game_add_player(game, player_id):
             'player_id': player_id
         }
     )
-    print('message: {}'.format(message))
     game.sendMessage(message)
 
 
@@ -168,7 +165,6 @@ def lobby_add_player(player_connection, lobby_id):
 
 
 def game_remove_player(game, player_id):
-    print('sending message to remove player {}'.format(player_id))
     message = format_msg(
         'remove this player from your game',
         MSG.game_remove_player,
@@ -176,7 +172,6 @@ def game_remove_player(game, player_id):
             'player_id': player_id
         }
     )
-    print('message: {}'.format(message))
     game.sendMessage(message)
 
 
@@ -272,7 +267,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert 'type' in message
         m_type = message['type']
 
-        # info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
+        #info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
         if m_type == MSG.chat.name:
             self.handleChat(as_string)
         elif m_type == MSG.tower_request.name:
@@ -350,8 +345,8 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert len(lobbies) > 0
         message = obj_from_json(json_msg)
 
-        assert 'lobby_name' in message
-        lobby_name = message['lobby_name']
+        assert 'lobby_name' in message['msg']
+        lobby_name = message['msg']['lobby_name']
         pending_lobby_names.append(lobby_name)
 
         engine = lobbies[0].get_game_client()

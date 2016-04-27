@@ -10,3 +10,6 @@ class GameState:
         # subclass game states MUST implement this, so throw exception
         # if they don't
         raise NotImplementedError
+
+    def is_dead(self):
+        return True

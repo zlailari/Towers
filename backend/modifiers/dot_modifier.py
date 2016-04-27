@@ -7,7 +7,6 @@ from game_pieces.creep import Creep
 # the original value for the creep is restored.
 class Dot_modifier (Modifiers):
     def __init__(self, id, gamestate, dotAmount):
-
         self.counter = 90
         self.creep_id = id
         self.poison = dotAmount/self.counter

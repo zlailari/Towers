@@ -1,16 +1,20 @@
 # this will store data about the different varieties of creeps
 # I don't know if I like this way of designating types, but it works for now
 import engine.util
+CREEP_TYPES = {
+    'basic': {'speed': 10, 'health': 100},
+    'medium': {'speed': 10, 'health': 150},
+    'advanced': {'speed': 10, 'health': 300},
+}
+
 
 class Creep:
     """So far this is just an example implementation"""
 
-
-    def factory(type,id): #loc, type, speed, hp, id, bounty
+    def factory(type,id):
         if type == "Default": return Creep((0,0),"Default",.05,100,id, 15)
-        if type == "Fast": return Creep((0,0),"Fast",.1,50,id,30)
-        if type == "Slow": return Creep((0,0),"Slow",.005,10000,id,100)
-
+        if type == "Strong": return Creep((0,0),"Strong",.01,500,id,30)
+        if type == "Weak": return Creep((0,0),"Weak",.02,50,id,30)
 
     factory = staticmethod(factory)
 

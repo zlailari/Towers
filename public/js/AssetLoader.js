@@ -3,6 +3,7 @@
 assetsLoaded = 0;
 assetsToLoad = 0;
 
+
 var shotNames;
 var shotImages = {"Human": [], "Alien": []};
 
@@ -77,6 +78,7 @@ loadImages = function() {
         }
         towerImages[i] = images;
     }
+
     assetsToLoad++;
     backgroundImg = new Image();
     backgroundImg.onload = function() { imageLoaded(); };
@@ -121,6 +123,5 @@ imageLoaded = function() {
     // check if all assets are loaded
     if (assetsLoaded == assetsToLoad) {
         fullyLoaded = true;
-        initSideBar();
     }
 };

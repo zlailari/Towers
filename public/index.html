@@ -67,7 +67,18 @@
             <h4 class="modal-title" id='lobby'>Lobby Information</h4>
           </div>
           <div class="modal-body" id='lobby'></div>
-          <div class="modal-footer" id='lobby'></div>
+          <div class="modal-footer" id='lobby'>
+            <div class="row">
+              <div class="col-sm-3 col-sm-offset-6">
+                <input id="lbName" class="form-control" id="lobbyName" placeholder="Lobby Name">
+              </div>
+              <div class="col-sm-3">
+                <button id="lbBtn" type="button" class="btn btn-default">
+                  Create New Lobby
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -131,7 +142,8 @@
         </div>
       </div>
     </div>
-
+    <div id="rejoinLbBtn">
+    </div>
   <script src="js/AssetLoader.js"></script>
   <script src="js/Cell.js"></script>
   <script src="js/Grid.js"></script>

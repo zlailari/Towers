@@ -48,6 +48,26 @@ ws.onmessage = function(event) {
         if (msg.type == 'game_update') {
             if (id == userID) {
                 playerState = msg['playerState'];
+                if (playerState['isDead']) {
+                    allCreeps[id] = [];
+                    var gameOffset = $("#gameFrame").offset();
+                    playerGrids[id] = new Grid(gameCan, gameCtx, gameOffset);
+                    $('<button type="button" class="btn btn-default">'
+                        + 'Rejoin Lobby System'
+                        + '</button>')
+                        .appendTo($("#rejoinLbBtn"))
+                        .click(function(event) {
+                            destroySideBar();
+                            $('.overlay').fadeIn(500);
+                            lobbyManager = new LobbyManager();
+                            lobbyManager.init();
+                            setTimeout(lobbyManager.enterLobby,
+                                500);
+                            $(this).remove();
+                        });
+                        var msg = {};
+                        ws.leaveLobby(userID, msg);
+                }
             }
 
             var newShots = msg['attacksMade'];
@@ -83,17 +103,19 @@ ws.onmessage = function(event) {
             for (var i = 0; i < lobbies.length; ++i) {
                 var lobby = lobbies[i];
                 var lbid = lobby['lobby_id'];
+                var lbname = lobby['lobby_name'];
                 var num = lobby['num_players'];
                 var max = lobby['max_players'];
                 var players = lobby['players'];
-                lobbyManager.update(lbid, num, max);
+                lobbyManager.update(lbid, lbname, num, max);
             }
         }
         if (msg.type == 'lobby_joined') {
             var lbid2 = msg['lobby_id'];
+            var lbname2 = msg['lobby_name'];
             var num2 = msg['num_players'];
             var max2 = msg['max_players'];
-            lobbyManager.joinLobby(lbid2, num2, max2);
+            lobbyManager.joinLobby(lbid2, lbname2, num2, max2);
         } else if (msg.type == 'lobby_dne') {
             // placeholder
         }
@@ -109,6 +131,7 @@ ws.onmessage = function(event) {
                 }
             }
             lobbyManager.exitLobby();
+            initSideBar();
         }
     }
 };

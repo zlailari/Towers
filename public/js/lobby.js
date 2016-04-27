@@ -40,7 +40,10 @@ var LobbyManager = function () {
         this.newLbBtn.bt.click({this: this}, function(event) {
             var self = event.data.this;
             if (self.canCreateLobby) {
-                var msg = {};
+                var name = $("#lbName").val();
+                var msg = {
+                    "lobby_name": name
+                };
                 ws.newLobbyRequest(userID, msg);
                 self.canCreateLobby = false;
                 self.newLbBtn.bt.addClass('disabled');
@@ -75,11 +78,7 @@ var LobbyManager = function () {
 
     this.init = function() {
         if (this.newLbBtn.bt == null) {
-            this.newLbBtn.bt = $(
-                '<button type="button" class="btn btn-default">'
-                + 'Create New Lobby'
-                + '</button>')
-                .appendTo('#lobby.modal-footer');
+            this.newLbBtn.bt = $("#lbBtn");
         }
         this.enableNewLobby();
         this.searching = true;
@@ -114,11 +113,11 @@ var LobbyManager = function () {
         }, 1000, this);
     };
 
-    this.updateText = function(id, numPlayers, maxPlayers) {
+    this.updateText = function(id, name, numPlayers, maxPlayers) {
         if (this.searching) {
             this.msgs[id].remove();
             this.msgs[id] = $(
-                '<p>Lobby ' + id + ' has ' + numPlayers
+                '<p>Lobby ' + name + ' which has ' + numPlayers
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
@@ -141,7 +140,7 @@ var LobbyManager = function () {
         } else if (id == this.joinedID) {
             this.msgs[id].remove();
             this.msgs[id] = $(
-                '<p>You are in lobby ' + id + ' has ' + numPlayers
+                '<p>You are in  ' + name + ' which has ' + numPlayers
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
@@ -155,7 +154,7 @@ var LobbyManager = function () {
         $("#lobby").modal("handleUpdate");
     };
 
-    this.joinLobby = function(id, numPlayers, maxPlayers) {
+    this.joinLobby = function(id, name, numPlayers, maxPlayers) {
         this.disableNewLobby();
         this.searching = false;
         this.joinedID = id;
@@ -165,7 +164,7 @@ var LobbyManager = function () {
             .appendTo($("#lobby.modal-body"));
 
         this.msgs[id] = $(
-            '<p>You are in lobby ' + id + ' has ' + numPlayers
+            '<p>You are in lobby ' + name + ' which has ' + numPlayers
             + '/' + maxPlayers + ' players'
             + '</p>')
             .prependTo(this.divs[id]);
@@ -213,7 +212,7 @@ var LobbyManager = function () {
         $("#lobby").modal("handleUpdate");
     };
 
-    this.addNewLobby = function(id, numPlayers, maxPlayers) {
+    this.addNewLobby = function(id, name, numPlayers, maxPlayers) {
         this.divs[id] = $(
             '<div class="lobby-item"/>')
             .appendTo($("#lobby.modal-body"));
@@ -233,7 +232,7 @@ var LobbyManager = function () {
             hasClick: true};
 
         this.msgs[id] = $(
-            '<p>Lobby ' + id + ' has ' + numPlayers
+            '<p>Lobby ' + name + ' which has ' + numPlayers
             + '/' + maxPlayers + ' players'
             + '</p>')
             .prependTo(this.divs[id]);
@@ -246,15 +245,15 @@ var LobbyManager = function () {
 
         $("#lobby").modal("handleUpdate");
     };
-    this.update = function(id, numPlayers, maxPlayers) {
+    this.update = function(id, name, numPlayers, maxPlayers) {
         if (this.divs.hasOwnProperty(id)) {
             if (maxPlayers > 0) {
-                this.updateText(id, numPlayers, maxPlayers);
+                this.updateText(id, name, numPlayers, maxPlayers);
             } else {
                 this.remove(id);
             }
         } else if (this.searching && maxPlayers > 0) {
-            this.addNewLobby(id, numPlayers, maxPlayers);
+            this.addNewLobby(id, name, numPlayers, maxPlayers);
         }
     };
 };

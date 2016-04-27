@@ -3,7 +3,6 @@ from engine.grid_world import GridWorld
 
 from game_pieces.creep import Creep
 from game_pieces.tower_factory import Tower_factory
-from engine.util import dump_obj_dict
 from engine.message_enum import MSG  # message type enum
 
 LOCATION_INDEX = 0
@@ -44,6 +43,10 @@ class GameplayState(GameState):
         if(self.counter > 10):
             self.gold +=int(self.spawned_creeps/3)
             self.counter = 0
+
+
+        if(self.counter % 300 == 0):
+            self.gold +=self.spawned_creeps/3
 
 
         self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
@@ -90,7 +93,8 @@ class GameplayState(GameState):
         playerState = {
             'lives': self.lives,
             'gold': self.gold,
-            'enemiesLeft': enemies
+            'enemiesLeft': enemies,
+            'isDead': False if self.lives > 0 else True
         }
 
         update = {
@@ -150,6 +154,12 @@ class GameplayState(GameState):
             self.gold -= tower.price
             self.all_towers.append(tower)
             return tower
+
+    def lose_life(self):
+        self.lives -= 60
+
+    def is_dead(self):
+        return self.lives <= 0
 
     # Calls upgrade for towers. Max level depends on the tower, cost per level
     # increases as per tower.

@@ -24,6 +24,7 @@ class Poison_tower (Tower):
         self.time_since_last_fire = 0
         self.upgrade_level = 0
         self.max_upgrade_level = 2
+
         self.dot_amount = 30
         self.upgrade_price = 35
 
@@ -43,6 +44,7 @@ class Poison_tower (Tower):
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
                             gameState.projectiles.append(ProjectileCreep(self.loc, creep, 2, "poison", self.dot_amount, gameState))
+
         return myAttacks;
 
     #Override for ice_tower

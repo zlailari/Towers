@@ -39,32 +39,19 @@ class GameRunner:
 
         self.game_states.append(state)
         self.player_states[player_id] = state
-        print('added player, and state for player {}'.format(player_id))
 
     def remove_player(self, player_id):
         if player_id in self.player_states:
             state = self.player_states[player_id]
             del self.player_states[player_id]
             self.game_states.remove(state)
+
             print('removing player and state for player {}'.format(player_id))
-
-        for i in range(0, 30):
-            self.spawnCreeps.append(Creep.factory("Default", i))
-
-        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
-        state = GameplayState(levels, WORLD_WIDTH,
-                              WORLD_HEIGHT, 100, 100, player_id)
-
-        self.game_states.append(state)
-        self.player_states[player_id] = state
-        print('added player, and state for player {}'.format(player_id))
 
     def run(self):
         # wait until a request comes in to start the game, then start the game
         while True:
             message = self.network.receive()
-            if message:
-                print('game received message: {}'.format(message))
             if message and message['type'] == MSG.game_start_request.name:
                 self.start_game()
                 break
@@ -78,14 +65,12 @@ class GameRunner:
                 self.remove_player(player_id)
 
     def spawn_new_game(self):
-        print('spawning new game instance')
         new_game = GameRunner(create_server=False)
         t = threading.Thread(target=new_game.run)
         t.daemon = True
         t.start()
 
     def start_game(self):
-        print('starting game.')
         clock = Clock(TICK_LEN)
         clock.tick()  # tick once to initialize counter
 
@@ -152,9 +137,9 @@ class GameRunner:
         elif msg['type'] == MSG.game_add_player.name:
             player_id = msg['player_id']
             self.add_player(player_id)
-        elif msg['type'] == MSG.game_remove_player.name:
-            player_id = msg['player_id']
-            self.remove_player(player_id)
+        # elif msg['type'] == MSG.game_remove_player.name:
+        #     player_id = msg['player_id']
+        #     self.remove_player(player_id)
         elif msg['type'] == MSG.creep_request.name:
             player_id = msg['player_id']
             creep_type = msg['msg']['creepID']
@@ -175,7 +160,14 @@ class GameRunner:
             self.process_message(message)
 
         # Update game 1 tick and pass to clients
+        dead_players = []
         for player in self.player_states:
             state = self.player_states[player]
             data = state.update(dt, [])
+            if state.is_dead():
+                dead_players.append(player)
+
             self.network.send_message(data)
+
+        for player in dead_players:
+            self.player_states.pop(player, None)  # remove dead players

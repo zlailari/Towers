@@ -21,6 +21,12 @@ var TowerButtons = function (divID) {
         this.images[ID].remove();
     };
 
+    this.destroy = function() {
+        for (var id in this.divs) {
+            this.divs[id].remove();
+        }
+    };
+
     this.changeTower = function (ID, name, imageName, toolTip, hotKeyKC) {
         if (this.images[ID]) {
             this.removeTower(ID);
@@ -90,6 +96,12 @@ var CreepButtons = function (divID) {
         this.image[ID].remove();
     };
 
+    this.destroy = function() {
+        for (var id in this.divs) {
+            this.divs[id].remove();
+        }
+    };
+
     this.changeCreep = function(ID, name, imageName, toolTip, hotKeyKC) {
         if (this.images[ID]) {
             this.removeCreep(ID);
@@ -150,7 +162,14 @@ function towerDenied (reason) {
     }, 3000);
 }
 
+
+var sideBarInit = false;
 function initSideBar() {
+    if (sideBarInit) {
+        return;
+    }
+
+    sideBarInit = true;
     $('<div class="sideBarTitle"'
         + 'id="denied"'
         + 'data-toggle="tooltip"'
@@ -254,4 +273,12 @@ function initSideBar() {
             creepNames[l], creepImageNames[l],
             creepToolTips[l], creepHotKeys[l]);
     }
+}
+
+
+function destroySideBar() {
+    towerButtons.destroy();
+    creepButtons.destroy();
+    $('#denied.sideBarTitle').remove();
+    sideBarInit = false;
 }
