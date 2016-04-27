@@ -1,15 +1,12 @@
 """This file acts as the main entrance point to the server."""
 import threading
-from game_pieces.creep import Creep
 from engine.clock import Clock
 # from game_states.main_menu import MainMenu
 # from game_states.gameplay_state import GameplayState
 from engine.network import Network
 from game_pieces.levels import Levels
 from game_states.gameplay_state import GameplayState
-from game_pieces.tower import Tower
 from engine.message_enum import MSG
-from engine.util import info
 
 # Define our globals
 TPS = 30  # ticks per second
@@ -26,15 +23,6 @@ class GameRunner:
     game engine loop to the server."""
 
     def __init__(self, print_gametick=False, print_on_receive=False, create_server=True):
-
-        # self.level_creeps_spawn_timers = [1,2,3,4,5]
-        # self.spawnCreeps = []
-
-        # for i in range(0, 5):
-        #    self.spawnCreeps.append(Creep.factory("Default",i))
-
-        # game_state = MainMenu()
-
         self.network = Network(create_server)
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
@@ -44,7 +32,6 @@ class GameRunner:
     def add_player(self, player_id):
         """Add a player to the game by giving them their own state."""
 
-        # initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
         levels = Levels.createLevel(5, 0.5, 10, 5, 3, "Default")
         state = GameplayState(levels, WORLD_WIDTH,
                               WORLD_HEIGHT, 100, 10000, player_id)
@@ -163,10 +150,3 @@ class GameRunner:
             state = self.player_states[player]
             data = state.update(dt, [])
             self.network.send_message(data)
-
-        # if self.print_gametick:
-        #     print("it's been " + str(dt * 1000) + " ms since last frame")
-
-        # message = self.network.receive()
-        # if message is not False and self.print_on_receive:
-        #     print("gameloop got message: {}".format(message))
