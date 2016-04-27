@@ -18,7 +18,7 @@ class Stun_tower (Tower):
         self.tower_type = "stun_tower"
 
         self.price = 30
-        self.upgrade_price = 10
+        self.upgrade_price = 0
         self.damage = 10
         self.time_since_last_fire = 0
         self.upgrade_level = 0
@@ -51,9 +51,4 @@ class Stun_tower (Tower):
 
 
     def upgrade(self):
-        if self.upgrade_level < self.max_upgrade_level:
-            self.upgrade_level += 1
-            self.upgrade_price += 5
-            self.cooldown = self.cooldown - .5
-            return True
         return False
