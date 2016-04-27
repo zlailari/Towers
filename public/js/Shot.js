@@ -36,12 +36,12 @@ drawShot = function(ctx, shot) {
         xpos = gridToPixel(shot.loc[0]);
         ypos = gridToPixel(shot.loc[1]);
 
-        ctx.drawImage(shotImages[race][2], xpos, ypos, 10, 20);
+        ctx.drawImage(shotImages[race][3], xpos, ypos, 10, 20);
     } else if (shot.type == "poison") {
         xpos = gridToPixel(shot.loc[0]);
         ypos = gridToPixel(shot.loc[1]);
 
-        ctx.drawImage(shotImages[race][3], xpos, ypos, 10, 20);
+        ctx.drawImage(shotImages[race][2], xpos, ypos, 10, 20);
     } else {
         console.log("WOWO what it this shot???");
         console.log(shot);
