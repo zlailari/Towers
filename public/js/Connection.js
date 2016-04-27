@@ -55,6 +55,7 @@ ws.onmessage = function(event) {
             allCreeps[id] = msg['creeps'];
 
             allEffects[id] = msg['effects'];
+
         }
         if (msg.type == 'tower_update') {
             if (msg['towerAccepted'] && playerGrids[id]) {
@@ -87,6 +88,8 @@ ws.onmessage = function(event) {
         }
 
         if (msg.type == 'game_start') {
+            $('.overlay').fadeOut(500);
+
             var players2 = msg['players'];
             for (var k = 0; k < players2.length; k++) {
                 var newID = players2[k];

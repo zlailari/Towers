@@ -16,13 +16,12 @@ class GameplayState(GameState):
     """This is the state the game is in during real gameplay,
     and manages all creeps, towers, scores, etc."""
 
-
     def __init__(self, level, width, height, lives, gold, player_id):
-
         self.cur_level = level
         self.world = GridWorld(width, height, (0, 0), (width - 1, height - 1))
         self.all_creeps = []
         self.all_towers = []
+
         #self.set_level(level)
         self.lives = lives
         self.gold = gold # starting gold
@@ -31,14 +30,18 @@ class GameplayState(GameState):
 
         self.spawned_creeps = 0 # Tracks how many creeps this person has spawned. For every 3 creeps, 1 gold is awarded every 10 seconds.
 
+
     # Calls all update methods within the game and returns dictionaries to be
     # converted to json with the player status (gold lives enemies left) and
     # other stats
     def update(self, dt, client_info):
         self.counter += dt  # the total amount of time that has elapsed
-
-        if(self.counter % 300 == 0):
-            self.gold +=self.spawned_creeps/3
+        #print(str(self.spawned_creeps))
+        #print("----------------------")
+        #print(str(self.counter))
+        if(self.counter > 10):
+            self.gold +=int(self.spawned_creeps/3)
+            self.counter = 0;
 
 
         self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
@@ -46,6 +49,7 @@ class GameplayState(GameState):
         creepLoc = {} # Dicitonary of creep locations
         creepProgress = {} # Dictionary of creep progresses
         attacksMade = [] # Dictionary of attacks made by towers
+
 
         # Update all creeps and get location location and movement progress
         bestPath = self.world.tilePaths
@@ -60,6 +64,7 @@ class GameplayState(GameState):
         for tower in self.all_towers:
             #attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
             attacksMade = attacksMade + tower.update(dt,self.all_creeps,self)
+
         enemies = 0
         for creep in self.all_creeps:
             if creep.live:
@@ -80,7 +85,7 @@ class GameplayState(GameState):
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
             'effects' : effects_json,
-            'path': str(bestPath),
+            #'path': str(bestPath), removed because we don't need it
             'player_id': self.player_id
         }
 
@@ -88,6 +93,14 @@ class GameplayState(GameState):
         for i in range(0,self.world.width):
             for j in range(0,self.world.height):
                 self.world.effects[i][j].update()
+
+        for i in range(0,self.world.width):
+            for j in range(0,self.world.height):
+                    a = self.world.effects[i][j].effects
+                    for b in reversed(a):
+                        if b.counter <0:
+                            a.remove(b)
+                    self.world.effects[i][j].effects = a
 
 
         return update
@@ -147,3 +160,4 @@ class GameplayState(GameState):
         for cr in self.all_creeps:
             if cr.loc == loc and cr.live:
                 cr.modify(mod)
+

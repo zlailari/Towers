@@ -3,8 +3,11 @@
 var myGrid = null;
 
 var playerGrids = [], allCreeps =[], shots = [];
+
 var playerState = null, creeps = null, attacksMade = null;
 var allEffects = [];
+
+var gameCan, gameCtx;
 
 var gameCan, gameCtx;
 
@@ -26,6 +29,9 @@ $(document).ready(function()  {
 
     var gameOffset = $("#gameFrame").offset();
     myGrid = new Grid(gameCan, gameCtx, gameOffset);
+
+    allCreeps = [];
+    allAttacks = [];
 
     gameCan.onmousemove = function (e) {
         myGrid.mouseMove(e.pageX, e.pageY);
@@ -60,6 +66,7 @@ $(document).ready(function()  {
         var effects = allEffects[currentTab];
         myGrid.setOffset(gameOffset);
         myGrid.draw(gameCtx, effects);
+
         creeps = allCreeps[currentTab];
         if (creeps) {
             for (var i = 0; i < creeps.length; i++) {
@@ -74,22 +81,5 @@ $(document).ready(function()  {
                 shots.splice(j, 1);
             }
         }
-        /* attacksMade = allShots[currentTab];
-        // this is also temp for demo
-        if (attacksMade) {
-            console.log(attacksMade);
-            // attacks come in as a dictionary like-> towerID: [creepIDs, ...]
-            // which is why this is a bit funky
-            for (var attack in attacksMade) {
-                if (attacksMade[attack].length > 0) {
-                    // a lot funky
-                    for (var shot in attacksMade[attack]) {
-                        // getting each towerID, creepID pair
-                        // this is why we must send stuff as array of objects...
-                        drawShot(gameCtx, attack, attacksMade[attack][shot]);
-                    }
-                }
-            }
-        }*/
     }
 });

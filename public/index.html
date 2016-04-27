@@ -33,6 +33,7 @@
       <div class="sideBarItem" id="towerButtons">
         <div class="sideBarImages" id="towerImages"></div>
         <hr class="line">
+
       </div>
       <div class="sideBarItem" id="creepButtons">
         <div class="sideBarTitle">
@@ -44,34 +45,6 @@
 
     <div class="overlay"></div>
     <div class="gameWrapper">
-      <div class="introduction">
-        <h2 class="welcome">Welcome to Towers!</h2>
-        <div class="wait-animation"></div>
-        <div class="search-status"></div>
-        <ul class="login-top">
-          <li id="login">
-            <a id="login-trigger" href="#">
-              Log in <span>▼</span>
-            </a>
-            <div id="login-content">
-              <form>
-                <fieldset id="inputs">
-                  <input id="username" type="email" name="Email" placeholder="Your email address" required>
-                  <input id="password" type="password" name="Password" placeholder="Password" required>
-                </fieldset>
-                <fieldset id="actions">
-                  <input type="submit" id="submit" value="Log in" class="submit-login">
-                  <label><input type="checkbox" checked="checked"> Keep me signed in</label>
-                </fieldset>
-              </form>
-            </div>
-          </li>
-          <li id="signup">
-            <a href="">Register (Keep track of stats)</a>
-          </li>
-        </ul>
-        <div class="play-now button-default">Play Now</div>
-      </div>
       <div class="stateWrapper">
         <div class="stateBarItem" id="tabs"></div>
         <div class="stateBarItem" id="gameInfo"></div>
@@ -84,8 +57,8 @@
     <!-- Inital home for chat box -->
     <div id="chat_div"></div>
 
-    <!-- Modal -->
-    <div id="lobby" class="modal fade" role="dialog">
+    <!-- Modals -->
+    <div id="lobby" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" >
       <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -98,6 +71,67 @@
         </div>
       </div>
     </div>
+
+    <div id="register" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" >
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Register</h4>
+          </div>
+          <div class="modal-body">
+            <div class="well">
+              <form id="registerForm">
+                <div class="form-group">
+                    <label for="username" class="control-label">Username</label>
+                    <input type="text" class="form-control" name="username" value="" required="" title="Please enter your username" placeholder="username">
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="control-label">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="password" value="" required="" title="Please enter your password">
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="control-label">Repeat Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="password" value="" required="" title="Please enter your password">
+                    <span class="help-block"></span>
+                </div>
+                <button type="submit" value="register" name="submit" class="btn btn-success btn-block" data-toggle="modal" data-target=".introduction" data-dismiss="modal">Register</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="introduction modal fade" role="dialog" data-backdrop="static" data-keyboard="false" >
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="welcome">Welcome to Towers!</h1>
+          </div>
+          <div class="modal-body">
+            <div class="btn-group">
+                  <button class="btn btn-secondary dropdown-toggle dropdown" type="button" data-toggle="dropdown" id="navLogin">Login</button>
+                  <div class="dropdown-menu" style="padding:17px;">
+                    <form class="form" id="formLogin">
+                      <input name="username" id="username" type="text" placeholder="Username"> 
+                      <input name="password" id="password" type="password" placeholder="Password"><br>
+                      <button type="button" id="btnLogin" class="btn">Login</button>
+                    </form>
+                  </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#register" data-dismiss="modal">Register (Keep track of stats)</button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="play-now btn-success" data-dismiss="modal">Play Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <script src="js/AssetLoader.js"></script>
   <script src="js/Cell.js"></script>
   <script src="js/Grid.js"></script>

@@ -79,25 +79,26 @@ var Grid = function (can, ctx, offset) {
             for (var j = 0; j < this.Cells[0].length; j++) {
                 // This is so gross, we need to figure out a nicer way
                 // of passing around effects
-                if (effects) {
-                    var e = effects[i][j];
-                    if (e) {
-                        var effectArray = e['effects'];
-                        for (var k = 0; k < effectArray.length; ++k) {
-                            if (effectArray[k]['type'] == 'fire') {
-                                this.Cells[i][j].effect = CellEffect.FIRE;
-                            } else if (effectArray[k]['type'] == 'stun') {
-                                this.Cells[i][j].effect = CellEffect.STUN;
-                            } else {
-                                this.Cells[i][j].effect = CellEffect.NONE;
-                            }
-                        }
-                    } else {
-                        this.Cells[i][j].effect = CellEffect.NONE;
-                    }
-                } else {
-                    this.Cells[i][j].effect = CellEffect.NONE;
+                this.Cells[i][j].effect = CellEffect.NONE;
+            }
+        }
+        if (effects) {
+            for (var i = 0; i < effects.length; ++i) {
+                var x = effects[i][0];
+                var y = effects[i][1];
+                var type = effects[i][2];
+                if (type == "fire") {
+                    this.Cells[y][x].effect = CellEffect.FIRE;
+                } else if (type == "stun") {
+                    this.Cells[y][x].effect = CellEffect.STUN;
                 }
+            }
+        }
+
+        for (var i = 0; i < this.Cells.length; i++) {
+            for (var j = 0; j < this.Cells[0].length; j++) {
+                // This is so gross, we need to figure out a nicer way
+                // of passing around effects
                 this.Cells[i][j].draw(ctx);
             }
         }

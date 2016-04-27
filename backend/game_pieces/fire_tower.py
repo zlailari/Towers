@@ -38,7 +38,7 @@ class Fire_tower (Tower):
                         if self.can_fire():
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(fire(self.id, creep.loc))
+                            myAttacks.append(fire(self.id, creep.id))
         return myAttacks;
 
     #Override for fire tower

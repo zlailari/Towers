@@ -36,7 +36,7 @@ class Tower:
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id,creep.loc))
+                            myAttacks.append(laser(self.id,creep.id))
         return myAttacks;
 
     def can_fire(self):

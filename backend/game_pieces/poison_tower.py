@@ -40,7 +40,7 @@ class Poison_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(poison((self.id,creep.loc)))
+                            myAttacks.append(poison((self.id,creep.id)))
         return myAttacks;
 
     #Override for ice_tower

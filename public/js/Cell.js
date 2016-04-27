@@ -88,6 +88,7 @@ var Cell = function (Grid, ctx, row, col) {
             if (towerButtons && towerButtons.wasPressed()) {
                 var type = towerButtons.getLastButton();
                 var index = typeToNumber[type];
+
                 ctx.lineWidth = highlightSize;
                 ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,

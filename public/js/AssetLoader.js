@@ -1,7 +1,9 @@
 // Loads all game images
 
 assetsLoaded = 0;
-assetsToLoad = 8;
+assetsToLoad = 9;
+
+var deleteImageName = "img/delete.png";
 
 loadImages = function() {
     // ADD ANY IMAGES TO LOAD HERE.
@@ -33,6 +35,10 @@ loadImages = function() {
         creepImages[k].onload = function() {imageLoaded();};
         creepImages[k].src = creepImageNames[k];
     }
+
+    deleteImage = new Image();
+    deleteImage.onload = function() {imageLoaded();};
+    deleteImage.src = deleteImageName;
 };
 
 imageLoaded = function() {
