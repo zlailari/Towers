@@ -62,7 +62,8 @@ class GameplayState(GameState):
         playerState = {
             'lives': self.lives,
             'gold': self.gold,
-            'enemiesLeft': enemies
+            'enemiesLeft': enemies,
+            'isDead': False if self.lives > 0 else True
         }
 
         update = {
