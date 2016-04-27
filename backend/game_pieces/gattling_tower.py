@@ -2,6 +2,7 @@ from game_pieces.tower import Tower
 import engine.util
 from shots.shot import shot
 from shots.laser import laser
+from game_pieces.projectile import ProjectileCreep
 
 import json
 
@@ -13,7 +14,7 @@ class Gattling_tower (Tower):
         self.loc = loc
         self.health = 25 #?
         self.cooldown = 0.4
-        self.fire_range = 2
+        self.fire_range = 5
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "gattling_tower"
 
@@ -39,14 +40,16 @@ class Gattling_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id,creep.id))
+                            shot = ProjectileCreep(self.loc, creep, .5, "gattling", self.damage, gameState)
+                            #print(str(shot))
+                            gameState.projectiles.append(shot)
         return myAttacks;
 
     #Override for ice_tower
     def fire(self, target, gameState):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
-        target.take_damage(self.damage , gameState)
+        #target.take_damage(self.damage , gameState)
 
     def upgrade(self):
         if self.upgrade_level < self.max_upgrade_level:

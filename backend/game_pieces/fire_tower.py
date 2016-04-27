@@ -2,6 +2,7 @@ from game_pieces.tower import Tower
 import engine.util
 from shots.shot import shot
 from shots.fire import fire
+from game_pieces.projectile import ProjectileTile
 import json
 
 # fire_tower is a subclass of tower. It sets tiles on fire but deals no damage.
@@ -12,7 +13,7 @@ class Fire_tower (Tower):
         self.loc = loc
         self.health = 26 #?
         self.cooldown = 6
-        self.fire_range = 1 # PLEASE NERF FIRE TOWER
+        self.fire_range = 3 # PLEASE NERF FIRE TOWER
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "fire_tower"
 
@@ -38,14 +39,15 @@ class Fire_tower (Tower):
                         if self.can_fire():
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(fire(self.id, creep.id))
+
+                            gameState.projectiles.append(ProjectileTile(self.loc, creep.loc, .05, "fire", gameState))
         return myAttacks;
 
     #Override for fire tower
     def fire(self, loc, gameState):
         """Fire at a target tile."""
         self.time_since_last_fire = 0
-        gameState.world.add_effect(loc,"fire")
+        #gameState.world.add_effect(loc,"fire")
 
     def upgrade(self):
         if self.upgrade_level < self.max_upgrade_level:

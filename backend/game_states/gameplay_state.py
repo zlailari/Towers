@@ -27,6 +27,7 @@ class GameplayState(GameState):
         self.gold = gold # starting gold
         self.counter = 0 #when this hits a certain number, the player gets gold payoff based on the number of creeps they've spawned that are alive.
         self.player_id = player_id
+        self.projectiles = []
 
         self.spawned_creeps = 0 # Tracks how many creeps this person has spawned. For every 3 creeps, 1 gold is awarded every 10 seconds.
 
@@ -38,9 +39,11 @@ class GameplayState(GameState):
         #print(str(self.spawned_creeps))
         #print("----------------------")
         #print(str(self.counter))
+
+
         if(self.counter > 10):
             self.gold +=int(self.spawned_creeps/3)
-            self.counter = 0;
+            self.counter = 0
 
 
         self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
@@ -62,13 +65,26 @@ class GameplayState(GameState):
         for tower in self.all_towers:
             # attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
             attacksMade = attacksMade + tower.update(dt, self.all_creeps, self)
+        for projectile in self.projectiles:
+            projectile.update()
+
+        temp = [] #Temp array used to append projectile location tuples
+        for projectile in self.projectiles:
+            if projectile.hit:
+                self.projectiles.remove(projectile)
+            else:
+                temp.append(projectile.make_shot())
+        #print(str(self.projectiles))
+
+        attacksMade = attacksMade + temp
 
         enemies = 0
         for creep in self.all_creeps:
             if creep.live:
                 enemies += 1
 
-        effects_json = self.world.process_effects()
+        #print(str(attacksMade))
+        effects_json = self.world.process_effects() #Makes a nice looking effects list to send to server
 
         # Dictionary of player stats
         playerState = {
