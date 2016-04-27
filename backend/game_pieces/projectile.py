@@ -44,9 +44,9 @@ class ProjectileCreep:
                 self.velocity /= np.linalg.norm(self.velocity)
                 self.velocity *= currentDistance
                 self.hit = True
-                creep.take_damage(self.damage, self.gameState)
-                if projectileType == "poison":
-                    creep.modify(Dot_modifier(creep.id, self.gameState, self.damage))
+                self.creep.take_damage(self.damage, self.gameState)
+                if self.projectileType == "poison":
+                    self.creep.modify(Dot_modifier(self.creep.id, self.gameState, self.damage))
 
 
             self.loc += self.velocity
@@ -67,7 +67,7 @@ class ProjectileCreep:
 
 class ProjectileTile:
 
-    def __init__(self, start, tile, speed, projectileType, effect, gameState):
+    def __init__(self, start, tile, speed, projectileType, gameState):
         self.loc = np.array(start).astype(float)
         self.velocity = np.array([0.0, 0.0])
         self.speed = speed
@@ -75,7 +75,6 @@ class ProjectileTile:
         self.hit = False
         self.type = projectileType
         self.gameState = gameState
-        self.effect = effect
 
     def update(self):
         if not self.hit:
@@ -100,7 +99,7 @@ class ProjectileTile:
                 self.velocity /= np.linalg.norm(self.velocity)
                 self.velocity *= currentDistance
                 self.hit = True
-                gameState.world.add_effect(self.get_position(), "fire")
+                self.gameState.world.add_effect(self.tile, "fire")
 
 
 
@@ -110,7 +109,7 @@ class ProjectileTile:
         return self.loc[0], self.loc[1]
 
     def make_shot(self):
-        return shot_proj(self.projectileType, self.get_position())
+        return shot_proj(self.type, self.get_position())
 
     def has_hit(self):
         return self.hit

@@ -74,7 +74,7 @@ class GameplayState(GameState):
                 self.projectiles.remove(projectile)
             else:
                 temp.append(projectile.make_shot())
-        #print(len(self.projectiles))
+        #print(str(self.projectiles))
 
         attacksMade = attacksMade + temp
 

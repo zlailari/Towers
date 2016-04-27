@@ -14,7 +14,7 @@ class Gattling_tower (Tower):
         self.loc = loc
         self.health = 25 #?
         self.cooldown = 0.4
-        self.fire_range = 2
+        self.fire_range = 5
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "gattling_tower"
 
@@ -40,7 +40,7 @@ class Gattling_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            shot = ProjectileCreep(self.loc, creep, .02, "gattling", self.damage, gameState)
+                            shot = ProjectileCreep(self.loc, creep, .5, "gattling", self.damage, gameState)
                             #print(str(shot))
                             gameState.projectiles.append(shot)
         return myAttacks;
