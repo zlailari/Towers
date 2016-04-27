@@ -46,3 +46,5 @@ class Wall_tower (Tower):
         target.take_damage(self.damage , gameState);
         target.modify(Dot_modifier(target, gameState, 10))
 
+    def upgrade(self):
+        return False
