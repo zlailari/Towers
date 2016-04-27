@@ -11,6 +11,7 @@ class fire(effects):
     def __init__(self, damage, counter=60):
         self.counter = counter;
         self.damage = damage;
+        self.type = 'fire';
 
     def update(self):
         self.counter = self.counter-1
@@ -24,6 +25,7 @@ class stun(effects):
     def init(self, damage, counter=15):
         self.counter = counter
         self.damage = damage
+        self.type = 'stun';
 
     def update(self):
         self.counter = self.counter-1

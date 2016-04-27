@@ -332,6 +332,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert engine is not None
         engine.sendMessage(format_msg(
             'ws master server requesting new game instance',
+            MSG.instance_request
         ))
 
     def handleChat(self, json_msg):

@@ -2,9 +2,9 @@
 
 var myGrid = null;
 
-var playerGrids = [], allCreeps =[], allShots = [];
+var playerGrids = [], allCreeps =[], shots = [];
 var playerState = null, creeps = null, attacksMade = null;
-
+var allEffects = [];
 
 var gameCan, gameCtx;
 
@@ -57,20 +57,21 @@ $(document).ready(function()  {
             myGrid = playerGrids[currentTab];
         }
         var gameOffset = $("#gameFrame").offset();
+        var effects = allEffects[currentTab];
         myGrid.setOffset(gameOffset);
-        myGrid.draw(gameCtx);
+        myGrid.draw(gameCtx, effects);
         creeps = allCreeps[currentTab];
         if (creeps) {
             for (var i = 0; i < creeps.length; i++) {
                 drawCreep(gameCtx, creeps[i]);
             }
         }
-        var shots = allShots[currentTab];
 
         if (shots) {
             // Shots come in as array with creepid, towerid, type (+ extra per type)
-            for (var j = 0; j < shots.length; j++) {
+            for (var j = shots.length - 1; j >= 0; j--) {
                 drawShot(gameCtx, shots[j]);
+                shots.splice(j, 1);
             }
         }
         /* attacksMade = allShots[currentTab];

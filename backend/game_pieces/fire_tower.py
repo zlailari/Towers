@@ -19,7 +19,7 @@ class Fire_tower (Tower):
         self.price = 40
         self.damage = 0
         self.upgrade_price = 10
-        self.time_since_last_fire = 0
+        self.time_since_last_fire = self.cooldown
         self.upgrade_level = 0
         self.max_upgrade_level = 3
 

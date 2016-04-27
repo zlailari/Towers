@@ -8,6 +8,12 @@ var CellType = Object.freeze({
     ICE: 102
 });
 
+var CellEffect = Object.freeze({
+    NONE: 0,
+    FIRE: 1,
+    STUN: 2
+});
+
 var Cell = function (Grid, ctx, row, col) {
     this.row = row;
     this.col = col;
@@ -15,6 +21,7 @@ var Cell = function (Grid, ctx, row, col) {
     this.hover = false;
 
     this.type = CellType.EMPTY;
+    this.effect = CellEffect.NONE;
 
     // What Grid this cell belongs to, so we can access its properties
     this.Grid = Grid;
@@ -47,6 +54,21 @@ var Cell = function (Grid, ctx, row, col) {
                 break;
             default:
                 console.log("ERROR: Illegal CellType: " + this.type);
+        }
+
+        switch (this.effect) {
+            case CellEffect.NONE:
+                break;
+            case CellEffect.FIRE:
+                ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+                doDraw = true;
+                break;
+            case CellEffect.STUN:
+                ctx.fillStyle = "rgba(0, 255, 255, 0.5)";
+                doDraw = true;
+                break;
+            default:
+                console.log("ERORR: Illegal CellEffect: " + this.effect);
         }
 
         if (doDraw) {

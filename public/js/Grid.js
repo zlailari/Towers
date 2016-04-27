@@ -66,7 +66,7 @@ var Grid = function (can, ctx, offset) {
         }
     };
 
-    this.draw = function(ctx) {
+    this.draw = function(ctx, effects) {
         if (!ctx) {
             console.log("ERROR: Canvas context not defined");
             return;
@@ -77,6 +77,27 @@ var Grid = function (can, ctx, offset) {
 
         for (var i = 0; i < this.Cells.length; i++) {
             for (var j = 0; j < this.Cells[0].length; j++) {
+                // This is so gross, we need to figure out a nicer way
+                // of passing around effects
+                if (effects) {
+                    var e = effects[i][j];
+                    if (e) {
+                        var effectArray = e['effects'];
+                        for (var k = 0; k < effectArray.length; ++k) {
+                            if (effectArray[k]['type'] == 'fire') {
+                                this.Cells[i][j].effect = CellEffect.FIRE;
+                            } else if (effectArray[k]['type'] == 'stun') {
+                                this.Cells[i][j].effect = CellEffect.STUN;
+                            } else {
+                                this.Cells[i][j].effect = CellEffect.NONE;
+                            }
+                        }
+                    } else {
+                        this.Cells[i][j].effect = CellEffect.NONE;
+                    }
+                } else {
+                    this.Cells[i][j].effect = CellEffect.NONE;
+                }
                 this.Cells[i][j].draw(ctx);
             }
         }
