@@ -140,7 +140,7 @@ var LobbyManager = function () {
         } else if (id == this.joinedID) {
             this.msgs[id].remove();
             this.msgs[id] = $(
-                '<p>You are in lobby ' + id + ' has ' + numPlayers
+                '<p>You are in  ' + name + ' which has ' + numPlayers
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
