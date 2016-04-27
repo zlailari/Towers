@@ -127,6 +127,7 @@ class GameplayState(GameState):
 
     def delete_tower(self, coordinates):
         self.all_towers = [t for t in self.all_towers if t.loc != coordinates]
+        self.world.remove_tower(coordinates[0], coordinates[1])
 
     # Assigns an id to spawn creep for pvp use. Hook this up to a button and
     # deal with it.

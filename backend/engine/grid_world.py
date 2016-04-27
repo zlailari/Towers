@@ -5,6 +5,7 @@ from heapq import *
 import math
 import copy
 
+
 class GridWorld:
 
     def __init__(self, width, height, spawnpoint, endpoint):
@@ -12,7 +13,6 @@ class GridWorld:
         self.height = height
         self.spawnpoint = spawnpoint
         self.endpoint = endpoint
-
 
         # this grid is a 2d array of bools, where grid[3][4] means
         # x,y position (4,3) is either obstructed (True) or traversable (False)
@@ -27,35 +27,34 @@ class GridWorld:
         self.tilePaths = self.dijkstras_path(self.grid)
 
         # Creates the tile effects double array. Sets everything as a tile effect (which holds another array of effects).
-        # Will need to change tile_effect later so that not everything is on fire.
+        # Will need to change tile_effect later so that not everything is on
+        # fire.
         self.effects = []
-        for i in range(0,width):
+        for i in range(0, width):
             new = []
-            for j in range(0,height):
+            for j in range(0, height):
                 new.append(tile_effects())
             self.effects.append(new)
 
-    #adds the effect to the effects list on a particular tile
-    def add_effect(self,loc, type):
-        if(type=="fire"):
+    # adds the effect to the effects list on a particular tile
+    def add_effect(self, loc, type):
+        if(type == "fire"):
             self.effects[loc[0]][loc[1]].append(fire(0.5))
         if(type == "stun"):
             self.effects[loc[0]][loc[1]].append(stun(10))
 
-    #Returns a nice version of the effects triple array for json sending in the format. Grabs the first effect (x,y, string of effect)
+    # Returns a nice version of the effects triple array for json sending in
+    # the format. Grabs the first effect (x,y, string of effect)
     def process_effects(self):
         processed_list = []
 
         for i in range(0, self.width):
             for k in range(0, self.height):
-                if(len(self.effects[i][k].effects)>0):
-                    processed_list.append((i,k,self.effects[i][k].effects[0].type))
+                if(len(self.effects[i][k].effects) > 0):
+                    processed_list.append(
+                        (i, k, self.effects[i][k].effects[0].type))
 
         return processed_list
-
-
-
-
 
     def is_blocked(self, x, y):
         return self.grid[y][x]
@@ -115,7 +114,8 @@ class GridWorld:
 
         return neighbors
 
-    ##a get neighbors function that also returns the diagonal neighbors. Default to returning diagonal first.
+    # a get neighbors function that also returns the diagonal neighbors.
+    # Default to returning diagonal first.
     def get_neighbors_diagonal(self, xCoord, yCoord):
         neighbors = []
         if(xCoord == 0):
@@ -149,7 +149,6 @@ class GridWorld:
 
         return neighbors
 
-
     # if a tower can be built in the desired location, do so. else return false
     def build_tower(self, xCoord, yCoord):
 
@@ -162,6 +161,13 @@ class GridWorld:
             return True
         else:
             return False
+
+    def remove_tower(self, x, y):
+        self.grid[y][x] = False
+        self.update_pathing()
+
+    def update_pathing(self):
+        self.tilePaths = self.dijkstras_path(self.grid)
 
     # return an array of that represents the tile to move to from any other
     # tile
@@ -207,20 +213,22 @@ class GridWorld:
             for neighbor in all_neighbors:
                 can_move_diagonally = 0
                 if neighbor in diagonal_neighbors:
-                    intersecting_neighbors = set(self.get_neighbors(neighbor[0], neighbor[1])).intersection(all_neighbors)
+                    intersecting_neighbors = set(self.get_neighbors(
+                        neighbor[0], neighbor[1])).intersection(all_neighbors)
                     for tile in intersecting_neighbors:
                         if grid[tile[1]][tile[0]]:
                             can_move_diagonally += 1
 
                 if not can_move_diagonally == 2:
-                    new_cost = cost_so_far[current] + math.hypot(neighbor[0] - current[0],neighbor[1] - current[1])
+                    new_cost = cost_so_far[
+                        current] + math.hypot(neighbor[0] - current[0], neighbor[1] - current[1])
                     if not grid[neighbor[1]][neighbor[0]]:
                         if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
                             cost_so_far[neighbor] = new_cost
                             frontier.put(neighbor, new_cost)
                             came_from[neighbor] = current
 
-        ##print came_from
+        # print came_from
         return came_from
 
     def get_single_path(self, location):
@@ -242,7 +250,8 @@ class GridWorld:
         if(self.grid[yCoord][xCoord]):  # cant build where there is already a tower
             return False
 
-        copy_board = copy.deepcopy(self.grid)  # create a copy of the current came board
+        # create a copy of the current came board
+        copy_board = copy.deepcopy(self.grid)
 
         # place a tower in the desired location
         copy_board[yCoord][xCoord] = True
