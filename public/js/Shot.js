@@ -1,4 +1,3 @@
-race = "Human";
 drawShot = function(ctx, shot) {
     var xpos, ypos;
     if (shot.type == "laser") {
