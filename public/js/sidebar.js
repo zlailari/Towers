@@ -163,15 +163,23 @@ function initSideBar() {
         .html('<p align="center"><strong>Towers</strong></p>')
         .prependTo($('#towerButtons'));
 
-    var towerNames = ["Arrow Tower", "Rocket Tower", "Ice Tower",
-        "Delete Tower", "Upgrade Tower"];
-    var towerTypes = ["laser_tower", "fire_tower", "ice_tower",
-        "delete_tower", "upgrade_tower"];
-
-    var towerDescriptions = ["This tower shoots arrows",
+    var towerNames = [
+        "Rocket Tower",
+        "Laser Tower",
+        "Railgun",
+        "Delete Tower",
+        "Upgrade Tower"
+    ];
+    var towerTypes = [
+        "laser_tower",
+        "fire_tower",
+        "ice_tower",
+        "delete_tower",
+        "upgrade_tower"];
+    var towerDescriptions = [
         "This tower shoots rockets",
-        "This tower shoots ice",
-        "Delete a tower", "Upgrade a tower"];
+        "This tower shoots lasers",
+        "This tower shoots ???"];
     var towerPrices = ["10", "10", "10", "-50%", "10"];
     var towerHotKeys = [{s:"A", kc:65},
         {s:"R", kc:82},
