@@ -3,6 +3,8 @@
 assetsLoaded = 0;
 assetsToLoad = 0;
 
+var race = null;
+
 loadImages = function() {
     // ADD ANY IMAGES TO LOAD HERE.
     // CAN DEFINE IMAGE VAR IN YOUR FILE JUST REFERENCE IT HERE
@@ -43,9 +45,9 @@ loadImages = function() {
     var assetPack = null;
     if (Math.random() > 0.5) {
         assetPack = alienImages;
-        console.log("Alien");
+        race = "Alien";
     } else {
-        console.log("Human");
+        race = "Human";
         assetPack = humanImages;
     }
 
