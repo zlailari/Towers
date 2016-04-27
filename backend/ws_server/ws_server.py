@@ -157,6 +157,7 @@ def lobby_add_player(player_connection, lobby_id):
             MSG.lobby_dne
         ))
 
+
 def game_remove_player(game, player_id):
     print('sending message to remove player {}'.format(player_id))
     message = format_msg(
@@ -262,7 +263,6 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert 'type' in message
         m_type = message['type']
 
-
         # info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
         if m_type == MSG.chat.name:
             self.handleChat(as_string)
@@ -284,10 +284,16 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.handleStartGame(as_string)
         elif m_type == MSG.creep_request.name:
             self.handleCreepRequest(as_string)
-
         else:
             info('warning! server does not handle message with type {}'.format(
                 m_type), INFO_ID)
+
+    def handleDeleteTower(self, json_msg):
+        """A client has requested that a tower be deleted."""
+        lobby = get_players_lobby(self)
+        assert lobby is not None
+        game = lobby.get_game_client()
+        game.sendMessage(utf(json_msg))
 
     def handleStartGame(self, json_msg):
         # start the sender's game
@@ -326,7 +332,6 @@ class GameServerProtocol(WebSocketServerProtocol):
         unpacked = obj_from_json(json_msg)
         requested_lobby_id = int(unpacked['msg']['lobby_id'])
         lobby_add_player(self, requested_lobby_id)
-
 
     def handleInstanceRequest(self, json_msg):
         # someone wants a new game instance, so tell a game engine to spin one
