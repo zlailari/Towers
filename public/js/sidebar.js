@@ -167,6 +167,7 @@ function initSideBar() {
         "Rocket Tower",
         "Laser Tower",
         "Railgun",
+        "Wall Tower",
         "Delete Tower",
         "Upgrade Tower"
     ];
@@ -174,16 +175,20 @@ function initSideBar() {
         "fire_tower",
         "laser_tower",
         "gattling_tower",
+        "wall_tower",
         "delete_tower",
         "upgrade_tower"];
     var towerDescriptions = [
         "This tower shoots rockets",
         "This tower shoots lasers",
-        "This tower shoots ???"];
-    var towerPrices = ["10", "10", "10", "-50%", "10"];
+        "This tower shoots ???",
+        "Does not fire anything but blocks creeps",
+        "Delete a Tower", "Upgrade a tower"];
+    var towerPrices = ["10", "10", "10", "10", "-50%", "10"];
     var towerHotKeys = [{s:"A", kc:65},
         {s:"R", kc:82},
         {s:"I", kc:73},
+        {s:"W", kc:87},
         {s:"L", kc:76},
         {s:"U", kc:85}];
 
@@ -226,8 +231,14 @@ function initSideBar() {
     });
 
     for (var j = 0; j < towerNames.length; j++) {
+        var name = null;
+        if (towerImageNames[j].constructor == Array) {
+            name = towerImageNames[j][0];
+        } else {
+            name = towerImageNames[j];
+        }
         towerButtons.addTower(towerTypes[j],
-            towerNames[j], towerImageNames[j],
+            towerNames[j], name,
             towerToolTips[j], towerHotKeys[j]);
     }
 
