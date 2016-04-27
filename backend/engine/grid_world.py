@@ -42,6 +42,19 @@ class GridWorld:
         if(type == "stun"):
             self.effects[loc[0]][loc[1]].append(stun(10))
 
+    #Returns a nice version of the effects triple array for json sending in the format. Grabs the first effect (x,y, string of effect)
+    def process_effects(self):
+        processed_list = []
+
+        for i in range(0, self.width):
+            for k in range(0, self.height):
+                if(len(self.effects[i][k].effects)>0):
+                    self.processed_list.append(i,k,self.effects[i][k].effects[0].type)
+
+        return processed_list
+
+
+
 
 
     def is_blocked(self, x, y):
