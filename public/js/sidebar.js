@@ -80,8 +80,7 @@ var TowerButtons = function (divID) {
 };
 
 
-var CreepButtons = function (divID, creepNames, creepImageNames,
-    creepToolTips, creepHotKeys) {
+var CreepButtons = function (divID) {
     this.divID = divID;
     this.divs = [];
     this.images = [];
@@ -118,9 +117,7 @@ var CreepButtons = function (divID, creepNames, creepImageNames,
         this.hotKeyCodes[ID] = hotKeyKC;
     };
 
-    this.addCreep = function(name, imageName, toolTip, hotKeyKC) {
-        var ID = this.divs.length;
-
+    this.addCreep = function(ID, name, imageName, toolTip, hotKeyKC) {
         this.divs[ID] = $('<div class="side-creep"'
             + 'id="creep' + ID + '"'
             + '/>')
@@ -139,11 +136,6 @@ var CreepButtons = function (divID, creepNames, creepImageNames,
             }
         }
     };
-
-    for (var i = 0; i < creepNames.length; i++) {
-        this.addCreep(creepNames[i], creepImageNames[i],
-            creepToolTips[i], creepHotKeys[i].kc);
-    }
 };
 
 function towerDenied (reason) {
@@ -198,14 +190,15 @@ function initSideBar() {
 
     towerButtons = new TowerButtons($("#towerImages"));
 
-    var creepNames = ["1", "2", "3"];
-    var creepDescriptions = ["Placeholder",
-        "Placeholder",
-        "Placeholder"];
+    var creepTypes = ["Slow", "Default", "Fast"];
+    var creepNames = ["Slow", "Normal", "Fast"];
+    var creepDescriptions = ["Slow creep with a lot of help",
+        "Normal creep with a well rounded set of states",
+        "Fast creep with a little bit of health"];
     var creepPrices = ["10", "10", "10"];
-    var creepHotKeys = [{s:"F", kc:70},
+    var creepHotKeys = [{s:"S ", kc:83},
         {s:"D", kc:68},
-        {s:"S ", kc:83}];
+        {s:"F", kc:70}];
 
     var creepToolTips = [];
     for (var k = 0; k < creepNames.length; k++) {
@@ -216,10 +209,8 @@ function initSideBar() {
         + "Hotkey: " + creepHotKeys[k].s;
     }
 
-    towerButtons = new TowerButtons($("#towerImages"),
-        towerNames, towerImageNames, towerToolTips, towerHotKeys);
-    creepButtons = new CreepButtons($("#creepImages"),
-        creepNames, creepImageNames, creepToolTips, creepHotKeys);
+    towerButtons = new TowerButtons($("#towerImages"));
+    creepButtons = new CreepButtons($("#creepImages"));
 
     $(document).keydown(function(e) {
         towerButtons.keypress(e);
@@ -232,5 +223,9 @@ function initSideBar() {
             towerToolTips[j], towerHotKeys[j]);
     }
 
-
+    for (var l = 0; l < creepNames.length; l++) {
+        creepButtons.addCreep(creepTypes[l],
+            creepNames[l], creepImageNames[l],
+            creepToolTips[l], creepHotKeys[l]);
+    }
 }
