@@ -12,7 +12,7 @@ class GridWorld:
         self.height = height
         self.spawnpoint = spawnpoint
         self.endpoint = endpoint
-        
+
 
         # this grid is a 2d array of bools, where grid[3][4] means
         # x,y position (4,3) is either obstructed (True) or traversable (False)
@@ -49,7 +49,7 @@ class GridWorld:
         for i in range(0, self.width):
             for k in range(0, self.height):
                 if(len(self.effects[i][k].effects)>0):
-                    self.processed_list.append(i,k,self.effects[i][k].effects[0].type)
+                    processed_list.append((i,k,self.effects[i][k].effects[0].type))
 
         return processed_list
 
@@ -148,7 +148,7 @@ class GridWorld:
                 neighbors.append((xCoord + 1, yCoord + 1))
 
         return neighbors
-    
+
 
     # if a tower can be built in the desired location, do so. else return false
     def build_tower(self, xCoord, yCoord):
