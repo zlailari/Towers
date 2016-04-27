@@ -157,6 +157,18 @@ def lobby_add_player(player_connection, lobby_id):
             MSG.lobby_dne
         ))
 
+def game_remove_player(game, player_id):
+    print('sending message to remove player {}'.format(player_id))
+    message = format_msg(
+        'remove this player from your game',
+        MSG.game_remove_player,
+        {
+            'player_id': player_id
+        }
+    )
+    print('message: {}'.format(message))
+    game.sendMessage(message)
+
 
 def remove_player(player_connection):
     """Remove a player from a lobby."""
@@ -249,6 +261,8 @@ class GameServerProtocol(WebSocketServerProtocol):
         message = obj_from_json(as_string)
         assert 'type' in message
         m_type = message['type']
+
+
         # info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
         if m_type == MSG.chat.name:
             self.handleChat(as_string)
@@ -268,6 +282,9 @@ class GameServerProtocol(WebSocketServerProtocol):
             self.handleLeaveLobby(as_string)
         elif m_type == MSG.game_start_request.name:
             self.handleStartGame(as_string)
+        elif m_type == MSG.creep_request.name:
+            self.handleCreepRequest(as_string)
+
         else:
             info('warning! server does not handle message with type {}'.format(
                 m_type), INFO_ID)
@@ -310,6 +327,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         requested_lobby_id = int(unpacked['msg']['lobby_id'])
         lobby_add_player(self, requested_lobby_id)
 
+
     def handleInstanceRequest(self, json_msg):
         # someone wants a new game instance, so tell a game engine to spin one
         # up
@@ -338,7 +356,12 @@ class GameServerProtocol(WebSocketServerProtocol):
         lobby = get_players_lobby(self)
         if lobby:
             lobby.remove_player(self)
+
         broadcast_lobby_list()
+
+    def handleCreepRequest(self, json_msg):
+        lobby = get_players_lobby(self)
+        lobby.get_game_client().sendMessage(utf(json_msg), False)
 
     def broadcast_to_lobby(self, msg, send_self=False):
         """Broadcast a message to rest of the sender's lobby"""

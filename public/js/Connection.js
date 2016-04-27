@@ -26,6 +26,7 @@ ws.onclose = function() {
 ws.onmessage = function(event) {
     var msg = safeParseJSON(event.data);
     if (msg && msg.hasOwnProperty('type')) {
+
         var id = msg.player_id;
         if (msg.type == 'assign_id') {
             userID = msg['user_id'];
@@ -41,8 +42,20 @@ ws.onmessage = function(event) {
             if (id == userID) {
                 playerState = msg['playerState'];
             }
-            allAttacks[id] = msg['attacksMade'];
+
+            var newShots = msg['attacksMade'];
+            if (newShots && newShots.constructor == Array) {
+                if (id == tabManager.getCurrentTab()) {
+                    for (var j = 0; j < newShots.length; ++j) {
+                        shots.push(newShots[j]);
+                    }
+                }
+            }
+
             allCreeps[id] = msg['creeps'];
+
+            allEffects[id] = msg['effects'];
+
         }
         if (msg.type == 'tower_update') {
             if (msg['towerAccepted'] && playerGrids[id]) {
@@ -52,6 +65,7 @@ ws.onmessage = function(event) {
                 var reason = "Placeholder";
                 towerDenied(reason);
             }
+
         }
         if (msg.type == 'lobby_info') {
             var lobbies = msg['lobbies'];

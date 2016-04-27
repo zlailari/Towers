@@ -8,6 +8,12 @@ var CellType = Object.freeze({
     ICE: 102
 });
 
+var CellEffect = Object.freeze({
+    NONE: 0,
+    FIRE: 1,
+    STUN: 2
+});
+
 var Cell = function (Grid, ctx, row, col) {
     this.row = row;
     this.col = col;
@@ -15,6 +21,7 @@ var Cell = function (Grid, ctx, row, col) {
     this.hover = false;
 
     this.type = CellType.EMPTY;
+    this.effect = CellEffect.NONE;
 
     // What Grid this cell belongs to, so we can access its properties
     this.Grid = Grid;
@@ -49,6 +56,21 @@ var Cell = function (Grid, ctx, row, col) {
                 console.log("ERROR: Illegal CellType: " + this.type);
         }
 
+        switch (this.effect) {
+            case CellEffect.NONE:
+                break;
+            case CellEffect.FIRE:
+                ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+                doDraw = true;
+                break;
+            case CellEffect.STUN:
+                ctx.fillStyle = "rgba(0, 255, 255, 0.5)";
+                doDraw = true;
+                break;
+            default:
+                console.log("ERORR: Illegal CellEffect: " + this.effect);
+        }
+
         if (doDraw) {
             // Fill rectangle with color chosen above
             ctx.fillRect((this.col * size) + .5 * highlightSize,
@@ -64,11 +86,14 @@ var Cell = function (Grid, ctx, row, col) {
         // Highlight square on hover
         if (this.hover) {
             if (towerButtons && towerButtons.wasPressed()) {
+                var type = towerButtons.getLastButton();
+                var index = typeToNumber[type];
+
                 ctx.lineWidth = highlightSize;
                 ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, size, size);
-                var img = towerImages[towerButtons.getLastButton()];
+                var img = towerImages[index];
                 ctx.drawImage(img, (this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, drawSize, drawSize);
             } else {

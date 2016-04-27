@@ -1,8 +1,13 @@
 /* Create a global for the grid */
 
 var myGrid = null;
-var playerGrids = [], allCreeps =[], allAttacks = [];
+
+var playerGrids = [], allCreeps =[], shots = [];
+
 var playerState = null, creeps = null, attacksMade = null;
+var allEffects = [];
+
+var gameCan, gameCtx;
 
 var gameCan, gameCtx;
 
@@ -58,29 +63,22 @@ $(document).ready(function()  {
             myGrid = playerGrids[currentTab];
         }
         var gameOffset = $("#gameFrame").offset();
+        var effects = allEffects[currentTab];
         myGrid.setOffset(gameOffset);
-        myGrid.draw(gameCtx);
+        myGrid.draw(gameCtx, effects);
+
         creeps = allCreeps[currentTab];
         if (creeps) {
-            // DONT REPLICATE THIS, just trying to get something to work for MVP
             for (var i = 0; i < creeps.length; i++) {
                 drawCreep(gameCtx, creeps[i]);
             }
         }
-        attacksMade = allAttacks[currentTab];
-        // this is also temp for demo
-        if (attacksMade) {
-            // attacks come in as a dictionary like-> towerID: [creepIDs, ...]
-            // which is why this is a bit funky
-            for (var attack in attacksMade) {
-                if (attacksMade[attack].length > 0) {
-                    // a lot funky
-                    for (var shot in attacksMade[attack]) {
-                        // getting each towerID, creepID pair
-                        // this is why we must send stuff as array of objects...
-                        drawShot(gameCtx, attack, attacksMade[attack][shot]);
-                    }
-                }
+
+        if (shots) {
+            // Shots come in as array with creepid, towerid, type (+ extra per type)
+            for (var j = shots.length - 1; j >= 0; j--) {
+                drawShot(gameCtx, shots[j]);
+                shots.splice(j, 1);
             }
         }
     }

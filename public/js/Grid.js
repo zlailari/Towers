@@ -66,7 +66,7 @@ var Grid = function (can, ctx, offset) {
         }
     };
 
-    this.draw = function(ctx) {
+    this.draw = function(ctx, effects) {
         if (!ctx) {
             console.log("ERROR: Canvas context not defined");
             return;
@@ -77,6 +77,28 @@ var Grid = function (can, ctx, offset) {
 
         for (var i = 0; i < this.Cells.length; i++) {
             for (var j = 0; j < this.Cells[0].length; j++) {
+                // This is so gross, we need to figure out a nicer way
+                // of passing around effects
+                this.Cells[i][j].effect = CellEffect.NONE;
+            }
+        }
+        if (effects) {
+            for (var i = 0; i < effects.length; ++i) {
+                var x = effects[i][0];
+                var y = effects[i][1];
+                var type = effects[i][2];
+                if (type == "fire") {
+                    this.Cells[y][x].effect = CellEffect.FIRE;
+                } else if (type == "stun") {
+                    this.Cells[y][x].effect = CellEffect.STUN;
+                }
+            }
+        }
+
+        for (var i = 0; i < this.Cells.length; i++) {
+            for (var j = 0; j < this.Cells[0].length; j++) {
+                // This is so gross, we need to figure out a nicer way
+                // of passing around effects
                 this.Cells[i][j].draw(ctx);
             }
         }
@@ -89,10 +111,10 @@ var Grid = function (can, ctx, offset) {
     this.towerAccepted = function(tower) {
         var x = tower['loc'][0];
         var y = tower['loc'][1];
-        var id = tower['tower_type'];
-
+        var type = tower['tower_type'];
+        var index = typeToNumber[type];
         this.Cells[y][x].type = parseFloat(CellType.ARROW) +
-                parseFloat(id);
+                parseFloat(index);
 
         this.towers.push(tower);
     };

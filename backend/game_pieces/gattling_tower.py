@@ -1,29 +1,32 @@
+from game_pieces.tower import Tower
 import engine.util
 from shots.shot import shot
 from shots.laser import laser
+
 import json
 
-class Tower:
-    """Basic implementation of a tower"""
-
-
-    def __init__(self, loc, health, cooldown, fire_range, id, tower_type="laser_tower"):
+# ice_tower is a subclass of tower. It fires a frozen shot at a creep that slows its speed by half.
+class Gattling_tower (Tower):
+    def __init__(self,id, loc):
         # TODO, make tower_type control other values
 
         self.loc = loc
-        self.health = health
-        self.cooldown = cooldown
-        self.fire_range = fire_range
+        self.health = 25 #?
+        self.cooldown = 0.4
+        self.fire_range = 2
         self.id = id; # we need the towers to know where they are in the array of towers.
-        self.tower_type = tower_type
+        self.tower_type = "gattling_tower"
 
-        self.price = 20
-        self.damage = 40
-        self.time_since_last_fire = cooldown
+        self.price = 30
+        self.upgrade_price = 10
+        self.damage = 5
+        self.time_since_last_fire = 0
         self.upgrade_level = 0
         self.max_upgrade_level = 3
 
+        pass
 
+    #Override for firing ice at a creep
     def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt
         myAttacks = [];
@@ -34,31 +37,22 @@ class Tower:
                     x1, y1 = creep.loc[0] , creep.loc[1]
                     if engine.util.distance(x1, y1, x2, y2) <= self.fire_range:
                         if self.can_fire():
-                            self.fire(creep, gameState)
+                            self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id,creep.id))
+                            myAttacks.append(laser(self.id, creep.loc))
         return myAttacks;
 
-    def can_fire(self):
-        """True if the cooldown has warn off."""
-        return self.time_since_last_fire >= self.cooldown
-        #return True
-
+    #Override for ice_tower
     def fire(self, target, gameState):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
         target.take_damage(self.damage , gameState)
 
-    def get_position(self):
-        return self.loc[0], self.loc[1]
-
-    #Upgrades the damage per shot
     def upgrade(self):
-
         if self.upgrade_level < self.max_upgrade_level:
             self.upgrade_level += 1
-            self.upgrade_price += 7
-            self.cooldown = self.cooldown*0.80
+            self.upgrade_price += 5
+            self.cooldown = self.cooldown - .05
+            self.damage += 2
             return True
         return False
-

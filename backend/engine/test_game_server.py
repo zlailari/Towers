@@ -38,34 +38,27 @@ class GameRunner:
         self.network = Network(create_server)
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
-
         self.game_states = []
         self.player_states = {}
+
 
     def add_player(self, player_id):
         """Add a player to the game by giving them their own state."""
 
-        self.level_creeps_spawn_timers = [5]
-        self.spawnCreeps = [Creep.factory("Default", 0)]
-        initialSpawn = 0
+        #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
+        levels = Levels.createLevel(5,0.5,10,5,3,"Default")
+        state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 10000, player_id)
 
-        # 3 sets of spawns
-        # Separated by initialSpawn time.
-        for _ in range(0, 5):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
+        self.game_states.append(state)
+        self.player_states[player_id] = state
+        print('added player, and state for player {}'.format(player_id))
 
-        initialSpawn += 3
-
-        for _ in range(0, 10):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
-
-        initialSpawn += 3
-
-        for _ in range(0, 15):
-            self.level_creeps_spawn_timers.append(initialSpawn)
-            initialSpawn += 0.3
+    def remove_player(self, player_id):
+        if player_id in self.player_states:
+            state = self.player_states[player_id]
+            del self.player_states[player_id]
+            self.game_states.remove(state)
+            print('removing player and state for player {}'.format(player_id))
 
         for i in range(0, 30):
             self.spawnCreeps.append(Creep.factory("Default", i))
@@ -93,6 +86,9 @@ class GameRunner:
             elif message and message['type'] == MSG.game_add_player.name:
                 player_id = message['player_id']
                 self.add_player(player_id)
+            elif message and message['type'] == MSG.game_remove_player.name:
+                player_id = message['player_id']
+                self.remove_player(player_id)
 
     def spawn_new_game(self):
         print('spawning new game instance')
@@ -117,27 +113,26 @@ class GameRunner:
             # do any cleanup you want to do here
             pass
 
+
     def process_message(self, msg):
-        if msg['type'] == MSG.instance_request.name:
-            self.spawn_new_game()
-        elif msg['type'] == MSG.game_add_player.name:
-            player_id = msg['player_id']
-            self.add_player(player_id)
-        elif msg['type'] == MSG.tower_request.name:
+        if msg['type'] == MSG.tower_request.name:
+            # This is the old way we built towers which worked
+
             # Make a new tower TODO, don't hardcode stuff
+            # tower = Tower(
+            #     (msg['msg']['x'], msg['msg']['y']),
+            #     1000,
+            #     1,
+            #     3,
+            #     len(self.game_state.all_towers),
+            #     msg['msg']['towerID']
+            # )
             player_id = msg['player_id']
             state = self.player_states[player_id]
-            tower = Tower(
-                (msg['msg']['x'], msg['msg']['y']),
-                1000,
-                1,
-                3,
-                len(state.all_towers),
-                msg['msg']['towerID']
-            )
-            success = state.build_tower(tower)
+            tower = state.build_tower(
+                (msg['msg']['x'], msg['msg']['y']), msg['msg']['towerID'])
             towerUpdate = None
-            if success:
+            if tower:
                 towerUpdate = {
                     'type': 'tower_update',
                     'towerAccepted': 'true',
@@ -152,6 +147,21 @@ class GameRunner:
                     'player_id': player_id
                 }
             self.network.send_message(towerUpdate)
+        if msg['type'] == MSG.instance_request.name:
+            self.spawn_new_game()
+        elif msg['type'] == MSG.game_add_player.name:
+            player_id = msg['player_id']
+            self.add_player(player_id)
+        elif msg['type'] == MSG.game_remove_player.name:
+            player_id = msg['player_id']
+            self.remove_player(player_id)
+        elif msg['type'] == MSG.creep_request.name:
+            player_id = msg['player_id']
+            creep_type = msg['msg']['creepID']
+            for player in self.player_states:
+                if player != player_id:
+                    state = self.player_states[player]
+                    state.spawn_creep(creep_type)
 
     def game_loop(self, dt):
         # Receive and process messages from clients

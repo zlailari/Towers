@@ -1,6 +1,9 @@
+from engine.tile_effects import tile_effects
+from engine.effects import *
 from queue import *
 from heapq import *
 import math
+import copy
 
 class GridWorld:
 
@@ -9,7 +12,7 @@ class GridWorld:
         self.height = height
         self.spawnpoint = spawnpoint
         self.endpoint = endpoint
-        
+
 
         # this grid is a 2d array of bools, where grid[3][4] means
         # x,y position (4,3) is either obstructed (True) or traversable (False)
@@ -22,6 +25,37 @@ class GridWorld:
                 self.vertices.append((i, j))
 
         self.tilePaths = self.dijkstras_path(self.grid)
+
+        # Creates the tile effects double array. Sets everything as a tile effect (which holds another array of effects).
+        # Will need to change tile_effect later so that not everything is on fire.
+        self.effects = []
+        for i in range(0,width):
+            new = []
+            for j in range(0,height):
+                new.append(tile_effects())
+            self.effects.append(new)
+
+    #adds the effect to the effects list on a particular tile
+    def add_effect(self,loc, type):
+        if(type=="fire"):
+            self.effects[loc[0]][loc[1]].append(fire(0.5))
+        if(type == "stun"):
+            self.effects[loc[0]][loc[1]].append(stun(10))
+
+    #Returns a nice version of the effects triple array for json sending in the format. Grabs the first effect (x,y, string of effect)
+    def process_effects(self):
+        processed_list = []
+
+        for i in range(0, self.width):
+            for k in range(0, self.height):
+                if(len(self.effects[i][k].effects)>0):
+                    processed_list.append((i,k,self.effects[i][k].effects[0].type))
+
+        return processed_list
+
+
+
+
 
     def is_blocked(self, x, y):
         return self.grid[y][x]
@@ -114,7 +148,7 @@ class GridWorld:
                 neighbors.append((xCoord + 1, yCoord + 1))
 
         return neighbors
-    
+
 
     # if a tower can be built in the desired location, do so. else return false
     def build_tower(self, xCoord, yCoord):
@@ -175,7 +209,7 @@ class GridWorld:
                 if neighbor in diagonal_neighbors:
                     intersecting_neighbors = set(self.get_neighbors(neighbor[0], neighbor[1])).intersection(all_neighbors)
                     for tile in intersecting_neighbors:
-                        if self.grid[tile[1]][tile[0]]:
+                        if grid[tile[1]][tile[0]]:
                             can_move_diagonally += 1
 
                 if not can_move_diagonally == 2:
@@ -208,7 +242,7 @@ class GridWorld:
         if(self.grid[yCoord][xCoord]):  # cant build where there is already a tower
             return False
 
-        copy_board = self.grid  # create a copy of the current came board
+        copy_board = copy.deepcopy(self.grid)  # create a copy of the current came board
 
         # place a tower in the desired location
         copy_board[yCoord][xCoord] = True

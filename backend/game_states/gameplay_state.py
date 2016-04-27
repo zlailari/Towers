@@ -2,7 +2,7 @@ from game_states.game_state import GameState
 from engine.grid_world import GridWorld
 
 from game_pieces.creep import Creep
-from game_pieces.tower import Tower
+from game_pieces.tower_factory import Tower_factory
 from engine.util import dump_obj_dict
 from engine.message_enum import MSG  # message type enum
 
@@ -21,13 +21,12 @@ class GameplayState(GameState):
         self.world = GridWorld(width, height, (0, 0), (width - 1, height - 1))
         self.all_creeps = []
         self.all_towers = []
+        self.lives = lives;
+        self.gold = gold; # starting gold
+        self.counter = 0;
         self.player_id = player_id
-        # self.set_level(level)
-        self.lives = lives
-        self.gold = gold  # starting gold
-        self.counter = 0
 
-        # bill.kill(yanming);
+
 
     # Calls all update methods within the game and returns dictionaries to be
     # converted to json with the player status (gold lives enemies left) and
@@ -37,9 +36,10 @@ class GameplayState(GameState):
 
         self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
 
-        creepLoc = {}  # Dicitonary of creep locations
-        creepProgress = {}  # Dictionary of creep progresses
-        attacksMade = {}  # Dictionary of attacks made by towers
+        creepLoc = {} # Dicitonary of creep locations
+        creepProgress = {} # Dictionary of creep progresses
+        attacksMade = [] # Dictionary of attacks made by towers
+
 
         # Update all creeps and get location location and movement progress
         bestPath = self.world.tilePaths
@@ -52,13 +52,15 @@ class GameplayState(GameState):
 
         # Updates the attacks made by the towers on the creeps
         for tower in self.all_towers:
-            attacksMade.update(
-                {tower.id: tower.update(dt, self.all_creeps, self)})
+            #attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
+            attacksMade = attacksMade + tower.update(dt,self.all_creeps,self)
 
         enemies = 0
         for creep in self.all_creeps:
             if creep.live:
                 enemies += 1
+
+        effects_json = self.world.process_effects()
 
         # Dictionary of player stats
         playerState = {
@@ -72,9 +74,16 @@ class GameplayState(GameState):
             'playerState': playerState,
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
+            'effects' : effects_json,
             'path': str(bestPath),
             'player_id': self.player_id
         }
+
+        # Updates all effects in the world (decreases their counter by one). Each gridworld holds an effects 2d array that stores a tile_effects object.
+        for i in range(0,self.world.width):
+            for j in range(0,self.world.height):
+                self.world.effects[i][j].update()
+
 
         return update
 
@@ -86,24 +95,51 @@ class GameplayState(GameState):
             creep = Creep(creep_type=self.cur_level['creep_type'])
             self.all_creeps.append(creep)
 
-    def build_tower(self, tower):
+    #Changed, should only take in coordinates and tower type
+    def build_tower(self, coordinates, towerType):
+        tower = Tower_factory.factory(towerType,coordinates, len(self.all_towers))
+
+        # TODO, send why build_tower failed (money, illegal position, etc)
+        if tower.tower_type == "failure":
+            print(tower.tower_type)
+            return False
+
         if tower.price > self.gold:
             return False
 
         if self.creep_in_loc(tower.loc):
             return False
 
-        if self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
+        if not self.world.build_tower(tower.loc[X_INDEX], tower.loc[Y_INDEX]):
+            return False
+        else:
             self.gold -= tower.price
             self.all_towers.append(tower)
-            return True
-        else:
-            # TODO, send why build_tower failed (money, illegal position, etc)
-            return False
+            return tower
+
+    #Calls upgrade for towers. Max level depends on the tower, cost per level increases as per tower.
+    def upgrade_tower(self, coordinates):
+        for tower in self.all_towers:
+            if tower.loc == coordinates:
+                if tower.upgrade_price <  self.gold:
+                    self.gold -= tower.upgrade_price
+                    return tower.upgrade()
+
+    #Assigns an id to spawn creep for pvp use. Hook this up to a button and deal with it.
+    def spawn_creep(self, creepType):
+        id = len(self.all_creeps)
+        self.cur_level.spawnCreep(creepType, id)
+        print('Added {} creep'.format(creepType))
 
     def creep_in_loc(self, loc):
         for cr in self.all_creeps:
-            if cr.loc == loc:
+            if cr.loc == loc and cr.live:
                 return True
         return False
+
+
+    def apply_mod_loc(self, loc, mod):
+        for cr in self.all_creeps:
+            if cr.loc == loc and cr.live:
+                cr.modify(mod)
 
