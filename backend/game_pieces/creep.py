@@ -1,12 +1,6 @@
 # this will store data about the different varieties of creeps
 # I don't know if I like this way of designating types, but it works for now
 import engine.util
-CREEP_TYPES = {
-    'basic': {'speed': 7, 'health': 100},
-    'medium': {'speed': 14, 'health': 300},
-    'advanced': {'speed': 25, 'health': 500},
-}
-
 
 class Creep:
     """So far this is just an example implementation"""

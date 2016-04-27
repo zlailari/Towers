@@ -66,7 +66,6 @@ class GameRunner:
         levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
         state = GameplayState(levels, WORLD_WIDTH,
                               WORLD_HEIGHT, 100, 100, player_id)
-        state.build_tower(Tower((8, 8), 1, 1, 1, 0))
 
         self.game_states.append(state)
         self.player_states[player_id] = state
