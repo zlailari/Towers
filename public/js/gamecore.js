@@ -46,9 +46,23 @@ $(document).ready(function()  {
     loadImages();
     setInterval(gameLoop, frequency);
 
+    // shim layer with setTimeout fallback
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       ||
+              window.webkitRequestAnimationFrame ||
+              window.mozRequestAnimationFrame    ||
+              function(callback) {
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+
+    (function animloop(){
+      requestAnimFrame(animloop);
+      render();
+    })();
+
     function gameLoop () {
         processUpdate();
-        render();
     }
 
     function processUpdate() {

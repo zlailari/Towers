@@ -14,7 +14,7 @@ class Creep:
         type = str(type)
         if type == "Default": return Creep((0,0),"Default",.05,100,id, 15)
         if type == "Slow": return Creep((0,0),"Slow",.01,500,id,30)
-        if type == "Fast": return Creep((0,0),"Fast",.5,50,id,30)
+        if type == "Fast": return Creep((0,0),"Fast",.15,50,id,30)
         else: return Creep((0,0),"Default",.05,100,id, 15)
     factory = staticmethod(factory)
 
