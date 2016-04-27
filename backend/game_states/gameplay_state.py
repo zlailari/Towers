@@ -25,6 +25,7 @@ class GameplayState(GameState):
         self.gold = gold  # starting gold
         self.counter = 0
         self.player_id = player_id
+        self.projectiles = []
 
     # Calls all update methods within the game and returns dictionaries to be
     # converted to json with the player status (gold lives enemies left) and
@@ -51,6 +52,15 @@ class GameplayState(GameState):
         for tower in self.all_towers:
             # attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
             attacksMade = attacksMade + tower.update(dt, self.all_creeps, self)
+
+        for projectile in self.projectiles:
+            projectile.update()
+
+        for projectile in self.projectiles:
+            if projectile.hit:
+                self.projectiles.remove(projectile)
+
+        attacksMade = attacksMade + self.projectiles
 
         enemies = 0
         for creep in self.all_creeps:

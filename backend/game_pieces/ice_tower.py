@@ -4,6 +4,8 @@ from shots.shot import shot
 from shots.fire import fire
 from shots.laser import laser
 from modifiers.frozen_modifier import Frozen_modifier
+from game_pieces.projectile import ProjectileCreep
+
 import json
 
 # ice_tower is a subclass of tower. It fires a frozen shot at a creep that slows its speed by half.
@@ -39,8 +41,9 @@ class Ice_tower (Tower):
                     if engine.util.distance(x1, y1, x2, y2) <= self.fire_range:
                         if self.can_fire():
                             self.fire(creep, gameState)
+                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 2, "ice"))
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id, creep.id))
+                            # myAttacks.append(laser(self.id, creep.id))
         return myAttacks;
 
     #Override for ice_tower
