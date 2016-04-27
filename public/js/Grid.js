@@ -112,10 +112,14 @@ var Grid = function (can, ctx, offset) {
         var x = tower['loc'][0];
         var y = tower['loc'][1];
         var type = tower['tower_type'];
-        var index = typeToNumber[type];
+        var index = towerTypeToNumber[type];
         this.Cells[y][x].type = parseFloat(CellType.ARROW) +
                 parseFloat(index);
 
         this.towers.push(tower);
+    };
+
+    this.deleteTower = function(x, y) {
+        this.Cells[y][x].type = CellType.EMPTY;
     };
 };

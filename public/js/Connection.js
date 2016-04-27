@@ -53,16 +53,17 @@ ws.onmessage = function(event) {
             }
 
             allCreeps[id] = msg['creeps'];
-
             allEffects[id] = msg['effects'];
 
         }
         if (msg.type == 'tower_update') {
             if (msg['towerAccepted'] && playerGrids[id]) {
                 playerGrids[id].towerAccepted(msg['tower']);
+            } else if (msg['towerDeleted'] && playerGrids[id]){
+                playerGrids[id].deleteTower(msg['x'],
+                    msg['y']);
             } else if (id == userID) {
                 var reason = msg['reason'];
-                var reason = "Placeholder";
                 towerDenied(reason);
             }
 
@@ -88,8 +89,6 @@ ws.onmessage = function(event) {
         }
 
         if (msg.type == 'game_start') {
-            $('.overlay').fadeOut(500);
-
             var players2 = msg['players'];
             for (var k = 0; k < players2.length; k++) {
                 var newID = players2[k];

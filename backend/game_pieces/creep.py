@@ -5,10 +5,12 @@ import engine.util
 class Creep:
     """So far this is just an example implementation"""
 
+
     def factory(type,id): #loc, type, speed, hp, id, bounty
         if type == "Default": return Creep((0,0),"Default",.05,100,id, 15)
         if type == "Fast": return Creep((0,0),"Fast",.1,50,id,30)
-        if type == "Slow": return Creep((0,0),"Slow",.005,1000,id,100)
+        if type == "Slow": return Creep((0,0),"Slow",.005,10000,id,100)
+
 
     factory = staticmethod(factory)
 

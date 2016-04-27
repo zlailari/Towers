@@ -43,6 +43,8 @@ var Cell = function (Grid, ctx, row, col) {
             case CellType.EMPTY:
             case CellType.BASIC_TOWER:
             case CellType.TRAP:
+                ctx.fillStyle = "#000000";
+                doDraw = false;
                 break;
             case CellType.ARROW:
             case CellType.FIRE:
@@ -87,7 +89,7 @@ var Cell = function (Grid, ctx, row, col) {
         if (this.hover) {
             if (towerButtons && towerButtons.wasPressed()) {
                 var type = towerButtons.getLastButton();
-                var index = typeToNumber[type];
+                var index = towerTypeToNumber[type];
 
                 ctx.lineWidth = highlightSize;
                 ctx.fillStyle = "rgba(255, 255, 255, 0.3)";

@@ -1,5 +1,7 @@
-var typeToNumber = [];
+var towerTypeToNumber = [];
 
-typeToNumber['laser_tower'] = 0;
-typeToNumber['fire_tower'] = 1;
-typeToNumber['ice_tower'] = 2;
+towerTypeToNumber['fire_tower'] = 0;
+towerTypeToNumber['laser_tower'] = 1;
+towerTypeToNumber['gattling_tower'] = 2;
+towerTypeToNumber['delete_tower'] = 3;
+towerTypeToNumber['upgrade_tower'] = 4;

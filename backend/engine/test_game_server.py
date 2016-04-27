@@ -31,8 +31,8 @@ class GameRunner:
 
     def __init__(self, print_gametick=False, print_on_receive=False, create_server=True):
 
-        #self.level_creeps_spawn_timers = [1,2,3,4,5]
-        #self.spawnCreeps = []
+        # self.level_creeps_spawn_timers = [1,2,3,4,5]
+        # self.spawnCreeps = []
 
         # for i in range(0, 5):
         #    self.spawnCreeps.append(Creep.factory("Default",i))
@@ -45,13 +45,13 @@ class GameRunner:
         self.game_states = []
         self.player_states = {}
 
-
     def add_player(self, player_id):
         """Add a player to the game by giving them their own state."""
 
-        #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
-        levels = Levels.createLevel(5,0.5,10,5,3,"Default")
-        state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 10000, player_id)
+        # initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
+        levels = Levels.createLevel(5, 0.5, 10, 5, 3, "Default")
+        state = GameplayState(levels, WORLD_WIDTH,
+                              WORLD_HEIGHT, 100, 10000, player_id)
 
         self.game_states.append(state)
         self.player_states[player_id] = state
@@ -116,41 +116,42 @@ class GameRunner:
             # do any cleanup you want to do here
             pass
 
-
     def process_message(self, msg):
         if msg['type'] == MSG.tower_request.name:
-            # This is the old way we built towers which worked
-
-            # Make a new tower TODO, don't hardcode stuff
-            # tower = Tower(
-            #     (msg['msg']['x'], msg['msg']['y']),
-            #     1000,
-            #     1,
-            #     3,
-            #     len(self.game_state.all_towers),
-            #     msg['msg']['towerID']
-            # )
             player_id = msg['player_id']
             state = self.player_states[player_id]
-            tower = state.build_tower(
-                (msg['msg']['x'], msg['msg']['y']), msg['msg']['towerID'])
-            towerUpdate = None
-            if tower:
-                towerUpdate = {
-                    'type': 'tower_update',
-                    'towerAccepted': 'true',
-                    'tower': tower,
-                    'player_id': player_id
-                }
+            x, y = msg['msg']['x'], msg['msg']['y']
+            if msg['msg']['towerID'] == 'delete_tower':
+                # request to delete a tower that's already present
+                state.delete_tower((x, y))
+                self.network.send_message(
+                    {
+                        'type': 'tower_update',
+                        'towerDeleted': True,
+                        'x': x,
+                        'y': y,
+                        'player_id': player_id
+                    }
+                )
             else:
-                towerUpdate = {
-                    'type': 'tower_update',
-                    'towerAccepted': 'false',
-                    'reason': 'TODO',
-                    'player_id': player_id
-                }
-            self.network.send_message(towerUpdate)
-        if msg['type'] == MSG.instance_request.name:
+                tower = state.build_tower((x, y), msg['msg']['towerID'])
+                towerUpdate = None
+                if tower:
+                    towerUpdate = {
+                        'type': 'tower_update',
+                        'towerAccepted': 'true',
+                        'tower': tower,
+                        'player_id': player_id
+                    }
+                else:
+                    towerUpdate = {
+                        'type': 'tower_update',
+                        'towerAccepted': 'false',
+                        'reason': 'TODO',
+                        'player_id': player_id
+                    }
+                self.network.send_message(towerUpdate)
+        elif msg['type'] == MSG.instance_request.name:
             self.spawn_new_game()
         elif msg['type'] == MSG.game_add_player.name:
             player_id = msg['player_id']
