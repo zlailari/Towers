@@ -59,10 +59,11 @@ class GameplayState(GameState):
         bestPath = self.world.tilePaths
 
         for creep in self.all_creeps:
-            cUpdate = creep.update(bestPath, dt, self)
-            if cUpdate is not None:
-                creepLoc.update(cUpdate[LOCATION_INDEX])
-                creepProgress.update(cUpdate[PROGRESS_INDEX])
+            if creep is not None:
+                cUpdate = creep.update(bestPath, dt, self)
+                if cUpdate is not None:
+                    creepLoc.update(cUpdate[LOCATION_INDEX])
+                    creepProgress.update(cUpdate[PROGRESS_INDEX])
 
         # Updates the attacks made by the towers on the creeps
         for tower in self.all_towers:
