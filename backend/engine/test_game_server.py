@@ -41,6 +41,7 @@ class GameRunner:
         self.game_states = []
         self.player_states = {}
 
+
     def add_player(self, player_id):
         """Add a player to the game by giving them their own state."""
 
@@ -58,6 +59,18 @@ class GameRunner:
             del self.player_states[player_id]
             self.game_states.remove(state)
             print('removing player and state for player {}'.format(player_id))
+
+        for i in range(0, 30):
+            self.spawnCreeps.append(Creep.factory("Default", i))
+
+        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
+        state = GameplayState(levels, WORLD_WIDTH,
+                              WORLD_HEIGHT, 100, 100, player_id)
+        state.build_tower(Tower((8, 8), 1, 1, 1, 0))
+
+        self.game_states.append(state)
+        self.player_states[player_id] = state
+        print('added player, and state for player {}'.format(player_id))
 
     def run(self):
         # wait until a request comes in to start the game, then start the game
@@ -103,7 +116,6 @@ class GameRunner:
 
     def process_message(self, msg):
         if msg['type'] == MSG.tower_request.name:
-
             # This is the old way we built towers which worked
 
             # Make a new tower TODO, don't hardcode stuff
@@ -134,7 +146,6 @@ class GameRunner:
                     'reason': 'TODO',
                     'player_id': player_id
                 }
-
             self.network.send_message(towerUpdate)
         if msg['type'] == MSG.instance_request.name:
             self.spawn_new_game()
@@ -151,7 +162,6 @@ class GameRunner:
                 if player != player_id:
                     state = self.player_states[player]
                     state.spawn_creep(creep_type)
-
 
     def game_loop(self, dt):
         # Receive and process messages from clients

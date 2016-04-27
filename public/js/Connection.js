@@ -55,6 +55,7 @@ ws.onmessage = function(event) {
             allCreeps[id] = msg['creeps'];
 
             allEffects[id] = msg['effects'];
+
         }
         if (msg.type == 'tower_update') {
             if (msg['towerAccepted'] && playerGrids[id]) {

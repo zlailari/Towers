@@ -16,20 +16,17 @@ class GameplayState(GameState):
     """This is the state the game is in during real gameplay,
     and manages all creeps, towers, scores, etc."""
 
-
     def __init__(self, level, width, height, lives, gold, player_id):
-
         self.cur_level = level
         self.world = GridWorld(width, height, (0, 0), (width - 1, height - 1))
         self.all_creeps = []
         self.all_towers = []
-        #self.set_level(level)
         self.lives = lives;
         self.gold = gold; # starting gold
         self.counter = 0;
         self.player_id = player_id
 
-        # bill.kill(yanming);t
+
 
     # Calls all update methods within the game and returns dictionaries to be
     # converted to json with the player status (gold lives enemies left) and
@@ -42,6 +39,7 @@ class GameplayState(GameState):
         creepLoc = {} # Dicitonary of creep locations
         creepProgress = {} # Dictionary of creep progresses
         attacksMade = [] # Dictionary of attacks made by towers
+
 
         # Update all creeps and get location location and movement progress
         bestPath = self.world.tilePaths
@@ -56,6 +54,7 @@ class GameplayState(GameState):
         for tower in self.all_towers:
             #attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
             attacksMade = attacksMade + tower.update(dt,self.all_creeps,self)
+
         enemies = 0
         for creep in self.all_creeps:
             if creep.live:
@@ -145,3 +144,4 @@ class GameplayState(GameState):
         for cr in self.all_creeps:
             if cr.loc == loc and cr.live:
                 cr.modify(mod)
+

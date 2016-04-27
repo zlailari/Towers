@@ -76,6 +76,7 @@
 
 .stateBarItem + #tabs{
     justify-content: flex-start;
+
 }
 
 .stateBarItem + #gameInfo{

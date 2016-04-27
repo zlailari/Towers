@@ -169,6 +169,7 @@ function initSideBar() {
 
     var towerNames = ["Arrow Tower", "Rocket Tower", "Ice Tower"];
     var towerTypes = ["laser_tower", "fire_tower", "ice_tower"];
+
     var towerDescriptions = ["This tower shoots arrows",
         "This tower shoots rockets",
         "This tower shoots ice"];
