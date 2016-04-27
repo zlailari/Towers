@@ -5,6 +5,7 @@
 #Calls to update will also do nothing if it's target is dead, and hit will be set to True
 
 import numpy as np
+from shots.shot_proj import shot_proj
 
 class ProjectileCreep:
 
@@ -46,6 +47,9 @@ class ProjectileCreep:
 
     def get_position(self):
         return self.loc[0], self.loc[1]
+
+    def make_shot(self):
+        return shot_proj(self.projectileType, self.get_position())
 
     def has_hit(self):
         return self.hit
@@ -91,6 +95,9 @@ class ProjectileTile:
 
     def get_position(self):
         return self.loc[0], self.loc[1]
+
+    def make_shot(self):
+        return shot_proj(self.projectileType, self.get_position())
 
     def has_hit(self):
         return self.hit

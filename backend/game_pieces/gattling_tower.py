@@ -40,8 +40,9 @@ class Gattling_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-
-                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 2, "gattling"))
+                            shot = ProjectileCreep(self.loc, creep, .00000000002, "gattling")
+                            #print(str(shot))
+                            gameState.projectiles.append(shot)
         return myAttacks;
 
     #Override for ice_tower

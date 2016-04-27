@@ -65,7 +65,6 @@ class GameplayState(GameState):
         for tower in self.all_towers:
             # attacksMade.update({tower.id : tower.update(dt, self.all_creeps , self)})
             attacksMade = attacksMade + tower.update(dt, self.all_creeps, self)
-
         for projectile in self.projectiles:
             projectile.update()
 
@@ -74,8 +73,9 @@ class GameplayState(GameState):
             if projectile.hit:
                 self.projectiles.remove(projectile)
             else:
-                temp.append(projectile.get_position())
+                temp.append(projectile.make_shot())
         #print(len(self.projectiles))
+
         attacksMade = attacksMade + temp
 
         enemies = 0
