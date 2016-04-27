@@ -148,12 +148,11 @@ class GameRunner:
 
             if((self.player_states[player_id].gold)>= creep_costs[creep_type]):
                 for player in self.player_states:
-                    #if player != player_id:
-
-                    state = self.player_states[player]
-                    state.spawn_creep(creep_type)
-                    self.player_states[player_id].spawned_creeps +=1
-                    self.player_states[player_id].gold=self.player_states[player_id].gold-creep_costs[creep_type]
+                    if player != player_id:
+                        state = self.player_states[player]
+                        state.spawn_creep(creep_type)
+                        self.player_states[player_id].spawned_creeps +=1
+                        self.player_states[player_id].gold=self.player_states[player_id].gold-creep_costs[creep_type]
 
 
     def game_loop(self, dt):
