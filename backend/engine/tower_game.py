@@ -38,21 +38,17 @@ class GameRunner:
 
         self.game_states.append(state)
         self.player_states[player_id] = state
-        print('added player, and state for player {}'.format(player_id))
 
     def remove_player(self, player_id):
         if player_id in self.player_states:
             state = self.player_states[player_id]
             del self.player_states[player_id]
             self.game_states.remove(state)
-            print('removing player and state for player {}'.format(player_id))
 
     def run(self):
         # wait until a request comes in to start the game, then start the game
         while True:
             message = self.network.receive()
-            if message:
-                print('game received message: {}'.format(message))
             if message and message['type'] == MSG.game_start_request.name:
                 self.start_game()
                 break
@@ -66,14 +62,12 @@ class GameRunner:
                 self.remove_player(player_id)
 
     def spawn_new_game(self):
-        print('spawning new game instance')
         new_game = GameRunner(create_server=False)
         t = threading.Thread(target=new_game.run)
         t.daemon = True
         t.start()
 
     def start_game(self):
-        print('starting game.')
         clock = Clock(TICK_LEN)
         clock.tick()  # tick once to initialize counter
 

@@ -1,14 +1,22 @@
 class Lobby:
 
-    def __init__(self, game_client, lobby_id, max_size=4):
+    def __init__(self, game_client, lobby_id, max_size=4, name=None):
         self.max_size = max_size
         self.players = []  # list of player connections
         self.game_client = game_client
         self.lobby_id = lobby_id
         self.game_in_progress = False
 
+        if name is None or name == '':
+            self.name = 'Lobby{}'.format(lobby_id)
+        else:
+            self.name = name
+
     def add_player(self, player_connection):
         self.players.append(player_connection)
+
+    def get_name(self):
+        return self.name
 
     def is_in_game(self):
         return self.game_in_progress
