@@ -39,3 +39,6 @@ class Wall_tower (Tower):
         #                     myAttacks.append(laser(self.id, creep.loc))
         return myAttacks;
 
+    def upgrade(self):
+
+        return False
