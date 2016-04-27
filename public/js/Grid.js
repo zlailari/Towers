@@ -60,7 +60,7 @@ var Grid = function (can, ctx, offset) {
                    "y": this.focusCell.row
                };
                ws.towerRequest(userID, msg);
-           } else {
+           } else if (this.focusCell.img == null) {
                this.focusCell.type = (this.focusCell.type + 1) % 2;
            }
         }

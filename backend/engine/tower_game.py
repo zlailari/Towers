@@ -122,14 +122,14 @@ class GameRunner:
                 if tower:
                     towerUpdate = {
                         'type': 'tower_update',
-                        'towerAccepted': 'true',
+                        'towerAccepted': True,
                         'tower': tower,
                         'player_id': player_id
                     }
                 else:
                     towerUpdate = {
                         'type': 'tower_update',
-                        'towerAccepted': 'false',
+                        'towerAccepted': False,
                         'reason': 'TODO',
                         'player_id': player_id
                     }
