@@ -19,14 +19,14 @@ class Sniper_tower (Tower):
 
         self.price = 30
         self.upgrade_price = 10
-        self.damage = 50
+        self.damage = 75
         self.time_since_last_fire = 0
         self.upgrade_level = 0
         self.max_upgrade_level = 3
 
         pass
 
-    #Override for firing ice at a creep
+    #Override for damaging sniper bolt at a creep
     def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt
         myAttacks = [];
@@ -37,12 +37,12 @@ class Sniper_tower (Tower):
                     x1, y1 = creep.loc[0] , creep.loc[1]
                     if engine.util.distance(x1, y1, x2, y2) <= self.fire_range:
                         if self.can_fire():
-                            self.fire(creep.loc, gameState)
+                            self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id, creep.loc))
+                            myAttacks.append(laser(self.id,creep.loc))
         return myAttacks;
 
-    #Override for ice_tower
+    #Override for sniper tower
     def fire(self, target, gameState):
         """Fire at a target creep."""
         self.time_since_last_fire = 0

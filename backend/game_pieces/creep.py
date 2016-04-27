@@ -2,9 +2,9 @@
 # I don't know if I like this way of designating types, but it works for now
 import engine.util
 CREEP_TYPES = {
-    'basic': {'speed': 10, 'health': 100},
-    'medium': {'speed': 10, 'health': 150},
-    'advanced': {'speed': 10, 'health': 300},
+    'basic': {'speed': 7, 'health': 100},
+    'medium': {'speed': 14, 'health': 300},
+    'advanced': {'speed': 25, 'health': 500},
 }
 
 

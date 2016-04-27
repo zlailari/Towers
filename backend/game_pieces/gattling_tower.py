@@ -37,9 +37,9 @@ class Gattling_tower (Tower):
                     x1, y1 = creep.loc[0] , creep.loc[1]
                     if engine.util.distance(x1, y1, x2, y2) <= self.fire_range:
                         if self.can_fire():
-                            self.fire(creep.loc, gameState)
+                            self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id, creep.loc))
+                            myAttacks.append(laser(self.id,creep.loc))
         return myAttacks;
 
     #Override for ice_tower

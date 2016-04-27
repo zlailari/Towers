@@ -31,6 +31,10 @@ class GameplayState(GameState):
     def update(self, dt, client_info):
         self.counter += dt  # the total amount of time that has elapsed
 
+        if(self.counter % 300 == 0):
+            self.gold +=self.spawned_creeps/3
+
+
         self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
 
         creepLoc = {}  # Dicitonary of creep locations

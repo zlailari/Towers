@@ -1,4 +1,4 @@
-from modifiers.stun_modifier import *
+from modifiers.stun_modifier import Stun_modifier
 
 #This class is stores all the effects in the game.
 # Tile_effects.py holds an array that stores multiple effects (there can be more than 1 effect on a tile at a given time.
@@ -22,7 +22,7 @@ class fire(effects):
         return self
 
 class stun(effects):
-    def init(self, damage, counter=15):
+    def __init__(self, damage, counter=30):
         self.counter = counter
         self.damage = damage
         self.type = 'stun';
@@ -32,5 +32,4 @@ class stun(effects):
         return self
 
     def on_move(self, creep, state):
-        creep.take_damage(self.damage, state)
         creep.modify(Stun_modifier(creep))
