@@ -17,33 +17,33 @@ loadImages = function() {
     // TODO: Get rid of this when backend creep stuff is ready
 
     var humanImages = [
-        ["/img/towers/h/laser_1.png", "/img/towers/h/laser_2.png",
-        "/img/towers/h/laser_3.png"],
-        ["/img/towers/h/rocket_1.png", "/img/towers/h/rocket_2.png",
-        "/img/towers/h/rocket_3.png"],
-        ["/img/towers/h/electric_trap.png"],
-        ["/img/towers/h/sniper_1.png", "/img/towers/h/sniper_2.png",
-        "/img/towers/h/sniper_3.png"],
-        ["/img/towers/h/wall.png"],
-        ["/img/towers/h/rail_1.png", "/img/towers/h/rail_2.png",
-        "/img/towers/h/rail_3.png"],
-        ["/img/towers/h/poison_1.png", "/img/towers/h/poison_2.png",
-        "/img/towers/h/poison_3.png"]
+        ["/img/towers/h/laser_1.jpg", "/img/towers/h/laser_2.jpg",
+        "/img/towers/h/laser_3.jpg"],
+        ["/img/towers/h/rocket_1.jpg", "/img/towers/h/rocket_2.jpg",
+        "/img/towers/h/rocket_3.jpg"],
+        ["/img/towers/h/electric_trap.jpg"],
+        ["/img/towers/h/sniper_1.jpg", "/img/towers/h/sniper_2.jpg",
+        "/img/towers/h/sniper_3.jpg"],
+        ["/img/towers/h/wall.jpg"],
+        ["/img/towers/h/rail_1.jpg", "/img/towers/h/rail_2.jpg",
+        "/img/towers/h/rail_3.jpg"],
+        ["/img/towers/h/poison_1.jpg", "/img/towers/h/poison_2.jpg",
+        "/img/towers/h/poison_3.jpg"]
     ];
 
     var alienImages = [
-        ["/img/towers/a/laser_1.png", "/img/towers/a/laser_2.png",
-        "/img/towers/a/laser_3.png"],
-        ["/img/towers/a/rocket_1.png", "/img/towers/a/rocket_2.png",
-        "/img/towers/a/rocket_3.png"],
-        ["/img/towers/a/electric_trap.png"],
-        ["/img/towers/a/sniper_1.png", "/img/towers/a/sniper_2.png",
-        "/img/towers/a/sniper_3.png"],
-        ["/img/towers/a/wall.png"],
-        ["/img/towers/a/rail_1.png", "/img/towers/a/rail_2.png",
-        "/img/towers/a/rail_3.png"],
-        ["/img/towers/a/poison_1.png", "/img/towers/a/poison_2.png",
-        "/img/towers/a/poison_3.png"]
+        ["/img/towers/a/laser_1.jpg", "/img/towers/a/laser_2.jpg",
+        "/img/towers/a/laser_3.jpg"],
+        ["/img/towers/a/rocket_1.jpg", "/img/towers/a/rocket_2.jpg",
+        "/img/towers/a/rocket_3.jpg"],
+        ["/img/towers/a/electric_trap.jpg"],
+        ["/img/towers/a/sniper_1.jpg", "/img/towers/a/sniper_2.jpg",
+        "/img/towers/a/sniper_3.jpg"],
+        ["/img/towers/a/wall.jpg"],
+        ["/img/towers/a/rail_1.jpg", "/img/towers/a/rail_2.jpg",
+        "/img/towers/a/rail_3.jpg"],
+        ["/img/towers/a/poison_1.jpg", "/img/towers/a/poison_2.jpg",
+        "/img/towers/a/poison_3.jpg"]
     ];
 
     var assetPack = null;
