@@ -147,7 +147,8 @@ def lobby_add_player(player_connection, lobby_id):
                 {
                     'lobby_id': lobby.get_id(),
                     'max_players': lobby.get_max_size(),
-                    'num_players': lobby.size()
+                    'num_players': lobby.size(),
+                    'lobby_name': lobby.get_name()
                 }
             )
             player_connection.sendMessage(message)
