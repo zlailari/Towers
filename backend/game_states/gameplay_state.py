@@ -116,7 +116,7 @@ class GameplayState(GameState):
             return tower
 
     def lose_life(self):
-        self.lives -= 1
+        self.lives -= 60
 
     def is_dead(self):
         return self.lives <= 0
