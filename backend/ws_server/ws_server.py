@@ -88,7 +88,6 @@ def get_players_lobby(player_connection):
         if lobby.has_player(player_connection):
             return lobby
 
-    print('couldnt find lobby for player {}'.format(player_connection))
     return None
 
 
@@ -121,7 +120,6 @@ def broadcast_lobby_list():
 
 def game_add_player(game, player_id):
     """Tell a game instance to add this player."""
-    print('sending message to gamerunner to add player {}'.format(player_id))
     message = format_msg(
         'add this player to your game',
         MSG.game_add_player,
@@ -129,7 +127,6 @@ def game_add_player(game, player_id):
             'player_id': player_id
         }
     )
-    print('message: {}'.format(message))
     game.sendMessage(message)
 
 
@@ -168,7 +165,6 @@ def lobby_add_player(player_connection, lobby_id):
 
 
 def game_remove_player(game, player_id):
-    print('sending message to remove player {}'.format(player_id))
     message = format_msg(
         'remove this player from your game',
         MSG.game_remove_player,
@@ -176,7 +172,6 @@ def game_remove_player(game, player_id):
             'player_id': player_id
         }
     )
-    print('message: {}'.format(message))
     game.sendMessage(message)
 
 
