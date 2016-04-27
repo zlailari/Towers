@@ -7,7 +7,7 @@ class Lobby:
         self.lobby_id = lobby_id
         self.game_in_progress = False
 
-        if name is None:
+        if name is None or name == '':
             self.name = 'Lobby{}'.format(lobby_id)
         else:
             self.name = name
