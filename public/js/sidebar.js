@@ -203,7 +203,7 @@ function initSideBar() {
     var creepDescriptions = ["Slow creep with a lot of help",
         "Normal creep with a well rounded set of states",
         "Fast creep with a little bit of health"];
-    var creepPrices = ["10", "10", "10"];
+    var creepPrices = ["100", "15", "30"];
     var creepHotKeys = [{s:"S ", kc:83},
         {s:"D", kc:68},
         {s:"F", kc:70}];

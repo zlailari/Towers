@@ -64,7 +64,6 @@ ws.onmessage = function(event) {
 
         }
         if (msg.type == 'tower_update') {
-            console.log(msg);
             if (msg['towerAccepted'] && playerGrids[id]) {
                 playerGrids[id].towerAccepted(msg['tower']);
             } else if (msg['towerDeleted'] && playerGrids[id]){
@@ -97,8 +96,6 @@ ws.onmessage = function(event) {
         }
 
         if (msg.type == 'game_start') {
-            $('.overlay').fadeOut(500);
-
             var players2 = msg['players'];
             for (var k = 0; k < players2.length; k++) {
                 var newID = players2[k];
