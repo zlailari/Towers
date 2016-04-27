@@ -32,4 +32,4 @@ class stun(effects):
         return self
 
     def on_move(self, creep, state):
-        creep.modify(Stun_modifier(creep))
+        creep.modify(Stun_modifier(creep.id,state))

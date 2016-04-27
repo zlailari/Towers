@@ -2,6 +2,8 @@ from game_pieces.tower import Tower
 import engine.util
 from shots.shot import shot
 from shots.laser import laser
+from game_pieces.projectile import ProjectileCreep
+
 
 import json
 
@@ -13,13 +15,13 @@ class Sniper_tower (Tower):
         self.loc = loc
         self.health = 25 #?
         self.cooldown = 5
-        self.fire_range = 7
+        self.fire_range = 10
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "sniper_tower"
 
         self.price = 30
         self.upgrade_price = 35
-        self.damage = 75
+        self.damage = 100
         self.time_since_last_fire = 0
         self.upgrade_level = 0
         self.max_upgrade_level = 2
@@ -39,7 +41,8 @@ class Sniper_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(laser(self.id,creep.loc))
+                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 3, "sniper", self.damage, gameState))
+
         return myAttacks;
 
     #Override for sniper tower
