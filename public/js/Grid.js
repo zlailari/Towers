@@ -113,7 +113,7 @@ var Grid = function (can, ctx, offset) {
         var y = tower['loc'][1];
         var type = tower['tower_type'];
         var index = towerTypeToNumber[type];
-        this.Cells[y][x].type = parseFloat(CellType.ARROW) +
+        this.Cells[y][x].type = parseFloat(CellType.LASER) +
                 parseFloat(index);
 
         this.towers.push(tower);
