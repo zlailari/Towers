@@ -37,6 +37,8 @@ loadImages = function() {
     }
 
     deleteImage = new Image();
+    deleteImage.onload = function() {imageLoaded();};
+    deleteImage.src = deleteImageName;
 };
 
 imageLoaded = function() {
