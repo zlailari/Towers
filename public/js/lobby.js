@@ -92,6 +92,7 @@ var LobbyManager = function () {
         if (chatbox.isVisible()) {
             chatbox.toggleBox();
         }
+        $('.overlay').fadeOut(500);
     };
 
     this.beginCountdown = function(time) {

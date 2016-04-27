@@ -18,15 +18,15 @@ class Stun_tower (Tower):
         self.tower_type = "stun_tower"
 
         self.price = 30
-        self.upgrade_price = 10
+        self.upgrade_price = 35
         self.damage = 10
         self.time_since_last_fire = 0
         self.upgrade_level = 0
-        self.max_upgrade_level = 3
+        self.max_upgrade_level = 2
 
         pass
 
-    #Override for firing ice at a creep
+    #Override for firing a stun bolt
     def update(self, dt, living_creeps, gameState):
         self.time_since_last_fire += dt
         myAttacks = [];
@@ -39,11 +39,12 @@ class Stun_tower (Tower):
                         if self.can_fire():
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
+                            # myAttacks.append(stun(self.id, creep.loc))
         return myAttacks;
 
-    #Override for ice_tower
+    #Override for stun tower fire
     def fire(self, target, gameState):
-        """Fire at a target creep."""
+        """Apply the stun modifier to target creep."""
         self.time_since_last_fire = 0
         allNeighbors = gameState.world.get_neighbors(self.loc[0], self.loc[1]) + gameState.world.get_neighbors_diagonal(self.loc[0], self.loc[1])
         for loc in allNeighbors:

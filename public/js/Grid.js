@@ -60,7 +60,7 @@ var Grid = function (can, ctx, offset) {
                    "y": this.focusCell.row
                };
                ws.towerRequest(userID, msg);
-           } else {
+           } else if (this.focusCell.img == null) {
                this.focusCell.type = (this.focusCell.type + 1) % 2;
            }
         }
@@ -112,7 +112,7 @@ var Grid = function (can, ctx, offset) {
         var x = tower['loc'][0];
         var y = tower['loc'][1];
         var type = tower['tower_type'];
-        var index = typeToNumber[type];
+        var index = towerTypeToNumber[type];
         this.Cells[y][x].type = parseFloat(CellType.ARROW) +
                 parseFloat(index);
 

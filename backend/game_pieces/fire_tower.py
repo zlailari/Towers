@@ -18,10 +18,10 @@ class Fire_tower (Tower):
 
         self.price = 40
         self.damage = 0
-        self.upgrade_price = 10
+        self.upgrade_price = 35
         self.time_since_last_fire = self.cooldown
         self.upgrade_level = 0
-        self.max_upgrade_level = 3
+        self.max_upgrade_level = 2
 
         pass
 
@@ -38,7 +38,7 @@ class Fire_tower (Tower):
                         if self.can_fire():
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
-                            myAttacks.append(fire(self.id, creep.loc))
+                            myAttacks.append(fire(self.id, creep.id))
         return myAttacks;
 
     #Override for fire tower

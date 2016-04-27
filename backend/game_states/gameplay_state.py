@@ -21,16 +21,27 @@ class GameplayState(GameState):
         self.world = GridWorld(width, height, (0, 0), (width - 1, height - 1))
         self.all_creeps = []
         self.all_towers = []
+
+        #self.set_level(level)
         self.lives = lives
-        self.gold = gold  # starting gold
-        self.counter = 0
+        self.gold = gold # starting gold
+        self.counter = 0 #when this hits a certain number, the player gets gold payoff based on the number of creeps they've spawned that are alive.
         self.player_id = player_id
+
+        self.spawned_creeps = 0 # Tracks how many creeps this person has spawned. For every 3 creeps, 1 gold is awarded every 10 seconds.
 
     # Calls all update methods within the game and returns dictionaries to be
     # converted to json with the player status (gold lives enemies left) and
     # other stats
     def update(self, dt, client_info):
         self.counter += dt  # the total amount of time that has elapsed
+        #print(str(self.spawned_creeps))
+        #print("----------------------")
+        #print(str(self.counter))
+        if(self.counter > 10):
+            self.gold +=int(self.spawned_creeps/3)
+            self.counter = 0;
+
 
         self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
 
@@ -71,8 +82,7 @@ class GameplayState(GameState):
             'playerState': playerState,
             'creeps': self.all_creeps,
             'attacksMade': attacksMade,
-            'effects': effects_json,
-            'path': str(bestPath),
+            'effects' : effects_json,
             'player_id': self.player_id
         }
 
@@ -82,6 +92,15 @@ class GameplayState(GameState):
         for i in range(0, self.world.width):
             for j in range(0, self.world.height):
                 self.world.effects[i][j].update()
+
+        for i in range(0,self.world.width):
+            for j in range(0,self.world.height):
+                    a = self.world.effects[i][j].effects
+                    for b in reversed(a):
+                        if b.counter <0:
+                            a.remove(b)
+                    self.world.effects[i][j].effects = a
+
 
         return update
 

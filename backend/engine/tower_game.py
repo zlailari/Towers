@@ -18,6 +18,7 @@ WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
 
 INFO_ID = 'game engine'
+creep_costs = {'Default':15, 'Fast':30, 'Slow':100}
 
 
 class GameRunner:
@@ -59,6 +60,17 @@ class GameRunner:
             del self.player_states[player_id]
             self.game_states.remove(state)
             print('removing player and state for player {}'.format(player_id))
+
+        for i in range(0, 30):
+            self.spawnCreeps.append(Creep.factory("Default", i))
+
+        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
+        state = GameplayState(levels, WORLD_WIDTH,
+                              WORLD_HEIGHT, 100, 100, player_id)
+
+        self.game_states.append(state)
+        self.player_states[player_id] = state
+        print('added player, and state for player {}'.format(player_id))
 
     def run(self):
         # wait until a request comes in to start the game, then start the game
@@ -124,14 +136,14 @@ class GameRunner:
                 if tower:
                     towerUpdate = {
                         'type': 'tower_update',
-                        'towerAccepted': 'true',
+                        'towerAccepted': True,
                         'tower': tower,
                         'player_id': player_id
                     }
                 else:
                     towerUpdate = {
                         'type': 'tower_update',
-                        'towerAccepted': 'false',
+                        'towerAccepted': False,
                         'reason': 'TODO',
                         'player_id': player_id
                     }
@@ -147,10 +159,15 @@ class GameRunner:
         elif msg['type'] == MSG.creep_request.name:
             player_id = msg['player_id']
             creep_type = msg['msg']['creepID']
-            for player in self.player_states:
-                if player != player_id:
-                    state = self.player_states[player]
-                    state.spawn_creep(creep_type)
+
+            if((self.player_states[player_id].gold)>= creep_costs[creep_type]):
+                for player in self.player_states:
+                    if player != player_id:
+                        state = self.player_states[player]
+                        state.spawn_creep(creep_type)
+                        self.player_states[player_id].spawned_creeps +=1
+                        self.player_states[player_id].gold=self.player_states[player_id].gold-creep_costs[creep_type]
+
 
     def game_loop(self, dt):
         # Receive and process messages from clients

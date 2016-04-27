@@ -5,14 +5,14 @@ from shots.fire import fire
 from shots.laser import laser
 import json
 
-# ice_tower is a subclass of tower. It fires a frozen shot at a creep that slows its speed by half.
+# Wall is a subclass of tower. Wall does nothing but block creeps.
 class Wall_tower (Tower):
     def __init__(self,id, loc):
         # TODO, make tower_type control other values
 
         self.loc = loc
-        self.health = 25 #?
-        self.cooldown = 1
+        self.health = 1 #?
+        self.cooldown = 0
         self.fire_range = 0
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "wall_tower"
@@ -39,10 +39,6 @@ class Wall_tower (Tower):
         #                     myAttacks.append(laser(self.id, creep.loc))
         return myAttacks;
 
-    #Override for ice_tower
-    def fire(self, target, gameState):
-        """Fire at a target creep."""
-        self.time_since_last_fire = 0
-        target.take_damage(self.damage , gameState);
-        target.modify(Dot_modifier(target, gameState, 10))
+    def upgrade(self):
 
+        return False
