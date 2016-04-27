@@ -42,7 +42,7 @@ class Sniper_tower (Tower):
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
 
-                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 3, "sniper"))
+                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 3, "sniper", self.damage, gameState))
         return myAttacks;
 
     #Override for sniper tower

@@ -5,17 +5,21 @@
 #Calls to update will also do nothing if it's target is dead, and hit will be set to True
 
 import numpy as np
+from game_pieces.creep import Creep
+from modifiers.dot_modifier import Dot_modifier
 from shots.shot_proj import shot_proj
 
 class ProjectileCreep:
 
-    def __init__(self, start, creep, speed, projectileType):
+    def __init__(self, start, creep, speed, projectileType, damage, gameState):
         self.loc = np.array(start).astype(float)
         self.velocity = np.array([0.0, 0.0])
         self.speed = speed
         self.creep = creep
         self.hit = False
+        self.damage = damage
         self.projectileType = projectileType
+        self.gameState = gameState
 
     def update(self):
         if self.creep.live and not self.hit:
@@ -40,6 +44,10 @@ class ProjectileCreep:
                 self.velocity /= np.linalg.norm(self.velocity)
                 self.velocity *= currentDistance
                 self.hit = True
+                creep.take_damage(self.damage, self.gameState)
+                if projectileType == "poison":
+                    creep.modify(Dot_modifier(creep.id, self.gameState, self.damage))
+
 
             self.loc += self.velocity
         elif not self.creep.live:
@@ -59,13 +67,15 @@ class ProjectileCreep:
 
 class ProjectileTile:
 
-    def __init__(self, start, tile, speed, projectileType):
+    def __init__(self, start, tile, speed, projectileType, effect, gameState):
         self.loc = np.array(start).astype(float)
         self.velocity = np.array([0.0, 0.0])
         self.speed = speed
         self.tile = tile
         self.hit = False
         self.type = projectileType
+        self.gameState = gameState
+        self.effect = effect
 
     def update(self):
         if not self.hit:
@@ -90,6 +100,9 @@ class ProjectileTile:
                 self.velocity /= np.linalg.norm(self.velocity)
                 self.velocity *= currentDistance
                 self.hit = True
+                gameState.world.add_effect(self.get_position(), "fire")
+
+
 
             self.loc += self.velocity
 

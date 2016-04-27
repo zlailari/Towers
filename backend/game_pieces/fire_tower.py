@@ -40,14 +40,14 @@ class Fire_tower (Tower):
                             self.fire(creep.loc, gameState)
                             # adds in all the fireable creeps to an array
 
-                            gameState.projectiles.append(ProjectileTile(self.loc, creep.loc, .0005, "fire"))
+                            gameState.projectiles.append(ProjectileTile(self.loc, creep.loc, .05, "fire", gameState))
         return myAttacks;
 
     #Override for fire tower
     def fire(self, loc, gameState):
         """Fire at a target tile."""
         self.time_since_last_fire = 0
-        gameState.world.add_effect(loc,"fire")
+        #gameState.world.add_effect(loc,"fire")
 
     def upgrade(self):
         if self.upgrade_level < self.max_upgrade_level:

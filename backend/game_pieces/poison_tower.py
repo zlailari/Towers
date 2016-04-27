@@ -42,15 +42,15 @@ class Poison_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 2, "poison"))
+                            gameState.projectiles.append(ProjectileCreep(self.loc, creep, 2, "poison", self.dot_amount, gameState))
         return myAttacks;
 
     #Override for ice_tower
     def fire(self, target, gameState):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
-        target.take_damage(self.damage , gameState);
-        target.modify(Dot_modifier(target.id, gameState, self.dot_amount))
+        #target.take_damage(self.damage , gameState);
+        #target.modify(Dot_modifier(target.id, gameState, self.dot_amount))
 
     def upgrade(self):
         if self.upgrade_level < self.max_upgrade_level:

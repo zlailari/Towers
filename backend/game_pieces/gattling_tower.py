@@ -40,7 +40,7 @@ class Gattling_tower (Tower):
                         if self.can_fire():
                             self.fire(creep, gameState)
                             # adds in all the fireable creeps to an array
-                            shot = ProjectileCreep(self.loc, creep, .02, "gattling")
+                            shot = ProjectileCreep(self.loc, creep, .02, "gattling", self.damage, gameState)
                             #print(str(shot))
                             gameState.projectiles.append(shot)
         return myAttacks;
@@ -49,7 +49,7 @@ class Gattling_tower (Tower):
     def fire(self, target, gameState):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
-        target.take_damage(self.damage , gameState)
+        #target.take_damage(self.damage , gameState)
 
     def upgrade(self):
         if self.upgrade_level < self.max_upgrade_level:
