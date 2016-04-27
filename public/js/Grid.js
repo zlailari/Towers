@@ -46,7 +46,7 @@ var Grid = function (can, ctx, offset) {
             }
 
             this.focusCell = this.Cells[row][col];
-            this.Cells[row][col].hover = true;
+            this.focusCell.hover = true;
         }
     };
 
