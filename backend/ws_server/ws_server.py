@@ -361,7 +361,8 @@ class GameServerProtocol(WebSocketServerProtocol):
         lobby = get_players_lobby(self)
         if lobby:
             lobby.remove_player(self)
-
+            game_remove_player(lobby.get_game_client(),
+                user_ids[self])
         broadcast_lobby_list()
 
     def handleCreepRequest(self, json_msg):

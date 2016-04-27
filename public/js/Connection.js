@@ -53,16 +53,15 @@ ws.onmessage = function(event) {
             }
 
             allCreeps[id] = msg['creeps'];
-
             allEffects[id] = msg['effects'];
 
         }
         if (msg.type == 'tower_update') {
+            console.log(msg);
             if (msg['towerAccepted'] && playerGrids[id]) {
                 playerGrids[id].towerAccepted(msg['tower']);
             } else if (id == userID) {
                 var reason = msg['reason'];
-                var reason = "Placeholder";
                 towerDenied(reason);
             }
 

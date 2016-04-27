@@ -21,11 +21,11 @@ var TowerButtons = function (divID) {
         this.images[ID].remove();
     };
 
-    this.changeTower = function (index, ID, name, imageName, toolTip, hotKeyKC) {
-        if (this.images[index]) {
-            this.removeTower(index);
+    this.changeTower = function (ID, name, imageName, toolTip, hotKeyKC) {
+        if (this.images[ID]) {
+            this.removeTower(ID);
         }
-        this.images[index] = $(
+        this.images[ID] = $(
             '<img src="' + imageName + '"'
             + 'class="tower-tooltip"'
             + 'alt="' + name + '"'
@@ -46,16 +46,20 @@ var TowerButtons = function (divID) {
                     self.setLastButton(tid);
                 }
             });
-        this.hotKeyCodes[index] = hotKeyKC;
+        this.hotKeyCodes[ID] = hotKeyKC;
     };
 
     this.addTower = function (ID, name, imageName, toolTip, hotKeyKC) {
-        var index = this.divs.length;
-        this.divs[index] = $('<div class="side-tower"'
+        var div = this.divID;
+        if (ID == 'delete_tower' || ID == 'upgrade_tower') {
+            div = $('#updateImages');
+        }
+
+        this.divs[ID] = $('<div class="side-tower"'
             + 'id="tower' + ID + '"'
             + '/>')
-            .appendTo(this.divID);
-        this.changeTower(index, ID, name, imageName, toolTip, hotKeyKC);
+            .appendTo(div);
+        this.changeTower(ID, name, imageName, toolTip, hotKeyKC);
     };
 
     this.getLastButton = function() { return this.lastButton; };
@@ -67,9 +71,9 @@ var TowerButtons = function (divID) {
     this.getHotKeyCodes = function() { return this.hotKeyCodes; };
 
     this.keypress = function (e) {
-        for (var i = 0; i < this.hotKeyCodes.length; ++i) {
-            if (e.which == this.hotKeyCodes[i].kc) {
-                this.images[i].click();
+        for (var ID in this.hotKeyCodes) {
+            if (e.which == this.hotKeyCodes[ID].kc) {
+                this.images[ID].click();
             }
         }
     };
@@ -129,9 +133,9 @@ var CreepButtons = function (divID, creepNames, creepImageNames,
     this.getHotKeyCodes = function() { return this.hotKeyCodes; };
 
     this.keypress = function (e) {
-        for (var i = 0; i < this.hotKeyCodes.length; i++) {
-            if (e.which == this.hotKeyCodes[i]) {
-                this.images[i].click();
+        for (var ID in this.hotKeyCodes) {
+            if (e.which == this.hotKeyCodes[ID].kc) {
+                this.images[ID].click();
             }
         }
     };
@@ -167,16 +171,21 @@ function initSideBar() {
         .html('<p align="center"><strong>Towers</strong></p>')
         .prependTo($('#towerButtons'));
 
-    var towerNames = ["Arrow Tower", "Rocket Tower", "Ice Tower"];
-    var towerTypes = ["laser_tower", "fire_tower", "ice_tower"];
+    var towerNames = ["Arrow Tower", "Rocket Tower", "Ice Tower",
+        "Delete Tower", "Upgrade Tower"];
+    var towerTypes = ["laser_tower", "fire_tower", "ice_tower",
+        "delete_tower", "upgrade_tower"];
 
     var towerDescriptions = ["This tower shoots arrows",
         "This tower shoots rockets",
-        "This tower shoots ice"];
-    var towerPrices = ["10", "10", "10"];
+        "This tower shoots ice",
+        "Delete a tower", "Upgrade a tower"];
+    var towerPrices = ["10", "10", "10", "-50%", "10"];
     var towerHotKeys = [{s:"A", kc:65},
         {s:"R", kc:82},
-        {s:"I", kc:73}];
+        {s:"I", kc:73},
+        {s:"L", kc:76},
+        {s:"U", kc:85}];
 
     var towerToolTips = [];
     for (var i = 0; i < towerNames.length; ++i) {
@@ -222,4 +231,6 @@ function initSideBar() {
             towerNames[j], towerImageNames[j],
             towerToolTips[j], towerHotKeys[j]);
     }
+
+
 }

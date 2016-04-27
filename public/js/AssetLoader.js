@@ -1,9 +1,7 @@
 // Loads all game images
 
 assetsLoaded = 0;
-assetsToLoad = 9;
-
-var deleteImageName = "img/delete.png";
+assetsToLoad = 10;
 
 loadImages = function() {
     // ADD ANY IMAGES TO LOAD HERE.
@@ -16,7 +14,8 @@ loadImages = function() {
     creepPic.src = ('img/Demon3.png');
 
     towerImageNames = ["img/arrowHead.png",
-        "img/fire.png", "img/ice.png"];
+        "img/fire.png", "img/ice.png",
+        "img/delete.png", "img/upgrade.png"];
     creepImageNames = ["img/Demon1.png",
         "img/Demon2.png", "img/Demon3.png"];
 
@@ -35,10 +34,6 @@ loadImages = function() {
         creepImages[k].onload = function() {imageLoaded();};
         creepImages[k].src = creepImageNames[k];
     }
-
-    deleteImage = new Image();
-    deleteImage.onload = function() {imageLoaded();};
-    deleteImage.src = deleteImageName;
 };
 
 imageLoaded = function() {
