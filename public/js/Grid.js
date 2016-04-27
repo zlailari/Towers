@@ -59,6 +59,7 @@ var Grid = function (can, ctx, offset) {
                    "x": this.focusCell.col,
                    "y": this.focusCell.row
                };
+               console.log(msg);
                ws.towerRequest(userID, msg);
            } else if (this.focusCell.img == null) {
                this.focusCell.type = (this.focusCell.type + 1) % 2;
