@@ -279,5 +279,6 @@ function initSideBar() {
 function destroySideBar() {
     towerButtons.destroy();
     creepButtons.destroy();
-    sideBarInit = true;
+    $('#denied.sideBarTitle').remove();
+    sideBarInit = false;
 }
