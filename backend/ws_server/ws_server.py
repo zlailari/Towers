@@ -313,6 +313,7 @@ class GameServerProtocol(WebSocketServerProtocol):
                     'players': [user_ids[player] for player in lobby.get_players()]
                 }
             ), send_self=True)
+            broadcast_lobby_list()
 
     def handleIdentifier(self, json_msg):
         """Handle identification messages, such as the server
