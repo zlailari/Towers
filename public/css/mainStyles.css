@@ -17,6 +17,7 @@
     box-shadow: 0 0 2px 2px #666666;
 }
 
+
 .content {
     display: flex;
     flex-flow: row wrap;

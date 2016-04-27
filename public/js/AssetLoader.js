@@ -74,7 +74,7 @@ loadImages = function() {
         }
         towerImages[i] = images;
     }
-    console.log(towerImages);
+
     assetsToLoad++;
     backgroundImg = new Image();
     backgroundImg.onload = function() { imageLoaded(); };
