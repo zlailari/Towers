@@ -22,7 +22,7 @@ class GameplayState(GameState):
         self.all_towers = []
 
         #self.set_level(level)
-        self.lives = 1
+        self.lives = lives
         self.gold = gold # starting gold
         self.counter = 0 #when this hits a certain number, the player gets gold payoff based on the number of creeps they've spawned that are alive.
         self.player_id = player_id
