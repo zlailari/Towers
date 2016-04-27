@@ -5,7 +5,8 @@ var CellType = Object.freeze({
     TRAP: 3,
     ARROW: 100,
     FIRE: 101,
-    ICE: 102
+    ICE: 102,
+    WALL: 103
 });
 
 var CellEffect = Object.freeze({
@@ -50,6 +51,7 @@ var Cell = function (Grid, ctx, row, col) {
             case CellType.ARROW:
             case CellType.FIRE:
             case CellType.ICE:
+            case CellType.WALL:
                 ctx.fillStyle = "#FFFFFF";
                 doDraw = true;
                 this.img = towerImages[parseFloat(this.type)
@@ -96,7 +98,7 @@ var Cell = function (Grid, ctx, row, col) {
                 ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
                 ctx.fillRect((this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, size, size);
-                var img = towerImages[index];
+                var img = towerImages[index][0];
                 ctx.drawImage(img, (this.col * size) + .5 * highlightSize,
                     (this.row * size) + .5 * highlightSize, drawSize, drawSize);
             } else {
