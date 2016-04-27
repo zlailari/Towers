@@ -18,6 +18,10 @@ WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
 
 INFO_ID = 'game engine'
+#if type == "Default": return Creep((0,0),"default",.05,100,id, 15)
+#if type == "Fast": return Creep((0,0),"strong",.1,50,id,30)
+#if type == "Slow": return Creep((0,0),"weak",.005,1000,id,100)
+creep_costs = {'Default':15, 'Fast':30, 'Slow':100}
 
 
 class GameRunner:
@@ -47,7 +51,7 @@ class GameRunner:
 
         #initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
         levels = Levels.createLevel(5,0.5,10,5,3,"Default")
-        state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 1000, player_id)
+        state = GameplayState(levels, WORLD_WIDTH, WORLD_HEIGHT, 100, 10000, player_id)
 
         self.game_states.append(state)
         self.player_states[player_id] = state
@@ -157,11 +161,16 @@ class GameRunner:
         elif msg['type'] == MSG.creep_request.name:
             player_id = msg['player_id']
             creep_type = msg['msg']['creepID']
-            for player in self.player_states:
-                #if player != player_id:
-                state = self.player_states[player]
-                state.spawn_creep(creep_type)
-                self.player_states[player_id].spawned_creeps +=1
+
+            if((self.player_states[player_id].gold)>= creep_costs[creep_type]):
+                for player in self.player_states:
+                    #if player != player_id:
+
+
+                    state = self.player_states[player]
+                    state.spawn_creep(creep_type)
+                    self.player_states[player_id].spawned_creeps +=1
+                    self.player_states[player_id].gold=self.player_states[player_id].gold-creep_costs[creep_type]
 
 
     def game_loop(self, dt):
