@@ -108,7 +108,7 @@ var CreepButtons = function (divID) {
             .appendTo($("#creep" + ID))
             .tooltip()
             .click({cid: ID}, function(event) {
-                var cid = "Default";
+                var cid = event.data.cid;
                 var msg = {
                     "creepID": cid
                 };
