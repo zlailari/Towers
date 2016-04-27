@@ -38,9 +38,11 @@ class GameplayState(GameState):
         #print(str(self.spawned_creeps))
         #print("----------------------")
         #print(str(self.counter))
+
+
         if(self.counter > 10):
             self.gold +=int(self.spawned_creeps/3)
-            self.counter = 0;
+            self.counter = 0
 
 
         self.all_creeps.extend(self.cur_level.spawnWave(self.counter))
@@ -68,7 +70,8 @@ class GameplayState(GameState):
             if creep.live:
                 enemies += 1
 
-        effects_json = self.world.process_effects()
+        #print(str(attacksMade))
+        effects_json = self.world.process_effects() #Makes a nice looking effects list to send to server
 
         # Dictionary of player stats
         playerState = {
