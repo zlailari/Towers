@@ -8,19 +8,20 @@ from game_pieces.creep import Creep
 class Dot_modifier (Modifiers):
     def __init__(self, id, gamestate, dotAmount):
 
+        self.counter = 90
         self.creep_id = id
         self.poison = dotAmount/self.counter
-        self.counter = 90
+
         pass
 
     # Counter update for the modifier.
     def update(self, id, gamestate):
 
         if(self.counter == 0):
-            gamestate.all_creeps[id].take_damage(self.fireDamage, self.gameState)
+            gamestate.all_creeps[id].take_damage(self.fireDamage, gamestate)
         elif(self.counter >0):
             self.counter = self.counter-1
-            gamestate.all_creeps[id].take_damage(self.poison, self.gameState)
+            gamestate.all_creeps[id].take_damage(self.poison, gamestate)
 
         else:
             self.counter = self.counter-1

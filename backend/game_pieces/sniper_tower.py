@@ -15,13 +15,13 @@ class Sniper_tower (Tower):
         self.loc = loc
         self.health = 25 #?
         self.cooldown = 5
-        self.fire_range = 7
+        self.fire_range = 10
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "sniper_tower"
 
         self.price = 30
         self.upgrade_price = 35
-        self.damage = 75
+        self.damage = 100
         self.time_since_last_fire = 0
         self.upgrade_level = 0
         self.max_upgrade_level = 2

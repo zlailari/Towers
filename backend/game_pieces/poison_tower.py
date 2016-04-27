@@ -24,7 +24,7 @@ class Poison_tower (Tower):
         self.time_since_last_fire = 0
         self.upgrade_level = 0
         self.max_upgrade_level = 2
-        self.dot_amount = 10
+        self.dot_amount = 30
         self.upgrade_price = 35
 
         pass
@@ -50,7 +50,7 @@ class Poison_tower (Tower):
         """Fire at a target creep."""
         self.time_since_last_fire = 0
         target.take_damage(self.damage , gameState);
-        target.modify(Dot_modifier(target, gameState, self.dot_amount))
+        target.modify(Dot_modifier(target.id, gameState, self.dot_amount))
 
     def upgrade(self):
         if self.upgrade_level < self.max_upgrade_level:

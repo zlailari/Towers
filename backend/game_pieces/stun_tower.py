@@ -12,7 +12,7 @@ class Stun_tower (Tower):
 
         self.loc = loc
         self.health = 25 #?
-        self.cooldown = 5
+        self.cooldown = 8
         self.fire_range = 2
         self.id = id; # we need the towers to know where they are in the array of towers.
         self.tower_type = "stun_tower"
