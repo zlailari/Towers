@@ -59,7 +59,6 @@ var Grid = function (can, ctx, offset) {
                    "x": this.focusCell.col,
                    "y": this.focusCell.row
                };
-               console.log(msg);
                ws.towerRequest(userID, msg);
            } else if (this.focusCell.img == null) {
                this.focusCell.type = (this.focusCell.type + 1) % 2;
@@ -122,5 +121,12 @@ var Grid = function (can, ctx, offset) {
 
     this.deleteTower = function(x, y) {
         this.Cells[y][x].type = CellType.EMPTY;
+    };
+
+    this.upgradeTower = function(x, y) {
+        var currentLevel = this.Cells[y][x].towerLevel;
+        if (currentLevel < 2) {
+            this.Cells[y][x].towerLevel = currentLevel + 1;
+        }
     };
 };

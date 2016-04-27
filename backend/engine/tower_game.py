@@ -118,7 +118,6 @@ class GameRunner:
                 self.network.send_message(
                     {
                         'type': 'tower_update',
-                        'towerAccepted': tower_upgraded,
                         'towerUpgraded': tower_upgraded,
                         'x': x,
                         'y': y,
