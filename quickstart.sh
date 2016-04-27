@@ -3,7 +3,7 @@
 source virtenv-towers/bin/activate
 
 cd backend
-python start_test_game_server.py &
+python start_game_server.py &
 
 cd ..
 node server.js &
