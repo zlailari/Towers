@@ -1,12 +1,19 @@
 // setup websocket with callbacks
 
-var re = /(.*\:)(.*)/;
-var hostParts = location.origin.match(re);
+var prod_re = /(.*\:)(.*)/;
+var test_re = /(.*)(:\d+$)/;
+var prodParts = location.origin.match(prod_re);
+var testParts = location.origin.match(test_re);
 
-var host = hostParts[1].replace(/^http/, 'ws');
-var port = 9000;
-var ws = new WebSocket(host + port);
-// var ws = new WebSocket('ws://localhost:9000/');
+var host, ws, port = 9000;
+
+if (testParts) {
+     host = testParts[1].replace(/^http/, 'ws');
+     ws = new WebSocket(host + ':' + port);
+} else {
+     host = prodParts[1].replace(/^http/, 'ws');
+     ws = new WebSocket(host + prodParts[2] + ':' + port);
+}
 
 var userID = 0;
 
