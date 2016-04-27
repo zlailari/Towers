@@ -19,11 +19,11 @@ class Ice_tower (Tower):
         self.tower_type = "ice_tower"
 
         self.price = 30
-        self.upgrade_price = 10
+        self.upgrade_price = 35
         self.damage = 15
         self.time_since_last_fire = self.cooldown
         self.upgrade_level = 0
-        self.max_upgrade_level = 3
+        self.max_upgrade_level = 2
 
         pass
 

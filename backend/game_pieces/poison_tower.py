@@ -21,9 +21,9 @@ class Poison_tower (Tower):
         self.damage = 5
         self.time_since_last_fire = 0
         self.upgrade_level = 0
-        self.max_upgrade_level = 3
+        self.max_upgrade_level = 2
         self.dot_amount = 10
-        self.upgrade_price = 10
+        self.upgrade_price = 35
 
         pass
 
