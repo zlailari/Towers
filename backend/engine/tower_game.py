@@ -6,7 +6,6 @@ from engine.clock import Clock
 from engine.network import Network
 from game_pieces.levels import Levels
 from game_states.gameplay_state import GameplayState
-from game_states.lose_state import LoseState
 from engine.message_enum import MSG
 
 # Define our globals
@@ -147,11 +146,14 @@ class GameRunner:
             self.process_message(message)
 
         # Update game 1 tick and pass to clients
+        dead_players = []
         for player in self.player_states:
             state = self.player_states[player]
             data = state.update(dt, [])
             if state.is_dead():
-                self.player_states[player] = LoseState()
+                dead_players.append(player)
 
-            if data is not None:  # will be None if the player is dead
-                self.network.send_message(data)
+            self.network.send_message(data)
+
+        for player in dead_players:
+            self.player_states.pop(player, None)  # remove dead players
