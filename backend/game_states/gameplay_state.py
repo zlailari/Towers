@@ -20,9 +20,10 @@ class GameplayState(GameState):
         self.world = GridWorld(width, height, (0, 0), (width - 1, height - 1))
         self.all_creeps = []
         self.all_towers = []
-        self.lives = lives
-        self.gold = gold  # starting gold
-        self.counter = 0
+        #self.set_level(level)
+        self.lives = 1
+        self.gold = gold # starting gold
+        self.counter = 0 #when this hits a certain number, the player gets gold payoff based on the number of creeps they've spawned that are alive.
         self.player_id = player_id
 
     # Calls all update methods within the game and returns dictionaries to be

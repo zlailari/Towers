@@ -267,7 +267,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert 'type' in message
         m_type = message['type']
 
-        info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
+        #info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
         if m_type == MSG.chat.name:
             self.handleChat(as_string)
         elif m_type == MSG.tower_request.name:

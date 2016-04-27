@@ -48,6 +48,23 @@ ws.onmessage = function(event) {
         if (msg.type == 'game_update') {
             if (id == userID) {
                 playerState = msg['playerState'];
+                console.log(playerState);
+                if (playerState['isDead']) {
+                    console.log("Dead");
+                    delete allCreeps[id];
+                    var gameOffset = $("#gameFrame").offset();
+                    playerGrids[id] = new Grid(gameCan, gameCtx, gameOffset);
+
+                    $('<button type="button" class="btn btn-default">'
+                        + 'Rejoin Lobby System'
+                        + '</button>')
+                        .appendTo($("#rejoinLbBtn"))
+                        .click(function(event) {
+                            $('.overlay').fadeIn(500);
+                            setTimeout(lobbyManager.enterLobby, 500);
+                            $(this).remove();
+                        });
+                }
             }
 
             var newShots = msg['attacksMade'];
