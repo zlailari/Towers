@@ -18,6 +18,7 @@ class Wall_tower (Tower):
         self.tower_type = "wall_tower"
 
         self.price = 5
+        self.upgrade_price = 0
         self.damage = 0
         self.time_since_last_fire = 0
 
@@ -40,5 +41,4 @@ class Wall_tower (Tower):
         return myAttacks;
 
     def upgrade(self):
-
         return False

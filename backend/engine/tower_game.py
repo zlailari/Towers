@@ -1,15 +1,12 @@
 """This file acts as the main entrance point to the server."""
 import threading
-from game_pieces.creep import Creep
 from engine.clock import Clock
 # from game_states.main_menu import MainMenu
 # from game_states.gameplay_state import GameplayState
 from engine.network import Network
 from game_pieces.levels import Levels
 from game_states.gameplay_state import GameplayState
-from game_pieces.tower import Tower
 from engine.message_enum import MSG
-from engine.util import info
 
 # Define our globals
 TPS = 30  # ticks per second
@@ -18,9 +15,6 @@ WORLD_WIDTH = 16
 WORLD_HEIGHT = 12
 
 INFO_ID = 'game engine'
-#if type == "Default": return Creep((0,0),"default",.05,100,id, 15)
-#if type == "Fast": return Creep((0,0),"strong",.1,50,id,30)
-#if type == "Slow": return Creep((0,0),"weak",.005,1000,id,100)
 creep_costs = {'Default':15, 'Fast':30, 'Slow':100}
 
 
@@ -30,15 +24,6 @@ class GameRunner:
     game engine loop to the server."""
 
     def __init__(self, print_gametick=False, print_on_receive=False, create_server=True):
-
-        # self.level_creeps_spawn_timers = [1,2,3,4,5]
-        # self.spawnCreeps = []
-
-        # for i in range(0, 5):
-        #    self.spawnCreeps.append(Creep.factory("Default",i))
-
-        # game_state = MainMenu()
-
         self.network = Network(create_server)
         self.print_gametick = print_gametick
         self.print_on_receive = print_on_receive
@@ -48,7 +33,6 @@ class GameRunner:
     def add_player(self, player_id):
         """Add a player to the game by giving them their own state."""
 
-        # initialDelay, delayBetweenCreeps, delayBetweenWaves, numCreeps, numWaves, creepType
         levels = Levels.createLevel(5, 0.5, 10, 5, 3, "Default")
         state = GameplayState(levels, WORLD_WIDTH,
                               WORLD_HEIGHT, 100, 10000, player_id)
@@ -133,20 +117,32 @@ class GameRunner:
                         'player_id': player_id
                     }
                 )
+            elif msg['msg']['towerID'] == 'upgrade_tower':
+                tower_upgraded = state.upgrade_tower((x,y))
+                self.network.send_message(
+                    {
+                        'type': 'tower_update',
+                        'towerUpgraded': tower_upgraded,
+                        'x': x,
+                        'y': y,
+                        'player_id': player_id
+                    }
+                )
+
             else:
                 tower = state.build_tower((x, y), msg['msg']['towerID'])
                 towerUpdate = None
                 if tower:
                     towerUpdate = {
                         'type': 'tower_update',
-                        'towerAccepted': 'true',
+                        'towerAccepted': True,
                         'tower': tower,
                         'player_id': player_id
                     }
                 else:
                     towerUpdate = {
                         'type': 'tower_update',
-                        'towerAccepted': 'false',
+                        'towerAccepted': False,
                         'reason': 'TODO',
                         'player_id': player_id
                     }
@@ -165,12 +161,11 @@ class GameRunner:
 
             if((self.player_states[player_id].gold)>= creep_costs[creep_type]):
                 for player in self.player_states:
-                    #if player != player_id:
-
-                    state = self.player_states[player]
-                    state.spawn_creep(creep_type)
-                    self.player_states[player_id].spawned_creeps +=1
-                    self.player_states[player_id].gold=self.player_states[player_id].gold-creep_costs[creep_type]
+                    if player != player_id:
+                        state = self.player_states[player]
+                        state.spawn_creep(creep_type)
+                        self.player_states[player_id].spawned_creeps +=1
+                        self.player_states[player_id].gold=self.player_states[player_id].gold-creep_costs[creep_type]
 
 
     def game_loop(self, dt):
@@ -184,10 +179,3 @@ class GameRunner:
             state = self.player_states[player]
             data = state.update(dt, [])
             self.network.send_message(data)
-
-        # if self.print_gametick:
-        #     print("it's been " + str(dt * 1000) + " ms since last frame")
-
-        # message = self.network.receive()
-        # if message is not False and self.print_on_receive:
-        #     print("gameloop got message: {}".format(message))

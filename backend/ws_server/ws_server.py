@@ -1,5 +1,4 @@
 """This module acts as the server in charge of everything.
-
 The game_loop has a client that connects to this server.
 
 Each player has their web-browser client which connects to this server.
@@ -25,6 +24,8 @@ all_connections = []
 user_ids = {}
 MAX_LOBBY_SIZE = 4  # how many users can be in a lobby?
 lobby_count = 0  # used to determine new lobby IDs, don't decrement
+pending_lobby_names = []
+
 
 INFO_ID = 'server'
 
@@ -63,8 +64,12 @@ def assign_user_id(connection):
 
 def create_lobby(gameengine_client):
     """Given an engine_client connection, create a lobby for it."""
-    lobby = Lobby(gameengine_client, lobby_count, MAX_LOBBY_SIZE)
+    name = None
+    if len(pending_lobby_names) > 0:
+        name = pending_lobby_names.pop(0)
+    lobby = Lobby(gameengine_client, lobby_count, MAX_LOBBY_SIZE, name)
     lobbies.append(lobby)
+
     global lobby_count
     lobby_count += 1
     broadcast_lobby_list()
@@ -93,11 +98,14 @@ def send_lobby_list(player_connection):
         'type': MSG.lobby_info.name,
         'lobbies': []
     }
+
     for lobby in lobbies:
+        max_players = MAX_LOBBY_SIZE if not lobby.is_in_game() else -1
         lobby_info = {
             'lobby_id': lobby.get_id(),
+            'lobby_name': lobby.get_name(),
             'num_players': lobby.size(),
-            'max_players': MAX_LOBBY_SIZE,
+            'max_players': max_players,
             'players': [user_ids[player] for player in lobby.get_players()]
         }
         message['lobbies'].append(lobby_info)
@@ -139,7 +147,8 @@ def lobby_add_player(player_connection, lobby_id):
                 {
                     'lobby_id': lobby.get_id(),
                     'max_players': lobby.get_max_size(),
-                    'num_players': lobby.size()
+                    'num_players': lobby.size(),
+                    'lobby_name': lobby.get_name()
                 }
             )
             player_connection.sendMessage(message)
@@ -299,6 +308,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         # start the sender's game
         lobby = get_players_lobby(self)
         if lobby is not None:
+            lobby.game_is_running()
             game = lobby.get_game_client()
             game.sendMessage(format_msg(
                 'start running the game',
@@ -311,6 +321,7 @@ class GameServerProtocol(WebSocketServerProtocol):
                     'players': [user_ids[player] for player in lobby.get_players()]
                 }
             ), send_self=True)
+            broadcast_lobby_list()
 
     def handleIdentifier(self, json_msg):
         """Handle identification messages, such as the server
@@ -337,6 +348,12 @@ class GameServerProtocol(WebSocketServerProtocol):
         # someone wants a new game instance, so tell a game engine to spin one
         # up
         assert len(lobbies) > 0
+        message = obj_from_json(json_msg)
+
+        assert 'lobby_name' in message
+        lobby_name = message['lobby_name']
+        pending_lobby_names.append(lobby_name)
+
         engine = lobbies[0].get_game_client()
         assert engine is not None
         engine.sendMessage(format_msg(
@@ -362,7 +379,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         if lobby:
             lobby.remove_player(self)
             game_remove_player(lobby.get_game_client(),
-                user_ids[self])
+                               user_ids[self])
         broadcast_lobby_list()
 
     def handleCreepRequest(self, json_msg):

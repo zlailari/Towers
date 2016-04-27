@@ -58,7 +58,7 @@ class Network:
             # do we
             return None
         as_obj = obj_from_json(as_json)
-        #info('received (type {}): {}'.format(as_obj['type'], as_json), INFO_ID)
+        # info('received (type {}): {}'.format(as_obj['type'], as_json), INFO_ID)
         return as_obj
 
     def send_message(self, data):
@@ -66,5 +66,5 @@ class Network:
         assert 'type' in data, 'cannot send a message without giving it a type (e.g., the message dict needs an entry called "type"). (data object: {})'.format(
             str(data))
         as_json = json.dumps(data, default=dump_obj_dict)
-        #info('sending message: {}'.format(as_json), INFO_ID)
+        # info('sending message: {}'.format(as_json), INFO_ID)
         self.client_protocol.sendMessage(utf(as_json), isBinary=False)

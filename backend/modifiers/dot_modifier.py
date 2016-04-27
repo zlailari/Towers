@@ -18,7 +18,7 @@ class Dot_modifier (Modifiers):
     def update(self, id, gamestate):
 
         if(self.counter == 0):
-            gamestate.all_creeps[id].take_damage(self.fireDamage, gamestate)
+            gamestate.all_creeps[id].take_damage(self.poison, gamestate)
         elif(self.counter >0):
             self.counter = self.counter-1
             gamestate.all_creeps[id].take_damage(self.poison, gamestate)

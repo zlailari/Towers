@@ -253,7 +253,7 @@ var LobbyManager = function () {
             } else {
                 this.remove(id);
             }
-        } else if (this.searching) {
+        } else if (this.searching && maxPlayers > 0) {
             this.addNewLobby(id, numPlayers, maxPlayers);
         }
     };
