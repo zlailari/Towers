@@ -40,11 +40,7 @@ var LobbyManager = function () {
         this.newLbBtn.bt.click({this: this}, function(event) {
             var self = event.data.this;
             if (self.canCreateLobby) {
-                var name = null;
-                name = $("#lbName").val();
-                if (name == null) {
-                    name = "";
-                }
+                var name = $("#lbName").val();
                 var msg = {
                     "lobby_name": name
                 };
@@ -121,7 +117,7 @@ var LobbyManager = function () {
         if (this.searching) {
             this.msgs[id].remove();
             this.msgs[id] = $(
-                '<p>Lobby ' + name + ' has ' + numPlayers
+                '<p>Lobby ' + name + ' which has ' + numPlayers
                 + '/' + maxPlayers + ' players'
                 + '</p>')
                 .prependTo(this.divs[id]);
@@ -168,7 +164,7 @@ var LobbyManager = function () {
             .appendTo($("#lobby.modal-body"));
 
         this.msgs[id] = $(
-            '<p>You are in lobby ' + name + ' has ' + numPlayers
+            '<p>You are in lobby ' + name + ' which has ' + numPlayers
             + '/' + maxPlayers + ' players'
             + '</p>')
             .prependTo(this.divs[id]);
@@ -236,7 +232,7 @@ var LobbyManager = function () {
             hasClick: true};
 
         this.msgs[id] = $(
-            '<p>Lobby ' + name + ' has ' + numPlayers
+            '<p>Lobby ' + name + ' which has ' + numPlayers
             + '/' + maxPlayers + ' players'
             + '</p>')
             .prependTo(this.divs[id]);

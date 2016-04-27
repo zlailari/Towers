@@ -150,7 +150,14 @@ function towerDenied (reason) {
     }, 3000);
 }
 
+
+var sideBarInit = false;
 function initSideBar() {
+    if (sideBarInit) {
+        return;
+    }
+
+    sideBarInit = true;
     $('<div class="sideBarTitle"'
         + 'id="denied"'
         + 'data-toggle="tooltip"'

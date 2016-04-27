@@ -83,7 +83,7 @@ ws.onmessage = function(event) {
             for (var i = 0; i < lobbies.length; ++i) {
                 var lobby = lobbies[i];
                 var lbid = lobby['lobby_id'];
-                var lbname = msg['lobby_name'];
+                var lbname = lobby['lobby_name'];
                 var num = lobby['num_players'];
                 var max = lobby['max_players'];
                 var players = lobby['players'];
@@ -111,6 +111,7 @@ ws.onmessage = function(event) {
                 }
             }
             lobbyManager.exitLobby();
+            initSideBar();
         }
     }
 };
@@ -154,6 +155,7 @@ ws.newLobbyRequest = function(id, msg) {
     // msg format is:
     // {
     // }
+    console.log(msg);
     ws.send(JSON.stringify({
         type: "new_lobby_request",
         player_id: id,

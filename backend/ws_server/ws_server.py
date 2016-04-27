@@ -267,7 +267,7 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert 'type' in message
         m_type = message['type']
 
-        # info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
+        info('received message (type {}): {}'.format(m_type, as_string), INFO_ID)
         if m_type == MSG.chat.name:
             self.handleChat(as_string)
         elif m_type == MSG.tower_request.name:
@@ -345,8 +345,8 @@ class GameServerProtocol(WebSocketServerProtocol):
         assert len(lobbies) > 0
         message = obj_from_json(json_msg)
 
-        assert 'lobby_name' in message
-        lobby_name = message['lobby_name']
+        assert 'lobby_name' in message['msg']
+        lobby_name = message['msg']['lobby_name']
         pending_lobby_names.append(lobby_name)
 
         engine = lobbies[0].get_game_client()

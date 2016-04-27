@@ -94,6 +94,5 @@ imageLoaded = function() {
     // check if all assets are loaded
     if (assetsLoaded == assetsToLoad) {
         fullyLoaded = true;
-        initSideBar();
     }
 };
