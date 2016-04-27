@@ -45,6 +45,19 @@ class GameRunner:
             del self.player_states[player_id]
             self.game_states.remove(state)
 
+            print('removing player and state for player {}'.format(player_id))
+
+        for i in range(0, 30):
+            self.spawnCreeps.append(Creep.factory("Default", i))
+
+        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
+        state = GameplayState(levels, WORLD_WIDTH,
+                              WORLD_HEIGHT, 100, 100, player_id)
+
+        self.game_states.append(state)
+        self.player_states[player_id] = state
+        print('added player, and state for player {}'.format(player_id))
+
     def run(self):
         # wait until a request comes in to start the game, then start the game
         while True:
