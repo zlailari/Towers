@@ -125,6 +125,8 @@ class GameplayState(GameState):
                     self.gold -= tower.upgrade_price
                     return tower.upgrade()
 
+        return False
+
     def delete_tower(self, coordinates):
         self.all_towers = [t for t in self.all_towers if t.loc != coordinates]
         self.world.remove_tower(coordinates[0], coordinates[1])
