@@ -41,7 +41,4 @@ class Wall_tower (Tower):
         return myAttacks;
 
     def upgrade(self):
-
-
-    def upgrade(self):
         return False
