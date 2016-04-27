@@ -106,14 +106,15 @@ class GameRunner:
             player_id = msg['player_id']
             state = self.player_states[player_id]
             x, y = msg['msg']['x'], msg['msg']['y']
-
-            if msg['msg']['towerID'] == 'delete':
+            if msg['msg']['towerID'] == 'delete_tower':
                 # request to delete a tower that's already present
                 state.delete_tower((x, y))
                 self.network.send_message(
                     {
                         'type': 'tower_update',
-                        'towerDeleted': 'true',
+                        'towerDeleted': True,
+                        'x': x,
+                        'y': y,
                         'player_id': player_id
                     }
                 )

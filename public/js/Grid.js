@@ -118,4 +118,8 @@ var Grid = function (can, ctx, offset) {
 
         this.towers.push(tower);
     };
+
+    this.deleteTower = function(x, y) {
+        this.Cells[y][x].type = CellType.EMPTY;
+    };
 };

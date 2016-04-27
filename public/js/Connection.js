@@ -60,6 +60,9 @@ ws.onmessage = function(event) {
             console.log(msg);
             if (msg['towerAccepted'] && playerGrids[id]) {
                 playerGrids[id].towerAccepted(msg['tower']);
+            } else if (msg['towerDeleted'] && playerGrids[id]){
+                playerGrids[id].deleteTower(msg['x'],
+                    msg['y']);
             } else if (id == userID) {
                 var reason = msg['reason'];
                 towerDenied(reason);
