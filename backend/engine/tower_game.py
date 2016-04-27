@@ -48,17 +48,6 @@ class GameRunner:
 
             print('removing player and state for player {}'.format(player_id))
 
-        for i in range(0, 30):
-            self.spawnCreeps.append(Creep.factory("Default", i))
-
-        levels = Levels(self.level_creeps_spawn_timers, self.spawnCreeps)
-        state = GameplayState(levels, WORLD_WIDTH,
-                              WORLD_HEIGHT, 100, 100, player_id)
-
-        self.game_states.append(state)
-        self.player_states[player_id] = state
-        print('added player, and state for player {}'.format(player_id))
-
     def run(self):
         # wait until a request comes in to start the game, then start the game
         while True:
@@ -148,9 +137,9 @@ class GameRunner:
         elif msg['type'] == MSG.game_add_player.name:
             player_id = msg['player_id']
             self.add_player(player_id)
-        elif msg['type'] == MSG.game_remove_player.name:
-            player_id = msg['player_id']
-            self.remove_player(player_id)
+        # elif msg['type'] == MSG.game_remove_player.name:
+        #     player_id = msg['player_id']
+        #     self.remove_player(player_id)
         elif msg['type'] == MSG.creep_request.name:
             player_id = msg['player_id']
             creep_type = msg['msg']['creepID']

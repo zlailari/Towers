@@ -59,9 +59,14 @@ ws.onmessage = function(event) {
                         .click(function(event) {
                             destroySideBar();
                             $('.overlay').fadeIn(500);
-                            setTimeout(lobbyManager.enterLobby, 500);
+                            lobbyManager = new LobbyManager();
+                            lobbyManager.init();
+                            setTimeout(lobbyManager.enterLobby,
+                                500);
                             $(this).remove();
                         });
+                        var msg = {};
+                        ws.leaveLobby(userID, msg);
                 }
             }
 
@@ -170,7 +175,6 @@ ws.newLobbyRequest = function(id, msg) {
     // msg format is:
     // {
     // }
-    console.log(msg);
     ws.send(JSON.stringify({
         type: "new_lobby_request",
         player_id: id,

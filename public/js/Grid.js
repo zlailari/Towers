@@ -41,7 +41,7 @@ var Grid = function (can, ctx, offset) {
         if (row < this.rows && col < this.cols) {
 
             // If the focus has changed to a new cell
-            if (this.Cells[row][col] != this.focusCell) {
+            if (this.focusCell && this.Cells[row][col] != this.focusCell) {
                 this.focusCell.hover = false;
             }
 
